@@ -5,12 +5,14 @@
 // before launch. Real projects belong in ../projects.ts once approved.
 // ─────────────────────────────────────────────────────────────────────────────
 import type { Project } from "../types";
+import { PH } from "../placeholders";
 
 const illus = (alt: string, caption: string) => [
   {
-    kind: "illustration" as const,
+    kind: "image" as const,
     alt,
     caption,
+    attribution: "Unsplash",
     permissionToPublish: true,
   },
 ];
@@ -34,9 +36,9 @@ export const demoProjects: Project[] = [
     outcomes: [],
     media: illus(
       "Illustration of a lounge with an arched opening and a coral feature wall",
-      "Illustrative concept. Not a completed project.",
+      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
     ),
-    art: { variant: "lounge", tone: "indigo" },
+    photo: PH.lounge,
   },
   {
     slug: "concept-hall-stand",
@@ -56,9 +58,9 @@ export const demoProjects: Project[] = [
     outcomes: [],
     media: illus(
       "Illustration of an exhibition stand with a tall fascia and plinths",
-      "Illustrative concept. Not a completed project.",
+      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
     ),
-    art: { variant: "stand", tone: "lavender" },
+    photo: PH.stand,
   },
   {
     slug: "concept-launch-stage",
@@ -78,9 +80,9 @@ export const demoProjects: Project[] = [
     outcomes: [],
     media: illus(
       "Illustration of a stage with a coral plinth and truss frame",
-      "Illustrative concept. Not a completed project.",
+      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
     ),
-    art: { variant: "launch", tone: "coral" },
+    photo: PH.stage,
   },
   {
     slug: "concept-corner-popup",
@@ -100,9 +102,9 @@ export const demoProjects: Project[] = [
     outcomes: [],
     media: illus(
       "Illustration of a modular pop-up with a striped canopy",
-      "Illustrative concept. Not a completed project.",
+      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
     ),
-    art: { variant: "popup", tone: "paper" },
+    photo: PH.popup,
   },
   {
     slug: "concept-sliding-window",
@@ -122,9 +124,9 @@ export const demoProjects: Project[] = [
     outcomes: [],
     media: illus(
       "Illustration of a shop window with sliding panels and a pendant disc",
-      "Illustrative concept. Not a completed project.",
+      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
     ),
-    art: { variant: "window", tone: "indigo" },
+    photo: PH.window,
   },
   {
     slug: "concept-garden-villa",
@@ -144,8 +146,8 @@ export const demoProjects: Project[] = [
     outcomes: [],
     media: illus(
       "Illustration of a villa entrance with a bench, pendant and planter",
-      "Illustrative concept. Not a completed project.",
+      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
     ),
-    art: { variant: "villa", tone: "lavender" },
+    photo: PH.villa,
   },
 ];

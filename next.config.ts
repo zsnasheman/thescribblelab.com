@@ -4,6 +4,10 @@ import { legacyRedirects } from "./src/content/redirects";
 const indexing = process.env.NEXT_PUBLIC_SITE_INDEXING === "on";
 
 const nextConfig: NextConfig = {
+  images: {
+    // Temporary placeholder photography only. Remove once real photos are in /public.
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
+  },
   async redirects() {
     return legacyRedirects;
   },

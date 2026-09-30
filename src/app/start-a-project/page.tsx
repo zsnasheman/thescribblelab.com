@@ -28,7 +28,7 @@ export default async function StartPage({
           <InquiryForm initialType={type} />
         </div>
         <aside aria-label="Prefer to talk?" className="lg:col-span-4">
-          <div className="rounded-md bg-white p-6 shadow-[8px_8px_0_var(--color-indigo-10)] lg:sticky lg:top-28">
+          <div className="rounded-xl bg-white p-6 lg:sticky lg:top-28">
             <h2 className="t-h3">Prefer to talk?</h2>
             <p className="t-body mt-2">Call or write to us directly.</p>
             <p className="mt-4"><a className="link" href={SITE.contact.phoneHref}>{SITE.contact.phone}</a></p>

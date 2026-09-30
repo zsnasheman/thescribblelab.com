@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MediaFigure } from "@/components/MediaFigure";
-import { Arrow } from "@/components/shapes";
+import { Photo } from "@/components/Photo";
+import { Arrow } from "@/components/ui";
 import { allProjects, projectBySlug, serviceBySlug } from "@/content";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -46,7 +47,7 @@ export default async function ProjectPage({ params }: Props) {
 
       <header className="max-w-4xl">
         <p className="t-label text-lavender">{svc?.name}</p>
-        <h1 className="t-display mt-4">{p.title}</h1>
+        <h1 className="t-mega mt-4">{p.title}</h1>
         <p className="t-lead mt-5 measure">{p.summary}</p>
         <dl className="t-caption mt-6 flex flex-wrap gap-x-8 gap-y-2">
           <div>
@@ -61,16 +62,21 @@ export default async function ProjectPage({ params }: Props) {
 
       {p.isDemo && (
         <p className="mt-8 max-w-3xl rounded-md border border-coral bg-coral-20 px-4 py-3 font-medium">
-          This page is an illustrative concept. It is not a completed project, and the client, scale
-          and results are not real.
+          This page is an illustrative concept with a temporary placeholder photo. It is not a completed
+          Scribble Lab project, and the client, scale and results are not real.
         </p>
       )}
 
-      <div className="mt-10 grid gap-8">
-        {p.media.map((m, idx) => (
-          <MediaFigure key={idx} m={m} art={p.art} />
-        ))}
+      <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-xl bg-indigo">
+        <Photo photo={p.photo} sizes="100vw" priority />
       </div>
+      {p.media.length > 0 && (
+        <div className="mt-8 grid gap-8 md:grid-cols-2">
+          {p.media.map((m, idx) => (
+            <MediaFigure key={idx} m={m} fallback={p.photo} />
+          ))}
+        </div>
+      )}
 
       <div className="mt-14">
         <Block title="The brief"><p className="t-body measure">{p.brief}</p></Block>

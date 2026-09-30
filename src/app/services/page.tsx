@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Art } from "@/components/Art";
+import { Photo } from "@/components/Photo";
 import { PageHeader } from "@/components/PageHeader";
 import { Reveal } from "@/components/Reveal";
-import { Arrow } from "@/components/shapes";
+import { Arrow } from "@/components/ui";
 import { services } from "@/content";
 
 export const metadata: Metadata = {
@@ -29,11 +29,11 @@ export default function ServicesPage() {
               tabIndex={-1}
               className={`block md:col-span-6 ${i % 2 ? "md:order-2" : ""}`}
             >
-              <Art variant={s.art} tone={s.tone} label="" className="aspect-[4/3] w-full rounded-sm" />
+              <span className="relative block aspect-[4/3] overflow-hidden rounded-xl"><Photo photo={s.photo} sizes="(min-width:768px) 50vw, 100vw" /></span>
             </Link>
             <div className={`md:col-span-6 ${i % 2 ? "md:order-1" : ""}`}>
               <p className="t-label text-lavender">0{i + 1}</p>
-              <h2 className="t-h1 mt-3">{s.name}</h2>
+              <h2 className="t-display mt-3">{s.name}</h2>
               <p className="t-lead mt-4 measure">{s.summary}</p>
               <Link href={`/services/${s.slug}`} className="btn btn-indigo mt-7">
                 About {s.name.toLowerCase()} <Arrow />

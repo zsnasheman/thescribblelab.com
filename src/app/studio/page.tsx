@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/PageHeader";
-import { FounderBlock } from "@/components/PeopleCta";
-import { Bubbles, StripeBlob } from "@/components/shapes";
-import { Arrow } from "@/components/shapes";
+import { FounderBlock } from "@/components/FounderBlock";
+import { Arrow, Bubbles } from "@/components/ui";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -48,7 +47,7 @@ export default function StudioPage() {
       </section>
 
       <section aria-label="Values" className="on-dark relative overflow-hidden bg-indigo py-16 text-white md:py-24">
-        <StripeBlob kind="c" className="pointer-events-none absolute -right-16 -top-10 h-44 w-64 opacity-95" />
+        <div aria-hidden="true" className="blob-c stripes pointer-events-none absolute -right-16 -top-10 h-44 w-64" />
         <div className="container-x relative">
           <h2 className="t-h1">What we care about</h2>
           <dl className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -67,7 +66,7 @@ export default function StudioPage() {
       </section>
 
       <section aria-labelledby="visit" className="container-x pb-12">
-        <div className="grid gap-10 rounded-md bg-white p-8 shadow-[8px_8px_0_var(--color-indigo-10)] md:grid-cols-12 md:p-12">
+        <div className="grid gap-10 rounded-xl bg-white p-8 md:grid-cols-12 md:p-12">
           <div className="md:col-span-5">
             <h2 id="visit" className="t-h2">Find the studio</h2>
             <Bubbles size={10} className="mt-5" />

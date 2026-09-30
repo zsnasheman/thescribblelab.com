@@ -18,19 +18,22 @@ export type Service = {
   covers: string[];
   /** Questions we usually ask first. */
   firstQuestions: string[];
-  /** Visual variant used for the honest illustration. */
-  art: ArtVariant;
-  tone: ArtTone;
+  photo: Photo;
 };
 
-export type ArtVariant = "lounge" | "stand" | "launch" | "popup" | "window" | "villa";
-export type ArtTone = "indigo" | "coral" | "lavender" | "paper";
+/** A photograph. `placeholder` photos are temporary web images, not Scribble Lab work. */
+export type Photo = {
+  src: string;
+  alt: string;
+  credit?: string;
+  placeholder: boolean;
+};
 
 export type ProjectStatus = "concept" | "completed";
 
 export type MediaItem = {
-  kind: "illustration" | "image" | "video";
-  /** Path or URL. Illustrations are drawn in code and have no src. */
+  kind: "image" | "video";
+  /** Path or URL. */
   src?: string;
   poster?: string;
   alt: string;
@@ -57,7 +60,7 @@ export type Project = {
   /** Only verified, supplied outcomes. Never invented. */
   outcomes: string[];
   media: MediaItem[];
-  art: { variant: ArtVariant; tone: ArtTone };
+  photo: Photo;
   /** Layout hint for the editorial showcase. */
   ratio: "landscape" | "portrait" | "square";
   // Optional verified metadata. Shown only when present.
@@ -74,4 +77,5 @@ export type ProcessStage = {
   line: string;
   body: string;
   visualLabel: string;
+  photo: Photo;
 };

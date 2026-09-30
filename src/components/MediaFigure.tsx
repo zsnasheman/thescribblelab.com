@@ -1,45 +1,23 @@
 import Image from "next/image";
-import { Art } from "./Art";
-import type { ArtTone, ArtVariant, MediaItem } from "@/content/types";
+import type { MediaItem, Photo as PhotoT } from "@/content/types";
+import { Photo } from "./Photo";
 
-/** One gallery item with its caption. Illustrations are drawn in code; photos use next/image. */
-export function MediaFigure({
-  m,
-  art,
-}: {
-  m: MediaItem;
-  art: { variant: ArtVariant; tone: ArtTone };
-}) {
+/** One gallery item with its caption. Falls back to the project photo if the item has no file yet. */
+export function MediaFigure({ m, fallback }: { m: MediaItem; fallback: PhotoT }) {
   if (!m.permissionToPublish) return null;
   return (
     <figure>
-      <div className="overflow-hidden rounded-sm bg-indigo-10">
-        {m.kind === "illustration" ? (
-          <Art variant={art.variant} tone={art.tone} label={m.alt} className="aspect-[4/3] w-full" />
-        ) : m.kind === "image" && m.src ? (
-          <Image
-            src={m.src}
-            alt={m.alt}
-            width={m.width ?? 1600}
-            height={m.height ?? 1200}
-            sizes="(min-width: 1024px) 60vw, 100vw"
-            className="h-auto w-full"
-          />
-        ) : m.kind === "video" && m.src ? (
-          <video
-            src={m.src}
-            poster={m.poster}
-            controls
-            preload="none"
-            playsInline
-            className="h-auto w-full"
-            aria-label={m.alt}
-          />
-        ) : null}
+      <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-indigo-10">
+        {m.kind === "video" && m.src ? (
+          <video src={m.src} poster={m.poster} controls preload="none" playsInline className="h-full w-full object-cover" aria-label={m.alt} />
+        ) : m.src ? (
+          <Image src={m.src} alt={m.alt} fill sizes="(min-width:1024px) 70vw, 100vw" className="object-cover" />
+        ) : (
+          <Photo photo={fallback} sizes="(min-width:1024px) 70vw, 100vw" />
+        )}
       </div>
       <figcaption className="t-caption mt-2 text-indigo-80">
-        {m.caption}
-        {m.attribution ? ` Photo: ${m.attribution}.` : ""}
+        {m.caption}{m.attribution ? ` Photo: ${m.attribution}.` : ""}
       </figcaption>
     </figure>
   );

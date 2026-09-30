@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Art } from "@/components/Art";
+import { Photo } from "@/components/Photo";
 import { ProjectCard } from "@/components/ProjectCard";
-import { Arrow } from "@/components/shapes";
+import { Arrow } from "@/components/ui";
 import { projectsForService, serviceBySlug, services } from "@/content";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -32,7 +32,7 @@ export default async function ServicePage({ params }: Props) {
             <nav aria-label="Breadcrumb" className="t-caption mb-6 text-white/85">
               <Link className="link" href="/services">What we do</Link>
             </nav>
-            <h1 className="t-display">{s.name}</h1>
+            <h1 className="t-mega">{s.name}</h1>
             <p className="t-lead mt-6 max-w-[40ch] text-white/90">{s.intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href={`/start-a-project?type=${s.slug}`} className="btn btn-coral">
@@ -44,8 +44,7 @@ export default async function ServicePage({ params }: Props) {
             </div>
           </div>
           <div className="lg:col-span-6">
-            <Art variant={s.art} tone={s.tone === "indigo" ? "lavender" : s.tone} label={`Illustration for ${s.name}`} className="aspect-[4/3] w-full rounded-sm" />
-            <p className="t-caption mt-2 text-white/80">Illustration, not a completed project.</p>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-xl"><Photo photo={s.photo} sizes="(min-width:1024px) 50vw, 100vw" priority /></div>
           </div>
         </div>
       </header>
@@ -89,7 +88,7 @@ export default async function ServicePage({ params }: Props) {
       </section>
 
       <section className="container-x py-12">
-        <div className="rounded-md bg-white p-8 shadow-[8px_8px_0_var(--color-indigo-10)] md:flex md:items-center md:justify-between md:gap-10 md:p-12">
+        <div className="rounded-xl bg-white p-8 md:flex md:items-center md:justify-between md:gap-10 md:p-12">
           <div>
             <h2 className="t-h2">Have a {s.name.toLowerCase()} project in mind?</h2>
             <p className="t-body mt-2 measure">A short brief is enough to begin.</p>

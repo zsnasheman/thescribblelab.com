@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bubbles } from "@/components/shapes";
+import { Bubbles } from "@/components/ui";
 
 export default function NotFound() {
   return (

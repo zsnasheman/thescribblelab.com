@@ -1,4 +1,5 @@
 import type { Service, ServiceSlug } from "./types";
+import { PH } from "./placeholders";
 
 export const services: Service[] = [
   {
@@ -20,8 +21,7 @@ export const services: Service[] = [
       "Which materials do you already love, or already own?",
       "What has to stay, and what can move?",
     ],
-    art: "lounge",
-    tone: "indigo",
+    photo: PH.interiors,
   },
   {
     slug: "exhibitions",
@@ -42,8 +42,7 @@ export const services: Service[] = [
       "What should a visitor remember after thirty seconds?",
       "What needs to happen on the stand: meetings, demos or both?",
     ],
-    art: "stand",
-    tone: "lavender",
+    photo: PH.exhibitions,
   },
   {
     slug: "events",
@@ -64,8 +63,7 @@ export const services: Service[] = [
       "What are the venue's load-in limits and hours?",
       "Who speaks, performs or presents, and from where?",
     ],
-    art: "launch",
-    tone: "coral",
+    photo: PH.events,
   },
   {
     slug: "brand-activations",
@@ -86,8 +84,7 @@ export const services: Service[] = [
       "What should they do with their hands?",
       "Does it travel, and how many times does it need to be rebuilt?",
     ],
-    art: "popup",
-    tone: "paper",
+    photo: PH.activations,
   },
   {
     slug: "kinetic-windows",
@@ -108,8 +105,7 @@ export const services: Service[] = [
       "How wide and how deep is the glass, and what can we fix to?",
       "How long should one full movement take?",
     ],
-    art: "window",
-    tone: "indigo",
+    photo: PH.windows,
   },
 ];
 

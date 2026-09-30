@@ -13,7 +13,7 @@ import {
 } from "@/lib/inquiry";
 import { SITE } from "@/lib/site";
 import { submitInquiry } from "@/app/start-a-project/actions";
-import { Bubbles } from "./shapes";
+import { Bubbles } from "./ui";
 
 type Data = {
   types: string[];
@@ -225,7 +225,7 @@ export function InquiryForm({ initialType }: { initialType?: string }) {
   // ───────── Result panels ─────────
   if (result?.status === "ok") {
     return (
-      <div className="rounded-md bg-white p-8 shadow-[8px_8px_0_var(--color-indigo-10)] md:p-12" role="status">
+      <div className="rounded-xl bg-white p-8 md:p-12" role="status">
         <Bubbles size={12} />
         <h2 ref={headingRef} tabIndex={-1} className="t-h1 mt-6 outline-none">Brief received.</h2>
         <p className="t-lead mt-4 measure">

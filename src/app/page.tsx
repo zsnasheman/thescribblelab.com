@@ -1,72 +1,65 @@
+import Link from "next/link";
+import { FounderBlock } from "@/components/FounderBlock";
 import { Hero } from "@/components/Hero";
-import { StudioBoard } from "@/components/StudioBoard";
-import { WorkShowcase } from "@/components/WorkShowcase";
-import { ProcessSequence } from "@/components/ProcessSequence";
 import { KineticWindow } from "@/components/KineticWindow";
-import { ClosingCta, FounderBlock } from "@/components/PeopleCta";
+import { Marquee } from "@/components/Marquee";
+import { ProcessAccordion } from "@/components/ProcessAccordion";
 import { Reveal } from "@/components/Reveal";
-
-function Head({ label, title, children }: { label: string; title: string; children?: React.ReactNode }) {
-  return (
-    <div className="mb-12 max-w-3xl">
-      <p className="t-label text-lavender">{label}</p>
-      <h2 className="t-h1 mt-4">{title}</h2>
-      {children && <p className="t-lead mt-5 measure">{children}</p>}
-    </div>
-  );
-}
+import { ScrollStatement } from "@/components/ScrollStatement";
+import { ServicesStack } from "@/components/ServicesStack";
+import { Arrow } from "@/components/ui";
+import { WorkCarousel } from "@/components/WorkCarousel";
+import { allProjects, services } from "@/content";
 
 export default function Home() {
+  const work = allProjects();
   return (
     <>
       <Hero />
+      <Marquee items={services.map((s) => s.name)} />
 
-      <section aria-labelledby="worlds-title" className="container-x py-20 md:py-28">
+      <section aria-label="About the studio" className="container-x py-24 md:py-40">
+        <ScrollStatement />
+      </section>
+
+      <section aria-labelledby="worlds-title" className="container-x pb-24 md:pb-32">
         <Reveal>
-          <div className="mb-12 max-w-3xl">
-            <p className="t-label text-lavender">Five worlds</p>
-            <h2 id="worlds-title" className="t-h1 mt-4">One studio, five ways a space gets made.</h2>
-            <p className="t-lead mt-5 measure">
-              Choose a world to look closer. Each one is designed, built and installed by the same team.
-            </p>
-          </div>
+          <p className="t-label text-lavender">Five worlds</p>
+          <h2 id="worlds-title" className="t-display mt-4 max-w-[16ch]">One studio, five ways a space gets made.</h2>
         </Reveal>
-        <StudioBoard />
+        <div className="mt-14"><ServicesStack /></div>
       </section>
 
-      <section aria-labelledby="work-title" className="container-x py-12 md:py-20">
-        <Reveal>
-          <div className="mb-12 max-w-3xl">
-            <p className="t-label text-lavender">Work</p>
-            <h2 id="work-title" className="t-h1 mt-4">Let the projects carry the proof.</h2>
-            <p className="t-lead mt-5 measure">
-              Approved case studies will appear here as they are published. Until then, these are
-              clearly labelled illustrative concepts.
-            </p>
-          </div>
-        </Reveal>
-        <WorkShowcase />
-      </section>
-
-      <section aria-label="Process" className="container-x py-20 md:py-28">
-        <Head label="Process" title="From first line to final handover.">
-          Five stages, one team. Scroll to follow a project from brief to finished space.
-        </Head>
-        <ProcessSequence />
-      </section>
-
-      <section aria-label="Kinetic windows" className="on-dark my-12 bg-indigo py-20 text-white md:py-28">
+      <section aria-labelledby="work-title" className="overflow-hidden py-16 md:py-28">
         <div className="container-x">
-          <KineticWindow />
+          <Reveal>
+            <p className="t-label text-lavender">Work</p>
+            <div className="mt-4 flex flex-wrap items-end justify-between gap-6">
+              <h2 id="work-title" className="t-display max-w-[14ch]">Let the projects do the talking.</h2>
+              <Link href="/work" className="btn btn-outline">See all work <Arrow /></Link>
+            </div>
+            <p className="t-body mt-5 max-w-[60ch] text-indigo-80">
+              Approved case studies will appear here as they are published. Until then these are placeholder photos and illustrative concepts, clearly labelled.
+            </p>
+          </Reveal>
+          <div className="mt-12"><WorkCarousel projects={work} /></div>
         </div>
       </section>
 
-      <section aria-label="The people" className="container-x py-16 md:py-24">
-        <FounderBlock />
+      <section aria-labelledby="process-title" className="container-x py-24 md:py-32">
+        <Reveal>
+          <p className="t-label text-lavender">Process</p>
+          <h2 id="process-title" className="t-display mt-4 max-w-[16ch]">From first line to final handover.</h2>
+        </Reveal>
+        <div className="mt-14"><ProcessAccordion /></div>
       </section>
 
-      <section aria-label="Start a project" className="container-x py-12 md:py-20">
-        <ClosingCta />
+      <section aria-label="Kinetic windows" className="on-dark bg-indigo py-24 text-white md:py-32">
+        <div className="container-x"><KineticWindow /></div>
+      </section>
+
+      <section aria-label="The people" className="container-x py-24 md:py-32">
+        <FounderBlock />
       </section>
     </>
   );

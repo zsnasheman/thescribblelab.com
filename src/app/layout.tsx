@@ -3,6 +3,7 @@ import { Figtree, Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { BlobDefs } from "@/components/BlobDefs";
 import { INDEXING_ENABLED, SITE } from "@/lib/site";
 
 const josefin = Josefin_Sans({
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
+        <BlobDefs />
         <Header />
         <main id="main" className="flex-1">
           {children}
