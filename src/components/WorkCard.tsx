@@ -1,20 +1,24 @@
 import Link from "next/link";
 import { ViewTransition } from "react";
-import { Plate } from "./art/Plates";
+import { projectArt } from "@/content/art";
 import { serviceBySlug } from "@/content/services";
 import type { Project } from "@/content/types";
 
-const ASPECT = { landscape: "aspect-[4/3]", portrait: "aspect-[4/5]", square: "aspect-square" } as const;
+const ASPECT = { landscape: "aspect-[4/3]", portrait: "aspect-[4/3]", square: "aspect-[4/3]" } as const;
 
-/** A project card. The drawing is named so it can morph into the project page. */
+/** A project card. Concept illustrations are labelled Concept study so they are never mistaken for completed work. */
 export function WorkCard({ p, ratio, lead = false }: { p: Project; ratio?: keyof typeof ASPECT; lead?: boolean }) {
+  const art = projectArt(p.slug, p.service);
   return (
     <article className="group">
       <Link href={`/work/${p.slug}`} className="block">
         <ViewTransition name={`project-${p.slug}`} share="morph" default="none">
-          <div className={`relative overflow-hidden rounded-lg border border-indigo/15 bg-paper transition-[border-color,transform] duration-500 group-hover:border-indigo/40 group-hover:-translate-y-0.5 ${ASPECT[ratio ?? p.ratio]}`}>
-            <Plate kind={p.plate} uid={`wc-${p.slug}`} label={`${p.title}: ${p.status === "concept" ? "concept drawing" : "project image"}`} className="absolute inset-0 h-full w-full transition-transform duration-[1100ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.03]" />
-            <span className="t-label absolute left-3 top-3 rounded-full bg-indigo px-3 py-2 text-[0.625rem] text-white">{p.status === "concept" ? "Concept" : "Completed"}</span>
+          <div className={`relative overflow-hidden rounded-2xl bg-lavender-20/70 ${ASPECT[ratio ?? p.ratio]}`}>
+            <div className="art-stack absolute inset-0 grid place-items-center p-[4%] transition-transform duration-[1100ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.03]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={art.color} width={art.w} height={art.h} alt={art.alt} loading="lazy" decoding="async" className="max-h-full w-full object-contain" />
+            </div>
+            <span className="t-label absolute left-3 top-3 rounded-full bg-paper px-3 py-2 text-[0.625rem] text-indigo shadow-sm">{p.status === "concept" ? "Concept study" : "Completed"}</span>
           </div>
         </ViewTransition>
         <p className="t-label mt-4 text-lavender">{serviceBySlug(p.service)?.name}</p>

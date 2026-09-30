@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MaterialBoard } from "@/components/MaterialBoard";
+import { DisciplineBoard } from "@/components/DisciplineBoard";
 import { PageHeader, SectionHead } from "@/components/PageHeader";
 import { Arrow } from "@/components/ui";
 import { services } from "@/content";
@@ -14,7 +14,7 @@ export default function ServicesPage() {
   return (
     <>
       <PageHeader label="What we do" title="Five disciplines, one way of working." lead="Design, fabrication and installation are connected, so the idea you approve is the thing that gets built. Choose a discipline to bring it into focus, or compare them below." />
-      <section aria-label="Disciplines" className="container-x pb-16"><MaterialBoard /></section>
+      <section aria-label="Disciplines" className="container-x pb-16"><DisciplineBoard /></section>
 
       <section aria-labelledby="compare-h" className="container-x pb-16 md:pb-24">
         <SectionHead id="compare-h" label="At a glance" title="Compare the five disciplines." />

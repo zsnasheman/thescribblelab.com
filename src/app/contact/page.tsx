@@ -16,7 +16,7 @@ export default function ContactPage() {
   ];
   return (
     <>
-      <PageHeader label="Contact us" title="Say hello." lead="A quick question, a first idea or a place you would like us to see. Reach us in whichever way is easiest, and a person will read it." />
+      <PageHeader label="Contact us" title="Say hello." lead="A quick question, a first idea or a place you would like us to see. Reach us in whichever way is easiest, and a person will read it."  art={{ src: "/art/v-interiors.webp", w: 596, h: 404, alt: "" }} />
       <section className="container-x grid gap-12 pb-16 lg:grid-cols-12">
         <div className="lg:col-span-7">
           <h2 className="t-h2">Send a short message</h2>

@@ -12,7 +12,7 @@ npm run build
 export CHROMIUM_PATH=/path/to/chromium        # or: npx playwright install chromium
 ```
 
-## Site checks (routes, navigation, every interaction, touch, keyboard, reduced motion, overflow)
+## Site checks (routes, opening composition at 360-1440, navigation, board, founder chapters, reduced motion, touch, keyboard)
 
 ```bash
 npx next start -p 3100 &

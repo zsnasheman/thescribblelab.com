@@ -3,7 +3,7 @@ import { Bubbles } from "@/components/ui";
 
 export default function NotFound() {
   return (
-    <div className="container-x py-24 md:py-32">
+    <div className="container-x pb-24 pt-masthead md:pb-32">
       <Bubbles size={12} />
       <h1 className="t-display mt-8">That page has been rubbed out.</h1>
       <p className="t-lead mt-6 measure">

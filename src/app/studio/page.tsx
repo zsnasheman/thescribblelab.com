@@ -18,7 +18,7 @@ export default function StudioPage() {
   const mats = Object.keys(MATERIALS) as MaterialId[];
   return (
     <>
-      <PageHeader label="Studio" title="A design and build studio in Dubai." lead={studioIntro.lead} />
+      <PageHeader label="Studio" title="A design and build studio in Dubai." lead={studioIntro.lead} art={{ src: "/art/hero-m.webp", w: 794, h: 688, alt: "" }} />
 
       <section aria-labelledby="who-h" className="container-x grid gap-12 pb-16 lg:grid-cols-12">
         <div className="lg:col-span-6">

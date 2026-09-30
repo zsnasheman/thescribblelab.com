@@ -34,7 +34,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5.5rem;
+  scroll-padding-top: 4.75rem;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -42,7 +42,8 @@ h1, h2, h3 { text-wrap: balance; }
 p, li { text-wrap: pretty; }
 
 body {
-  background: var(--color-paper);
+  background: var(--color-paper) url(/art/grain.png);
+  background-size: 256px;
   color: var(--color-indigo);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -66,30 +67,31 @@ body {
 @layer components {
   .t-mega {
     font-family: var(--font-display);
-    font-weight: 300;
-    font-size: clamp(2.25rem, 1.3rem + 3.6vw, 4rem);
-    line-height: 0.94;
-    letter-spacing: -0.035em;
+    font-weight: 700;
+    font-size: clamp(2.35rem, 1.2rem + 4.2vw, 4.6rem);
+    line-height: 1;
+    letter-spacing: -0.025em;
   }
   .t-display {
     font-family: var(--font-display);
-    font-weight: 300;
+    font-weight: 700;
     font-size: clamp(2.25rem, 1.3rem + 3.6vw, 4rem);
     line-height: 1.02;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.022em;
   }
   .t-h1 {
     font-family: var(--font-display);
-    font-weight: 300;
+    font-weight: 700;
     font-size: clamp(1.85rem, 1.3rem + 1.9vw, 2.875rem);
-    line-height: 1.08;
-    letter-spacing: -0.015em;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
   }
   .t-h2 {
     font-family: var(--font-display);
-    font-weight: 300;
+    font-weight: 600;
     font-size: clamp(1.5rem, 1.15rem + 1.2vw, 2.125rem);
-    line-height: 1.15;
+    line-height: 1.12;
+    letter-spacing: -0.012em;
   }
   .t-h3 {
     font-family: var(--font-display);
@@ -107,7 +109,7 @@ body {
     font-family: var(--font-sans);
     font-weight: 600;
     font-size: 0.75rem;
-    line-height: 1;
+    line-height: 1.35;
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
@@ -199,6 +201,7 @@ body {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     transition-delay: 0ms !important;
@@ -210,4 +213,75 @@ body {
 .sr-only-focusable:not(:focus):not(:focus-within) {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- Art layers: concept illustration normalised to paper so it multiplies onto the page ---------- */
+.art-stack { position: relative; isolation: isolate; pointer-events: none; }
+.art-stack > img, .art-stack > picture, .art-stack > picture > img { display: block; width: 100%; height: auto; }
+.art-stack .art-ink { position: absolute; inset: 0; }
+.art-stack .art-color { position: relative; }
+/* The material mask: colour fills in across the line drawing, left to right, once, then stays. */
+.paint-in {
+  -webkit-mask-image: linear-gradient(100deg, #000 0%, #000 34%, transparent 62%, transparent 100%);
+  mask-image: linear-gradient(100deg, #000 0%, #000 34%, transparent 62%, transparent 100%);
+  -webkit-mask-size: 300% 100%; mask-size: 300% 100%;
+  -webkit-mask-position: 100% 0; mask-position: 100% 0;
+  animation: paint-in 2.8s 0.35s var(--ease-paper) forwards;
+}
+@keyframes paint-in { to { -webkit-mask-position: 0% 0; mask-position: 0% 0; } }
+/* Scroll-entered variant: waits for .in */
+.paint-on-view { -webkit-mask-image: linear-gradient(100deg, #000 0%, #000 34%, transparent 62%, transparent 100%); mask-image: linear-gradient(100deg, #000 0%, #000 34%, transparent 62%, transparent 100%); -webkit-mask-size: 300% 100%; mask-size: 300% 100%; -webkit-mask-position: 100% 0; mask-position: 100% 0; transition: mask-position 1.6s var(--ease-paper), -webkit-mask-position 1.6s var(--ease-paper); }
+.in .paint-on-view, .paint-on-view.in { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+.no-js-paint .paint-on-view { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+.reveal-fallback .paint-on-view { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+
+.depth { transform: translate3d(calc(var(--dx, 0) * 8px), calc(var(--dy, 0) * 5px), 0); transition: transform 0.6s var(--ease-paper); will-change: transform; }
+
+/* Organic masks that hold a material texture */
+.blob { -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; background-size: cover; background-position: center; }
+.blob-1 { -webkit-mask-image: url(/art/blob-1.svg); mask-image: url(/art/blob-1.svg); }
+.blob-2 { -webkit-mask-image: url(/art/blob-2.svg); mask-image: url(/art/blob-2.svg); }
+.blob-3 { -webkit-mask-image: url(/art/blob-3.svg); mask-image: url(/art/blob-3.svg); }
+
+/* Navigation: a line drawn under hovered or focused links */
+.nav-link { position: relative; display: inline-flex; align-items: center; min-height: 2.75rem; padding-inline: 0.15rem; font-weight: 600; text-decoration: none; }
+.nav-link::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0.45rem; height: 6px;
+  background: no-repeat center / 100% 100% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.6C18 1.4 30 4.8 50 3s35-2 49-.4' fill='none' stroke='%232F2058' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  clip-path: inset(0 100% 0 0); transition: clip-path 0.45s var(--ease-out-expo);
+}
+.nav-link:hover::after, .nav-link:focus-visible::after, .nav-link[aria-current="page"]::after { clip-path: inset(0 0 0 0); }
+
+/* Kinetic teaser: louvres start face-on, then turn edge-on once to reveal the scene behind them */
+.louver { transition: transform 1.1s var(--ease-paper); transform: scaleX(0.16); }
+.js .louvers:not(.in) .louver { transform: scaleX(1); }
+.reveal-fallback .louvers .louver { transform: scaleX(0.16) !important; }
+
+/* Painted-in reveal driven by a data flag (founder story) */
+.wipe { -webkit-mask-image: linear-gradient(100deg, #000 0%, #000 34%, transparent 62%, transparent 100%); mask-image: linear-gradient(100deg, #000 0%, #000 34%, transparent 62%, transparent 100%); -webkit-mask-size: 300% 100%; mask-size: 300% 100%; -webkit-mask-position: 100% 0; mask-position: 100% 0; transition: mask-position 1.8s var(--ease-paper), -webkit-mask-position 1.8s var(--ease-paper); }
+.wipe[data-on="true"] { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+.paint-on-view[data-on="true"] { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+
+/* Clears the full logo that sits at the upper left of every page */
+.pt-masthead { padding-top: 10.75rem; }
+@media (min-width: 640px) { .pt-masthead { padding-top: 12rem; } }
+@media (min-width: 1024px) { .pt-masthead { padding-top: 14rem; } }
+.t-hero {
+  font-family: var(--font-display); font-weight: 700; line-height: 1.02; letter-spacing: -0.025em;
+  font-size: clamp(2.35rem, 0.9rem + 4.6vw, 4rem);
+}
+@media (min-width: 1024px) { .t-hero { font-size: clamp(2.9rem, 0.6rem + 3.25vw, 4.25rem); } }
+
+/* Once the colour has filled in, the line drawing settles back so pigment and line do not double up */
+.ink-settle { animation: ink-settle 1.6s 2.4s var(--ease-paper) forwards; }
+@keyframes ink-settle { to { opacity: 0.22; } }
+
+/* Hero art as backgrounds so each device downloads only its own composition */
+.hero-art { width: 100%; aspect-ratio: 794 / 688; background: no-repeat center / 100% 100%; }
+.hero-ink { background-image: url(/art/hero-m-ink.webp); }
+.hero-color { background-image: url(/art/hero-m.webp); }
+@media (min-width: 1024px) {
+  .hero-art { height: 100%; aspect-ratio: auto; background-size: cover; background-position: left top; }
+  .hero-ink { background-image: url(/art/hero-ink.webp); }
+  .hero-color { background-image: url(/art/hero.webp); }
 }

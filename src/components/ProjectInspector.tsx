@@ -12,10 +12,11 @@ type Tab = "drawing" | "materials" | "built";
 /** Inspect the drawings, the materials and, when real assets exist, the completed work. */
 export function ProjectInspector({ p }: { p: Project }) {
   const uid = useId().replace(/:/g, "");
+  const hasBuilt = Boolean(p.compare) || p.media.some((m) => m.permissionToPublish);
   const tabs: { id: Tab; label: string }[] = [
     { id: "drawing", label: "Drawings" },
     { id: "materials", label: "Materials" },
-    { id: "built", label: "Completed work" },
+    ...(hasBuilt ? [{ id: "built" as Tab, label: "Completed work" }] : []),
   ];
   const [tab, setTab] = useState<Tab>("drawing");
   const refs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -61,6 +62,7 @@ export function ProjectInspector({ p }: { p: Project }) {
         </ul>
       </div>
 
+      {hasBuilt && (
       <div role="tabpanel" id={`${uid}-panel-built`} aria-labelledby={`${uid}-tab-built`} hidden={tab !== "built"} className="mt-6">
         {p.compare && <div className="mb-8"><CompareSlider before={p.compare.before} after={p.compare.after} caption={p.compare.caption} /></div>}
         {p.media.filter((m) => m.permissionToPublish).length ? (
@@ -78,14 +80,9 @@ export function ProjectInspector({ p }: { p: Project }) {
               </figure>
             ))}
           </div>
-        ) : !p.compare ? (
-          <p className="t-body rounded-lg border border-indigo/20 p-5 measure">
-            {p.status === "concept"
-              ? "This is a concept, so there is no built work to show. Completed projects will show photographs and video here."
-              : "Photographs and video for this project will appear here once they are approved for publication."}
-          </p>
         ) : null}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

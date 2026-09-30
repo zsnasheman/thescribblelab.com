@@ -16,7 +16,7 @@ export function Logo({ width = 220, priority, className }: { width?: number; pri
       height={h}
       priority={priority}
       className={className}
-      style={{ width: w, height: "auto" }}
+      style={className ? undefined : { width: w, height: "auto" }}
       sizes={`${w}px`}
     />
   );

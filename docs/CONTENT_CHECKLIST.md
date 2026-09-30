@@ -84,3 +84,17 @@ in `src/content/index.ts` before launch. A render-to-reality slider appears only
 | Workshop photograph | `public/studio/workshop-01.jpg` | landscape 4:3 | Studio | Fabrication in progress |
 | Installation photograph | `public/studio/install-01.jpg` | landscape 4:3 | Studio | A team on site |
 | Approved client references | `src/content/` | n/a | Work, Studio | Only with written permission |
+
+
+---
+## Owner-supplied materials still needed (consolidated, art-direction rebuild)
+None of these are shown on the public site; the pages read as complete without them.
+
+1. **Completed-project photography and video**, with written permission to publish, location, year and a one-line brief each. Until then the homepage and Work show *Concept study* illustrations.
+2. **Commissioned or high-resolution artwork** to replace the concept layers in `public/art/` (hero scene at least 2400 px wide, five discipline vignettes at least 1600 px, textures from real material scans: travertine, timber, granite, plaster).
+3. **Founder**: her own words for the four chapters (where she comes from, what shaped her eye, why she started the studio), and a portrait if she wants one shown. Confirm the spelling of her name: the Brand Book prints "Nashemman"; the site uses "Nasheman".
+4. **Founder facts to confirm**: that the listed employers may be named, the December 2021 date, and the 2036 ambition wording.
+5. **Verified outcomes** per project (only numbers you can evidence).
+6. **Map pin**: confirm the Google Maps location for UNBOX Community, Bay Square.
+7. **Approved alternate logo lockup** for the compact bar, if you want one; until then the compact bar uses a plain Home link.
+8. **Run `supabase/migrations/20261001000000_contact_source.sql`** (pending): the contact form cannot store messages until it has run. Verify storage on the deployed preview afterwards.

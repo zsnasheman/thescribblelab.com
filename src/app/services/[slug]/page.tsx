@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Plate, plateAspect } from "@/components/art/Plates";
+import { VIGNETTES } from "@/content/art";
+import { KineticDemo } from "@/components/KineticDemo";
 import { ServiceSpecial } from "@/components/ServiceSpecial";
 import { SPECIAL_TITLE } from "@/content/serviceSpecial";
 import { WorkCard } from "@/components/WorkCard";
@@ -107,22 +108,29 @@ export default async function ServicePage({ params }: Props) {
   if (!s) notFound();
   return (
     <>
-      <div className="on-dark bg-indigo text-white">
-        <div className="container-x grid items-center gap-10 py-10 md:py-14 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <nav aria-label="Breadcrumb" className="t-caption text-white/85"><Link className="link" href="/services">What we do</Link></nav>
+      <header className="relative overflow-hidden">
+        <div className="container-x grid items-center gap-x-12 gap-y-4 pb-10 pt-masthead md:pb-14 lg:grid-cols-12 lg:pt-44">
+          <div className="lg:col-span-6">
+            <nav aria-label="Breadcrumb" className="t-caption"><Link className="link" href="/services">What we do</Link></nav>
             <h1 className="t-display mt-4 !text-[clamp(2.25rem,1.4rem+3.4vw,4rem)]">{s.name}</h1>
-            <p className="t-lead mt-5 max-w-[44ch] text-white/90">{s.intro}</p>
+            <p className="t-lead mt-5 max-w-[44ch]">{s.intro}</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href={`/start-a-project?type=${s.slug}`} className="btn btn-coral">Start a project <Arrow /></Link>
-              <Link href={`/work?service=${s.slug}`} className="btn btn-outline text-white">See related work</Link>
+              <Link href={`/work?service=${s.slug}`} className="btn btn-outline">See related work</Link>
             </div>
           </div>
-          <div className="lg:col-span-7">
-            <div className="overflow-hidden rounded-xl bg-paper"><Plate kind={s.plate} uid={`sv-${s.slug}`} label={`${s.name}: drawn composition`} className={`block w-full ${plateAspect(s.plate)}`} /></div>
+          <div aria-hidden="true" className="pointer-events-none relative lg:col-span-6">
+            <div className="blob blob-2 absolute inset-[-6%_-8%] opacity-45" style={{ backgroundImage: "url(/art/t-wash.webp)" }} />
+            <div className="art-stack relative mx-auto max-w-[34rem] px-[4%]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={VIGNETTES[s.slug].color} width={VIGNETTES[s.slug].w} height={VIGNETTES[s.slug].h} alt="" decoding="async" fetchPriority="high" className="w-full" />
+            </div>
           </div>
         </div>
-      </div>
+      </header>
+      {s.slug === "kinetic-windows" && (
+        <section aria-label="Kinetic window demonstration" className="on-dark bg-indigo py-14 text-white md:py-20"><div className="container-x"><KineticDemo /></div></section>
+      )}
       {ORDER[s.slug].map((k) => render(k, s))}
       <section aria-labelledby="next-h" className="container-x py-12">
         <div className="rounded-xl border-2 border-indigo p-8 md:flex md:items-center md:justify-between md:gap-10 md:p-10">

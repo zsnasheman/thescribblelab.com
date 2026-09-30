@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Logo } from "./Logo";
 import { Arrow } from "./ui";
 
 /** The closing invitation. Hidden on the brief and contact pages, where it would only repeat the page. */
 export function FooterCta() {
   const pathname = usePathname();
-  if (pathname.startsWith("/start-a-project") || pathname.startsWith("/contact")) return null;
+  if (pathname === "/" || pathname.startsWith("/start-a-project") || pathname.startsWith("/contact")) return null;
   return (
     <div className="container-x grid items-center gap-10 py-14 md:grid-cols-12 md:py-20">
       <div className="md:col-span-7">
@@ -20,8 +19,6 @@ export function FooterCta() {
           <Link href="/contact" className="btn btn-outline">Contact us</Link>
         </div>
       </div>
-      {/* The full-colour logo always sits on a light field with its clear space kept */}
-      <div className="md:col-span-5 md:justify-self-end"><Logo width={300} /></div>
     </div>
   );
 }
