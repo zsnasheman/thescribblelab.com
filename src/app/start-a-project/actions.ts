@@ -1,17 +1,8 @@
 "use server";
 
-import { createHash, randomBytes } from "node:crypto";
-import { headers } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { inquirySchema, type FieldErrors, type InquiryResult } from "@/lib/inquiry";
-
-const MAX_PER_HOUR = 5;
-
-const code = () => {
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  const bytes = randomBytes(5);
-  return Array.from(bytes, (b) => alphabet[b % alphabet.length]).join("");
-};
+import { MAX_PER_HOUR, NOT_READY_CODES, makeReference, visitorFingerprint } from "@/lib/inquiry-server";
 
 /**
  * Validates on the server, then stores the brief with the service-role client.
@@ -35,10 +26,7 @@ export async function submitInquiry(raw: unknown): Promise<InquiryResult> {
   const db = createAdminClient();
   if (!db) return { status: "unavailable" };
 
-  const h = await headers();
-  const ip = (h.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
-  const salt = process.env.INQUIRY_HASH_SALT ?? "scribble-lab";
-  const ipHash = createHash("sha256").update(`${salt}:${ip}`).digest("hex");
+  const { ipHash, userAgent } = await visitorFingerprint();
 
   try {
     // Duplicate submission (double click, retry): return the original reference.
@@ -60,7 +48,7 @@ export async function submitInquiry(raw: unknown): Promise<InquiryResult> {
       .gte("created_at", since);
     if (!recent.error && (recent.count ?? 0) >= MAX_PER_HOUR) return { status: "rate_limited" };
 
-    const reference = `SL-${new Date().getUTCFullYear()}-${code()}`;
+    const reference = makeReference();
     const { error } = await db.from("inquiries").insert({
       reference,
       types: d.types,
@@ -78,7 +66,7 @@ export async function submitInquiry(raw: unknown): Promise<InquiryResult> {
       consent: true,
       idempotency_key: d.idempotencyKey,
       ip_hash: ipHash,
-      user_agent: (h.get("user-agent") ?? "").slice(0, 300),
+      user_agent: userAgent,
     });
 
     if (error) {
@@ -88,7 +76,7 @@ export async function submitInquiry(raw: unknown): Promise<InquiryResult> {
         if (again.data?.reference) return { status: "ok", reference: again.data.reference, duplicate: true };
       }
       // Missing table or permissions: the backend is not ready, so say so honestly.
-      if (error.code === "42P01" || error.code === "42501" || error.code === "PGRST205") {
+      if (error.code && NOT_READY_CODES.has(error.code)) {
         return { status: "unavailable" };
       }
       return { status: "error" };

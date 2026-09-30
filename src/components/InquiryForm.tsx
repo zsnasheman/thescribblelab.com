@@ -444,7 +444,7 @@ export function InquiryForm({ initialType }: { initialType?: string }) {
                   onChange={(e) => set("consent", e.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-[#2f2058]" />
                 <span>
                   I agree that The Scribble Lab may store this brief and use my details to reply to it.
-                  <span className="t-caption block text-indigo-80">We will not add you to a mailing list.</span>
+                  <span className="t-caption block text-indigo-80">We will not add you to a mailing list. <Link href="/privacy" className="link">How we handle your details</Link>.</span>
                 </span>
               </label>
               {E.consent && <p id={fid("consent-err")} className="mt-2 flex gap-2 font-semibold text-[#9b1c1c]"><span aria-hidden="true">●</span> {E.consent}</p>}

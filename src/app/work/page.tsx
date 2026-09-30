@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/PageHeader";
-import { ProjectCard } from "@/components/ProjectCard";
+import { WorkCard } from "@/components/WorkCard";
 import { allProjects, services } from "@/content";
 
 export const metadata: Metadata = {
@@ -9,81 +9,68 @@ export const metadata: Metadata = {
   description: "Interiors, exhibitions, events, brand activations and kinetic windows by The Scribble Lab.",
 };
 
-export default async function WorkPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ service?: string | string[] }>;
-}) {
+const STATUS = [
+  { id: "concept", label: "Concepts" },
+  { id: "completed", label: "Completed" },
+] as const;
+
+export default async function WorkPage({ searchParams }: { searchParams: Promise<{ service?: string | string[]; status?: string | string[] }> }) {
   const sp = await searchParams;
-  const raw = Array.isArray(sp.service) ? sp.service[0] : sp.service;
-  const active = services.find((s) => s.slug === raw);
+  const one = (v?: string | string[]) => (Array.isArray(v) ? v[0] : v);
+  const svc = one(sp.service);
+  const st = one(sp.status);
+  const activeSvc = services.find((s) => s.slug === svc);
+  const activeSt = STATUS.find((s) => s.id === st);
   const all = allProjects();
-  const list = raw ? all.filter((p) => p.service === raw) : all;
+  const list = all.filter((p) => (!svc || p.service === svc) && (!st || p.status === st));
+  const href = (service?: string, status?: string) => {
+    const q = new URLSearchParams();
+    if (service) q.set("service", service);
+    if (status) q.set("status", status);
+    const s = q.toString();
+    return s ? `/work?${s}` : "/work";
+  };
   const hasDemo = all.some((p) => p.isDemo);
+  const chip = (on: boolean) => `btn !min-h-11 !px-5 !py-2 ${on ? "btn-indigo" : "btn-outline"}`;
 
   return (
     <>
-      <PageHeader
-        label="Work"
-        title="Spaces, stands, stages and windows."
-        lead="Filter by the kind of space. Every page can be shared with a direct link."
-      />
-      <section aria-label="Work index" className="container-x pb-12">
-        <nav aria-label="Filter work by service" className="mb-10 flex flex-wrap gap-2">
-          <Link
-            href="/work"
-            aria-current={!raw ? "true" : undefined}
-            className={`btn !min-h-11 !px-5 !py-2 ${!raw ? "btn-indigo" : "btn-outline"}`}
-          >
-            All
-          </Link>
-          {services.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/work?service=${s.slug}`}
-              aria-current={raw === s.slug ? "true" : undefined}
-              className={`btn !min-h-11 !px-5 !py-2 ${raw === s.slug ? "btn-indigo" : "btn-outline"}`}
-            >
-              {s.name}
-            </Link>
-          ))}
-        </nav>
+      <PageHeader label="Work" title="Spaces, stands, stages and windows." lead="Filter by discipline or by status. Every view has its own link you can share." />
+      <section aria-label="Work index" className="container-x pb-10">
+        <div className="grid gap-6 border-y border-indigo/15 py-6 md:grid-cols-[1fr_auto] md:items-center">
+          <nav aria-label="Filter by discipline" className="flex flex-wrap gap-2">
+            <Link href={href(undefined, st)} aria-current={!svc ? "true" : undefined} className={chip(!svc)}>All disciplines</Link>
+            {services.map((s) => (
+              <Link key={s.slug} href={href(s.slug, st)} aria-current={svc === s.slug ? "true" : undefined} className={chip(svc === s.slug)}>{s.name}</Link>
+            ))}
+          </nav>
+          <nav aria-label="Filter by status" className="flex flex-wrap gap-2">
+            <Link href={href(svc, undefined)} aria-current={!st ? "true" : undefined} className={chip(!st)}>Any status</Link>
+            {STATUS.map((s) => (<Link key={s.id} href={href(svc, s.id)} aria-current={st === s.id ? "true" : undefined} className={chip(st === s.id)}>{s.label}</Link>))}
+          </nav>
+        </div>
 
         {hasDemo && (
-          <p className="t-caption mb-8 max-w-2xl rounded-md border border-indigo/20 bg-white px-4 py-3">
-            <strong>Illustrative concepts.</strong> Approved case studies will replace these as they
-            are published. None of the entries below is a completed client project.
+          <p className="t-caption mt-6 max-w-3xl text-indigo-80">
+            <strong className="text-indigo">Concepts</strong> are original drawings made to show the kind of project the studio takes on. They are not commissioned work.
           </p>
         )}
-
-        <p className="t-caption mb-6 text-indigo-80" aria-live="polite">
-          {list.length} {list.length === 1 ? "entry" : "entries"}
-          {active ? ` in ${active.name.toLowerCase()}` : ""}
+        <p className="t-caption mt-4 text-indigo-80" aria-live="polite">
+          {list.length} {list.length === 1 ? "entry" : "entries"}{activeSvc ? ` · ${activeSvc.name}` : ""}{activeSt ? ` · ${activeSt.label.toLowerCase()}` : ""}
         </p>
 
         {list.length === 0 ? (
-          <div className="rounded-md border border-indigo/15 bg-white p-8 md:p-12">
-            <h2 className="t-h2">
-              {raw && !active
-                ? "We do not have a category with that name."
-                : `No ${active ? active.name.toLowerCase() : ""} work published yet.`}
-            </h2>
-            <p className="t-body mt-3 measure">
-              New projects are added as they are approved for publication. If you are planning
-              something in this area, we would still like to hear about it.
-            </p>
+          <div className="mt-6 rounded-xl border border-indigo/20 p-8 md:p-12">
+            <h2 className="t-h2">{svc && !activeSvc ? "We do not have a discipline with that name." : st === "completed" ? "No completed projects are published yet." : "Nothing matches those filters."}</h2>
+            <p className="t-body mt-3 measure">Completed projects appear here once they are approved for publication. If you are planning something similar, we would like to hear about it.</p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/work" className="btn btn-outline">Clear filter</Link>
+              <Link href="/work" className="btn btn-outline">Clear filters</Link>
               <Link href="/start-a-project" className="btn btn-coral">Start a project</Link>
             </div>
           </div>
         ) : (
-          <ul className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {list.map((p) => (
-              <li key={p.slug}>
-                <ProjectCard p={p} />
-              </li>
-            ))}
+          <ul className="mt-8 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+            {list.map((p) => (<li key={p.slug}><WorkCard p={p} /></li>))}
           </ul>
         )}
       </section>

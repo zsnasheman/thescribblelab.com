@@ -5,28 +5,28 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { Arrow } from "./ui";
+import { SITE } from "@/lib/site";
 
-const NAV = [
+const NAV: { href: string; label: string; also?: string[] }[] = [
   { href: "/work", label: "Work" },
   { href: "/services", label: "What we do" },
-  { href: "/studio", label: "Studio" },
+  { href: "/studio", label: "Studio", also: ["/founder", "/approach"] },
+  { href: "/contact", label: "Contact" },
+];
+const MORE = [
+  { href: "/founder", label: "Founder" },
+  { href: "/approach", label: "Our approach" },
+  { href: "/privacy", label: "Privacy" },
 ];
 
 export function Header() {
   const pathname = usePathname();
+  // The menu is open only for the route it was opened on, so navigating closes it without an effect.
   const [openAt, setOpenAt] = useState<string | null>(null);
   const open = openAt === pathname;
-  const [scrolled, setScrolled] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const active = (h: string) => pathname === h || pathname.startsWith(h + "/");
-
-  useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 260);
-    on();
-    window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
-  }, []);
+  const isActive = (n: (typeof NAV)[number]) => [n.href, ...(n.also ?? [])].some((h) => pathname === h || pathname.startsWith(h + "/"));
 
   useEffect(() => {
     if (!open) return;
@@ -45,64 +45,55 @@ export function Header() {
     return () => { document.body.style.overflow = prev; document.removeEventListener("keydown", onKey); };
   }, [open]);
 
-  const toggle = () => setOpenAt(open ? null : pathname);
-
   return (
-    <>
-      {/* Top of page: the logo gets room to breathe (200 px minimum, clear space kept) */}
-      <header className="container-x flex items-center justify-between gap-6 py-4 md:py-6">
-        <Link href="/" aria-label="The Scribble Lab, home" className="block shrink-0">
-          <Logo width={200} priority />
-        </Link>
-        <nav aria-label="Main" className="hidden items-center gap-10 md:flex">
-          {NAV.map((n) => (
-            <Link key={n.href} href={n.href} aria-current={active(n.href) ? "page" : undefined}
-              className="draw-link py-2 text-[1.05rem] font-semibold no-underline">
-              {n.label}
-            </Link>
-          ))}
-          <Link href="/start-a-project" className="btn btn-coral">Start a project</Link>
-        </nav>
-      </header>
-
-      {/* Mobile: Menu stays reachable at the top right at all times */}
-      <div className="fixed right-3 top-3 z-50 md:hidden">
-        <button ref={btnRef} type="button" aria-expanded={open} aria-controls="mobile-menu" onClick={toggle}
-          className="btn btn-indigo !min-h-12 !px-6 shadow-lg">
-          {open ? "Close" : "Menu"}
-        </button>
+    <header>
+      {/* Logo row: scrolls away. The logo keeps its 200 px minimum and its clear space. */}
+      <div className="container-x flex items-center justify-between gap-6 py-4 md:py-5">
+        <Link href="/" aria-label="The Scribble Lab, home" className="block shrink-0"><Logo width={200} priority /></Link>
+        <div className="hidden text-right md:block">
+          <p className="font-[family-name:var(--font-display)] text-lg font-light leading-snug">{SITE.tagline}</p>
+          <p className="t-caption mt-1 text-indigo-80">
+            <a className="link" href={SITE.contact.phoneHref}>{SITE.contact.phone}</a>
+            <span aria-hidden="true"> · </span>
+            <a className="link" href={SITE.contact.whatsappHref} rel="noopener">WhatsApp</a>
+          </p>
+        </div>
       </div>
-      {/* Desktop: a floating pill appears once you scroll, so navigation is always close */}
-      <nav
-        aria-label="Quick navigation"
-        className={`on-dark fixed left-1/2 top-4 z-50 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-indigo p-1.5 pl-6 text-white shadow-xl transition-all duration-500 ease-[var(--ease-out-expo)] md:flex ${
-          scrolled ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-20 opacity-0"
-        }`}
-        aria-hidden={!scrolled}
-      >
-        {NAV.map((n) => (
-          <Link key={n.href} href={n.href} tabIndex={scrolled ? 0 : -1}
-            className={`rounded-full px-4 py-2 text-[0.95rem] font-semibold no-underline transition-colors hover:bg-white/15 ${active(n.href) ? "bg-white/15" : ""}`}>
-            {n.label}
-          </Link>
-        ))}
-        <Link href="/start-a-project" tabIndex={scrolled ? 0 : -1} className="btn btn-coral !min-h-10 !px-5 !py-2">Start a project</Link>
-      </nav>
 
-      {open && (
-        <div id="mobile-menu" ref={panelRef} className="on-dark fixed inset-0 z-40 overflow-y-auto bg-indigo text-white md:hidden" style={{ height: "100dvh" }}>
-          <nav aria-label="Mobile" className="container-x flex min-h-full flex-col justify-center gap-1 pb-10 pt-24">
-            {[{ href: "/", label: "Home" }, ...NAV].map((n, i) => (
-              <Link key={n.href} href={n.href} aria-current={pathname === n.href ? "page" : undefined}
-                className="group flex items-baseline justify-between border-b border-white/20 py-5 font-[family-name:var(--font-display)] text-5xl font-light no-underline">
-                <span>{n.label}</span><span className="t-label text-white/80 tabular-nums">0{i + 1}</span>
+      {/* Navigation bar: sticky, but in the page flow, so it never covers content */}
+      <div className="on-dark sticky top-0 z-50 bg-indigo text-white">
+        <div className="container-x flex h-14 items-center justify-between gap-4">
+          <nav aria-label="Main" className="hidden h-full items-stretch gap-8 md:flex">
+            {NAV.map((n) => (
+              <Link key={n.href} href={n.href} aria-current={isActive(n) ? "page" : undefined}
+                className="relative flex items-center text-[0.98rem] font-semibold no-underline after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:origin-left after:scale-x-0 after:bg-coral after:transition-transform after:duration-300 hover:after:scale-x-100 aria-[current=page]:after:scale-x-100">
+                {n.label}
               </Link>
             ))}
-            <Link href="/start-a-project" className="btn btn-coral btn-lg mt-10 self-start">Start a project <Arrow /></Link>
-            <p className="t-caption mt-10 text-white/80">Ideas. People. Places. A brighter tomorrow.</p>
+          </nav>
+          <button ref={btnRef} type="button" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpenAt(open ? null : pathname)}
+            className="btn btn-outline !min-h-10 !px-5 !py-1.5 text-white md:hidden">
+            {open ? "Close" : "Menu"}
+          </button>
+          <Link href="/start-a-project" aria-current={pathname.startsWith("/start-a-project") ? "page" : undefined} className="btn btn-coral !min-h-10 !px-5 !py-1.5">
+            Start a project
+          </Link>
+        </div>
+      </div>
+
+      {open && (
+        <div id="mobile-menu" ref={panelRef} className="on-dark fixed inset-x-0 bottom-0 top-14 z-40 overflow-y-auto bg-indigo text-white md:hidden" style={{ top: "3.5rem" }}>
+          <nav aria-label="Mobile" className="container-x flex flex-col pb-10 pt-4">
+            {[{ href: "/", label: "Home" }, ...NAV, ...MORE].map((n) => (
+              <Link key={n.href} href={n.href} aria-current={pathname === n.href ? "page" : undefined}
+                className="flex items-center justify-between border-b border-white/20 py-4 font-[family-name:var(--font-display)] text-3xl font-light no-underline aria-[current=page]:text-coral">
+                {n.label}<Arrow />
+              </Link>
+            ))}
+            <p className="t-caption mt-8 text-white/80">{SITE.tagline}</p>
           </nav>
         </div>
       )}
-    </>
+    </header>
   );
 }

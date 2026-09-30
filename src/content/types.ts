@@ -5,43 +5,55 @@ export type ServiceSlug =
   | "brand-activations"
   | "kinetic-windows";
 
+/** Drawn compositions (original architectural illustrations) used until real photography exists. */
+export type PlateKind = "interior" | "villa" | "stand" | "stage" | "popup" | "window";
+export type FragmentKind = "plan-interior" | "plan-stand" | "section-stage" | "kit" | "rail-elevation" | "joinery-section";
+export type MaterialId =
+  | "lacquer"
+  | "plaster"
+  | "terrazzo"
+  | "travertine"
+  | "brass"
+  | "felt"
+  | "coral-paint"
+  | "ply";
+
+export type Faq = { q: string; a: string };
+
 export type Service = {
   slug: ServiceSlug;
   name: string;
-  /** One line for the studio board. */
   short: string;
-  /** Short paragraph for the focused view. */
   summary: string;
-  /** Longer copy for the service page. */
   intro: string;
-  /** Plain statements of what the work covers. No promises of price or time. */
-  covers: string[];
-  /** Questions we usually ask first. */
+  plate: PlateKind;
+  fragment: FragmentKind;
+  materials: MaterialId[];
+  /** The kinds of brief this service answers. */
+  briefs: string[];
+  /** What the work covers. */
+  scope: string[];
+  /** What the client receives. Never promises times, prices or guarantees. */
+  deliverables: string[];
+  /** How the five stages apply to this discipline. */
+  processNotes: { stage: ProcessStage["id"]; note: string }[];
+  faqs: Faq[];
   firstQuestions: string[];
-  photo: Photo;
-};
-
-/** A photograph. `placeholder` photos are temporary web images, not Scribble Lab work. */
-export type Photo = {
-  src: string;
-  alt: string;
-  credit?: string;
-  placeholder: boolean;
+  nextStep: string;
 };
 
 export type ProjectStatus = "concept" | "completed";
 
+/** A real supplied asset (photograph or video). Empty for illustrative concepts. */
 export type MediaItem = {
   kind: "image" | "video";
-  /** Path or URL. */
-  src?: string;
+  src: string;
   poster?: string;
   alt: string;
   caption: string;
   width?: number;
   height?: number;
   attribution?: string;
-  /** Written permission to publish this media. */
   permissionToPublish: boolean;
 };
 
@@ -53,17 +65,21 @@ export type Project = {
   /** Demo records are illustrative and must be removed before launch. */
   isDemo: boolean;
   summary: string;
+  overview: string;
   brief: string;
   response: string;
-  materials: string[];
+  materials: MaterialId[];
+  development: string;
   execution: string;
   /** Only verified, supplied outcomes. Never invented. */
   outcomes: string[];
+  plate: PlateKind;
+  drawings: { fragment: FragmentKind; caption: string }[];
+  /** Real completed-work media, when supplied. */
   media: MediaItem[];
-  photo: Photo;
-  /** Layout hint for the editorial showcase. */
+  /** Only for a genuinely matched render and built photograph. */
+  compare?: { before: MediaItem; after: MediaItem; caption: string };
   ratio: "landscape" | "portrait" | "square";
-  // Optional verified metadata. Shown only when present.
   client?: string;
   location?: string;
   year?: number;
@@ -75,7 +91,20 @@ export type ProcessStage = {
   id: "listen" | "sketch" | "develop" | "build" | "handover";
   name: string;
   line: string;
-  body: string;
-  visualLabel: string;
-  photo: Photo;
+  what: string[];
+  clientSees: string[];
+  decisions: string[];
+  fragment: FragmentKind;
+};
+
+export type FounderChapter = {
+  id: string;
+  title: string;
+  kicker: string;
+  paragraphs: string[];
+  /** Short facts shown beside the prose. */
+  facts?: { label: string; value: string }[];
+  /** Text that still needs the founder's own words. Shown quietly, once per chapter. */
+  draftNote?: string;
+  caption: string;
 };

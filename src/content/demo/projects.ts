@@ -1,153 +1,126 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// DEMO CONTENT — ILLUSTRATIVE CONCEPTS ONLY.
-// Nothing in this file is a real client, project, result or date.
-// Delete this folder (and set SHOW_DEMO_CONTENT to false in ../index.ts)
-// before launch. Real projects belong in ../projects.ts once approved.
+// DEMO CONTENT: ILLUSTRATIVE CONCEPTS ONLY.
+// Nothing here is a real client, project, result or date. Each is an original drawing,
+// not a photograph. Delete this folder and set SHOW_DEMO_CONTENT to false in ../index.ts
+// before launch. Real, approved projects belong in ../projects.ts.
 // ─────────────────────────────────────────────────────────────────────────────
 import type { Project } from "../types";
-import { PH } from "../placeholders";
 
-const illus = (alt: string, caption: string) => [
-  {
-    kind: "image" as const,
-    alt,
-    caption,
-    attribution: "Unsplash",
-    permissionToPublish: true,
-  },
-];
+const base = { status: "concept" as const, isDemo: true, outcomes: [] as string[], media: [] as Project["media"] };
 
 export const demoProjects: Project[] = [
   {
+    ...base,
     slug: "concept-courtyard-lounge",
     title: "Courtyard lounge",
     service: "interiors",
-    status: "concept",
-    isDemo: true,
     ratio: "landscape",
-    summary: "A calm residential lounge organised around one arched opening.",
-    brief:
-      "Illustrative brief: a family lounge that feels quiet in the day and warm in the evening, with storage that disappears.",
-    response:
-      "One arched opening frames the room. Joinery runs wall to wall in a single tone so the eye rests on the coral feature panel.",
-    materials: ["Indigo lacquered joinery", "Lime plaster walls", "Brushed brass details"],
-    execution:
-      "Illustrative only. A real project page describes the fabrication sequence, fixings and site programme here.",
-    outcomes: [],
-    media: illus(
-      "Illustration of a lounge with an arched opening and a coral feature wall",
-      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
-    ),
-    photo: PH.lounge,
+    summary: "A residential lounge organised around one arched opening to a courtyard.",
+    overview: "A concept for a family lounge where a single arch frames the garden and the joinery does the rest.",
+    brief: "A lounge that is calm in the day and warm in the evening, with storage that disappears into the walls.",
+    response: "One arched opening frames the courtyard. Battened joinery runs along the side walls in a single tone, so the eye rests on the opening and the light beyond it.",
+    materials: ["lacquer", "plaster", "terrazzo", "brass"],
+    development: "The battened wall is drawn as a section first: batten width, gap and backing decide both the look and how the panel is fixed.",
+    execution: "A real project page would describe fabrication, fixings and the site programme here.",
+    plate: "interior",
+    drawings: [
+      { fragment: "plan-interior", caption: "Concept plan: lounge, arch and courtyard axis." },
+      { fragment: "joinery-section", caption: "Section through the battened wall." },
+    ],
   },
   {
+    ...base,
     slug: "concept-hall-stand",
-    title: "Hall 4 stand",
+    title: "Two-storey corner stand",
     service: "exhibitions",
-    status: "concept",
-    isDemo: true,
     ratio: "portrait",
-    summary: "A two-storey stand with an open ground floor and a quiet meeting loft.",
-    brief:
-      "Illustrative brief: a stand that draws people off a busy aisle and gives private meetings somewhere to happen.",
-    response:
-      "A tall indigo fascia signals the stand from far down the hall. The ground floor stays open; meetings move upstairs.",
-    materials: ["Painted MDF fascia", "Acoustic felt panels", "Demountable aluminium frame"],
-    execution:
-      "Illustrative only. A real project page covers shipping, install nights and dismantle.",
-    outcomes: [],
-    media: illus(
-      "Illustration of an exhibition stand with a tall fascia and plinths",
-      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
-    ),
-    photo: PH.stand,
+    summary: "A corner stand with an open ground floor and a quiet meeting level above.",
+    overview: "A concept for a corner stand that draws visitors in from two aisles and keeps meetings above the noise.",
+    brief: "A stand that invites people off a busy aisle and gives private conversations somewhere to happen.",
+    response: "Two open sides meet the aisles. A tall fascia signals the stand from down the hall, and meetings move to a level above.",
+    materials: ["lacquer", "felt", "coral-paint", "ply"],
+    development: "The structure is drawn as a demountable frame so it can be shipped flat and assembled in the build window.",
+    execution: "A real project page would cover shipping, install nights and dismantle.",
+    plate: "stand",
+    drawings: [
+      { fragment: "plan-stand", caption: "Plan: two open sides, reception and meeting stair." },
+      { fragment: "kit", caption: "Demountable frame, exploded." },
+    ],
   },
   {
+    ...base,
     slug: "concept-launch-stage",
     title: "Launch stage",
     service: "events",
-    status: "concept",
-    isDemo: true,
     ratio: "landscape",
-    summary: "A single reveal moment staged for a room of four hundred.",
-    brief:
-      "Illustrative brief: one product reveal, seen clearly from every seat, with a fast load-in.",
-    response:
-      "A raised coral plinth sits inside a simple truss frame. Everything else stays quiet so the reveal lands.",
-    materials: ["Scenic flats", "Truss frame", "Warm white LED wash"],
-    execution:
-      "Illustrative only. A real project page covers rigging, load-in times and show support.",
-    outcomes: [],
-    media: illus(
-      "Illustration of a stage with a coral plinth and truss frame",
-      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
-    ),
-    photo: PH.stage,
+    summary: "One reveal moment, staged to be seen from every seat.",
+    overview: "A concept for a product reveal in a room for four hundred.",
+    brief: "One moment the whole room should see, with a fast load-in.",
+    response: "A raised plinth sits inside a simple truss frame. Everything around it stays quiet so the reveal lands.",
+    materials: ["lacquer", "felt", "coral-paint", "ply"],
+    development: "A section checks sightlines from the front row to the back of the raked seating.",
+    execution: "A real project page would cover rigging, load-in and show support.",
+    plate: "stage",
+    drawings: [
+      { fragment: "section-stage", caption: "Section: stage, truss and raked seating." },
+      { fragment: "kit", caption: "Set pieces, exploded for load-in." },
+    ],
   },
   {
+    ...base,
     slug: "concept-corner-popup",
-    title: "Corner pop-up",
+    title: "Modular pop-up",
     service: "brand-activations",
-    status: "concept",
-    isDemo: true,
     ratio: "square",
-    summary: "A small, modular pop-up that opens on two sides.",
-    brief:
-      "Illustrative brief: a pop-up that can be rebuilt in a mall atrium, a street market and a hotel lobby.",
-    response:
-      "Four identical modules lock together. A striped canopy gives it a recognisable roofline wherever it lands.",
-    materials: ["Birch ply modules", "Printed fabric canopy", "Cast-rubber feet"],
-    execution:
-      "Illustrative only. A real project page covers transport, rebuild time and servicing.",
-    outcomes: [],
-    media: illus(
-      "Illustration of a modular pop-up with a striped canopy",
-      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
-    ),
-    photo: PH.popup,
+    summary: "A small modular pop-up that opens on two sides and can be rebuilt elsewhere.",
+    overview: "A concept for a pop-up designed to be rebuilt in a mall atrium, a street market and a hotel lobby.",
+    brief: "A pop-up that can move between very different sites without being redesigned each time.",
+    response: "Four identical modules lock together. A striped canopy gives a recognisable roofline wherever it lands.",
+    materials: ["ply", "coral-paint", "felt", "brass"],
+    development: "Modules are drawn to fit a standard vehicle, with a one-page assembly sequence.",
+    execution: "A real project page would cover transport, rebuild time and servicing.",
+    plate: "popup",
+    drawings: [
+      { fragment: "kit", caption: "Kit of parts, exploded." },
+      { fragment: "plan-stand", caption: "Plan: two open sides and a counter." },
+    ],
   },
   {
+    ...base,
     slug: "concept-sliding-window",
     title: "Sliding panel window",
     service: "kinetic-windows",
-    status: "concept",
-    isDemo: true,
     ratio: "portrait",
-    summary: "A retail window where three panels slowly rearrange a scene.",
-    brief:
-      "Illustrative brief: a window that changes as people walk past, with a full cycle of about fourteen seconds.",
-    response:
-      "Two panels slide on rails while a pendant disc rises and swings. The mechanism is visible and quiet.",
-    materials: ["Powder-coated steel rails", "Brushless motors", "Painted aluminium panels"],
-    execution:
-      "Illustrative only. A real project page covers testing, installation after hours and servicing.",
-    outcomes: [],
-    media: illus(
-      "Illustration of a shop window with sliding panels and a pendant disc",
-      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
-    ),
-    photo: PH.window,
+    summary: "A retail window where panels slowly rearrange a scene on rails.",
+    overview: "A concept for a window that changes as people walk past, with one full cycle of about fourteen seconds.",
+    brief: "A shopfront window with a repeating movement that a passer-by can read in one glance.",
+    response: "Two panels slide on overhead rails while a pendant disc rises and swings. The mechanism is visible, quiet and serviceable.",
+    materials: ["brass", "lacquer", "coral-paint", "felt"],
+    development: "The rails, carriages and drive are drawn with service access from behind the glass.",
+    execution: "A real project page would cover workshop testing, after-hours installation and servicing.",
+    plate: "window",
+    drawings: [
+      { fragment: "rail-elevation", caption: "Elevation: rails, carriages and panels." },
+      { fragment: "joinery-section", caption: "Section through a panel and its carriage." },
+    ],
   },
   {
+    ...base,
     slug: "concept-garden-villa",
-    title: "Garden villa entrance",
+    title: "Villa entrance hall",
     service: "interiors",
-    status: "concept",
-    isDemo: true,
     ratio: "landscape",
-    summary: "A villa entrance hall that moves from courtyard light to a warm interior.",
-    brief:
-      "Illustrative brief: an entrance that feels generous without adding square metres.",
-    response:
-      "A long bench, a pendant and a green planter stage the arrival. A single stripe detail adds craft without noise.",
-    materials: ["Terrazzo floor", "Oak bench", "Brass pendant"],
-    execution:
-      "Illustrative only. A real project page covers sequencing with trades and finishes.",
-    outcomes: [],
-    media: illus(
-      "Illustration of a villa entrance with a bench, pendant and planter",
-      "Placeholder photo and illustrative concept. Not a completed Scribble Lab project.",
-    ),
-    photo: PH.villa,
+    summary: "An entrance hall that moves from courtyard light to a warmer interior.",
+    overview: "A concept for an entrance that feels generous without adding square metres.",
+    brief: "An arrival that introduces the house: light, a place to sit and a view through.",
+    response: "A long bench, a pendant and a planter stage the arrival. A single brass inlay in the terrazzo leads the eye to the arch.",
+    materials: ["terrazzo", "plaster", "brass", "travertine"],
+    development: "The terrazzo layout is drawn with movement joints so the brass inlay sits on a joint line.",
+    execution: "A real project page would cover sequencing with the trades and finishes.",
+    plate: "villa",
+    drawings: [
+      { fragment: "plan-interior", caption: "Plan: entrance, bench and courtyard view." },
+      { fragment: "joinery-section", caption: "Section through the bench and wall." },
+    ],
   },
 ];
