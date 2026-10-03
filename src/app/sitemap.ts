@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { allProjects, services } from "@/content";
+import { PORTFOLIO, services } from "@/content";
 import { SITE } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -14,6 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...fixed,
     ...services.map((s) => ({ url: `${base}/services/${s.slug}`, lastModified: now, priority: 0.7 })),
-    ...allProjects().map((p) => ({ url: `${base}/work/${p.slug}`, lastModified: now, priority: 0.6 })),
+    ...PORTFOLIO.map((p) => ({ url: `${base}/work/${p.slug}`, lastModified: now, priority: 0.6 })),
   ];
 }

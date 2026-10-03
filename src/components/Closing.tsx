@@ -1,17 +1,17 @@
 import Link from "next/link";
 import { Arrow } from "./ui";
-import { mediaById } from "@/content/media";
+import { shot } from "@/content/showcase";
 import { SITE } from "@/lib/site";
 
 /** The invitation: a full-bleed image, a clear action and the verified details. */
 export function Closing() {
   const c = SITE.contact;
-  const m = mediaById("boardroom");
+  const m = shot("al-hilal-bank-youth-centre", 0);
   return (
     <section aria-labelledby="close-h" className="relative isolate overflow-hidden bg-ink py-24 text-white md:py-36">
       <div aria-hidden="true" className="absolute inset-0 -z-10">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={m.src} width={m.w} height={m.h} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+        <img src={m.image.src} width={m.image.w} height={m.image.h} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-ink/80" />
       </div>
       <div className="container-x text-center">

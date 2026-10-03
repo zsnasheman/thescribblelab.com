@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { mediaById } from "@/content/media";
+import { shot } from "@/content/showcase";
 import { usePrefersReducedMotion } from "@/lib/useReducedMotion";
 import { background, founderChapters } from "@/content/founder";
 
@@ -24,7 +24,7 @@ export function FounderStory() {
     return () => io.disconnect();
   }, []);
 
-  const IMGS = ["boardroom", "reception", "office-lounge", "cafe"].map(mediaById);
+  const IMGS = [shot("roche-riyadh", 0), shot("dt1-downtown", 1), shot("laduree-dubai-hills", 0), shot("fifa-arab-cup-qatar", 0)];
 
   return (
     <div className="grid gap-x-16 lg:grid-cols-12">
@@ -46,7 +46,7 @@ export function FounderStory() {
             <p className="t-label text-lavender">Chapter {c.kicker}</p>
             <h2 id={`${c.id}-h`} className="t-h1 mt-3">{c.title}</h2>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS[i].thumb} width={640} height={IMGS[i].kind === "photograph" ? 427 : 320} alt="" loading="lazy" className="mt-6 aspect-[16/10] w-full rounded-xl object-cover lg:hidden" />
+            <img src={IMGS[i].image.thumb} width={820} height={460} alt="" loading="lazy" className="mt-6 aspect-[16/10] w-full rounded-xl object-cover lg:hidden" />
             <div className="mt-6 space-y-4">
               {c.paragraphs.map((t, k) => (<p key={k} className="t-lead measure">{t}</p>))}
             </div>
@@ -69,7 +69,7 @@ export function FounderStory() {
           <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-indigo">
             {IMGS.map((m, i) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={m.id} src={m.src} width={m.w} height={m.h} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms]" style={{ opacity: (reduced ? 0 : active) === i ? 1 : 0 }} />
+              <img key={m.project.slug} src={m.image.src} width={m.image.w} height={m.image.h} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms]" style={{ opacity: (reduced ? 0 : active) === i ? 1 : 0 }} />
             ))}
           </div>
           <p className="t-caption mt-3 text-indigo-80" aria-live="polite">{founderChapters[active].caption}</p>

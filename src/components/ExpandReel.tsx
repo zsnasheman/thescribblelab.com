@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { Arrow } from "./ui";
-import { mediaById } from "@/content/media";
+import { shot } from "@/content/showcase";
+import { categoryName } from "@/content/portfolio";
 
 /** A framed image that opens to the full screen as you scroll (normal scrolling, pinned only while it opens). */
-export function ExpandReel({ imageId = "reception" }: { imageId?: string }) {
-  const m = mediaById(imageId);
+export function ExpandReel({ slug = "the-juice-beauty", index = 0 }: { slug?: string; index?: number }) {
+  const m = shot(slug, index);
   const root = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLDivElement>(null);
   const img = useRef<HTMLImageElement>(null);
@@ -48,20 +49,20 @@ export function ExpandReel({ imageId = "reception" }: { imageId?: string }) {
     <div ref={root} className="relative" style={{ height: "260svh" }} data-expand>
       <div className="sticky top-0 h-[100svh] overflow-hidden bg-paper">
         <div ref={label} className="container-x pointer-events-none absolute inset-x-0 top-24 z-10 text-center md:top-28">
-          <p className="t-label text-lavender">Interiors</p>
+          <p className="t-label text-lavender">Interior design</p>
           <p className="mt-3 font-[family-name:var(--font-display)] text-[clamp(1.5rem,1rem+2vw,2.75rem)] font-light">Every space starts with a line.</p>
         </div>
         <div ref={frame} className="scrub-img absolute inset-0" style={{ clipPath: "inset(26% 22% 10% 22% round 34px)" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img ref={img} src={m.src} width={m.w} height={m.h} alt={m.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" style={{ transform: "scale(1.22)" }} />
+          <img ref={img} src={m.image.src} width={m.image.w} height={m.image.h} alt={m.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" style={{ transform: "scale(1.22)" }} />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,50,0)_45%,rgba(20,10,50,.78)_100%)]" />
         </div>
         <div ref={copy} className="container-x on-dark absolute inset-x-0 bottom-0 z-10 pb-12 text-white md:pb-16" style={{ opacity: 0, visibility: "hidden" }}>
-          <p className="t-label text-white/90">{m.kind === "photograph" ? "Photograph" : "Design visual"} · Placeholder image</p>
-          <p className="t-lux mt-3 !text-[clamp(2rem,1rem+4vw,4.5rem)]">Residential, commercial, retail and hospitality interiors.</p>
+          <p className="t-label text-white/90">{m.project.title} · {categoryName(m.project.category)}{m.project.label ? ` · ${m.project.label}` : ""}</p>
+          <p className="t-lux mt-3 !text-[clamp(2rem,1rem+4vw,4.5rem)]">We don’t decorate. We craft environments.</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/services/interiors" className="btn btn-coral">About interiors <Arrow /></Link>
-            <Link href="/work?service=interiors" className="btn btn-outline text-white">See the work</Link>
+            <Link href={`/work/${m.project.slug}`} className="btn btn-outline text-white">View the project</Link>
           </div>
         </div>
       </div>

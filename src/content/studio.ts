@@ -1,5 +1,5 @@
 export const studioIntro = {
-  lead: "The Scribble Lab is a creative design and build agency headquartered in Dubai. We take ideas from the first sketch to finished spaces.",
+  lead: "We’re a Dubai-based creative agency that concepts, builds and activates spaces and experiences people actually remember. Interior design. Brand activations. Exhibitions. Events. Retail pop-ups. We do it all and we do it bold.",
   serves:
     "We work with homeowners, developers, retailers, restaurateurs, exhibitors, brands and event organisers. Some bring a complete brief. Others arrive with a location and an instinct.",
   evolution: [

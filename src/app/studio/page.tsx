@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader, SectionHead } from "@/components/PageHeader";
 import { Arrow, Bubbles } from "@/components/ui";
-import { allProjects, services } from "@/content";
+import { PORTFOLIO, services } from "@/content";
+import { CLIENT_LIST } from "@/content/showcase";
 import { capabilities, howItConnects, roles, studioIntro, values } from "@/content/studio";
 import { SITE } from "@/lib/site";
 
@@ -59,15 +60,20 @@ export default function StudioPage() {
         <p className="mt-8"><Link href="/approach" className="btn btn-indigo">Our approach in detail <Arrow /></Link></p>
       </section>
 
-      <section aria-labelledby="shop-h" className="container-x border-t border-indigo/15 py-14 md:py-20">
-        <SectionHead id="shop-h" label="Materials" title="What spaces are made from.">Timber, planting, stone and metalwork: chosen against the drawing, specified and detailed before anything is built.</SectionHead>
-        <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {([["timber", "Timber veneer"], ["moss", "Preserved moss"], ["travertine", "Stone flooring"], ["lattice", "Brass lattice"]] as const).map(([id, name]) => (
-            <li key={id}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/projects/m-${id}.webp`} width={320} height={320} alt={`${name}, detail from a design visual`} loading="lazy" className="aspect-square w-full rounded-2xl object-cover" />
-              <p className="t-caption mt-2 font-semibold">{name}</p>
-            </li>
+      <section aria-labelledby="scribblers-h" className="container-x border-t border-indigo/15 py-14 md:py-20">
+        <p className="t-label text-lavender">Who are Scribblers</p>
+        <h2 id="scribblers-h" className="t-lux mt-3 max-w-[18ch] !text-[clamp(2.2rem,1rem+4vw,4.5rem)]">We call ourselves Scribblers.</h2>
+        <div className="mt-8 grid gap-8 md:grid-cols-2 md:gap-14">
+          <p className="t-lead">We walk into a blank space and see the finished room. We look at a brief and sketch something nobody asked for but everybody needed. We lose sleep over the angle of a spotlight and the texture of a wall that most people will never notice but will always feel.</p>
+          <p className="t-lead">Sharp minds. Restless energy. An almost unreasonable commitment to bold. We don’t hire people who colour inside the lines. We hire people who question why there are lines in the first place.</p>
+        </div>
+      </section>
+
+      <section aria-labelledby="clients-h" className="container-x border-t border-indigo/15 py-14 md:py-20">
+        <SectionHead id="clients-h" label="Our clients" title="Projects across the region." />
+        <ul className="divide-y divide-indigo/15 border-y border-indigo/15">
+          {CLIENT_LIST.map(([name, role, place, year]) => (
+            <li key={name} className="grid gap-x-6 gap-y-1 py-4 md:grid-cols-[1.6fr_1.2fr_1fr_5rem]"><span className="font-semibold">{name}</span><span className="text-indigo-80">{role}</span><span className="text-indigo-80">{place}</span><span className="tabular-nums text-indigo-80 md:text-right">{year}</span></li>
           ))}
         </ul>
       </section>
@@ -79,7 +85,7 @@ export default function StudioPage() {
             <ul className="mt-4 grid gap-2 sm:grid-cols-2">
               <li><Link className="link" href="/founder">The founder: {SITE.founder.firstName}&rsquo;s story</Link></li>
               <li><Link className="link" href="/approach">Our approach</Link></li>
-              <li><Link className="link" href="/work">Work ({allProjects().length})</Link></li>
+              <li><Link className="link" href="/work">Work ({PORTFOLIO.length})</Link></li>
               <li><Link className="link" href="/services">What we do ({services.length} disciplines)</Link></li>
             </ul>
           </div>

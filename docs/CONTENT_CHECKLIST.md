@@ -114,3 +114,15 @@ None of these are shown on the public site; the pages read as complete without t
 ## Update: placeholder imagery received (Oct 2026)
 Five images were supplied as placeholders: one photograph (cafe, `public/projects/cafe.webp`) and four design visuals (collaboration area, reception, open workspace, boardroom). They appear in the journey's aperture (Beat D, the cafe photograph) and in the Interiors gallery, labelled as a photograph or a design visual and flagged "Placeholder image/imagery".
 Still needed before they can be shown as Scribble Lab projects: confirmation each is the studio's own work, the project names, location and year, written permission to publish (the cafe photograph shows a third-party brand sign: "LDC"), and photographer credit. The logo SVG was not attached; please resend it.
+
+---
+## Portfolio import (TSL Company Profile & Portfolio PDF, Oct 2026)
+`scripts/build-portfolio.py` + `src/content/portfolio.ts` now carry 23 projects with their images, text and status labels exactly as printed in the PDF (Concept design / Design & build / Design consultancy / Built). Seven categories plus Kinetic windows; 8 featured on the homepage.
+To confirm later (look and feel comes first):
+1. The PDF lists the studio email as **hello@thescribblelab.com** and a **warehouse** (Warehouse No. 215, Sheikh Saeed Al Maktoum Warehouses, Mena Jabal Ali, Industrial 1, Dubai). The site still shows nash@ and no warehouse until you choose.
+2. Ladurée EXPEX is headed "Concept Design" but the text says "designed and built": which is right?
+3. DT1: the PDF text mentions awards the *building* received; the awards sentence and the awards plaque image were left out so the studio is not credited with them. Confirm if you want them shown.
+4. Client names and logos appear as in the PDF; confirm permission to show each client's name and imagery publicly. The Al Hilal Bank page says the project was halted; wording kept.
+5. Dubai Health / Al Jalila Foundation (2026), Emirates NBD HQ, Bank ABC HQ, Britishvolt, Energy Plus Gym and Barako Grill are in the client list but have no project pages in the PDF; send images and text if they should have one.
+6. Image quality: many PDF images are 500-1400 px wide (compressed PDF). Original files would be sharper for full-bleed use.
+7. The café photograph supplied earlier (shows an "LDC" sign) is not used; no matching project in the PDF.

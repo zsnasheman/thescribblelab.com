@@ -24,7 +24,7 @@ ok("robots disallows all", (await (await p0.goto(B + "/robots.txt")).text()).inc
 errs.length = 0;
 
 // 2. no production notes, no leftover illustration
-const banned = [/to come/i, /portrait to be supplied/i, /will appear here/i, /will go here/i, /no verified outcomes/i, /lorem/i, /coming soon/i, /concept study/i];
+const banned = [/to come/i, /portrait to be supplied/i, /will appear here/i, /will go here/i, /no verified outcomes/i, /lorem/i, /coming soon/i];
 for (const r of ["/", "/work", "/studio", "/founder", "/approach", "/contact", "/services", "/services/interiors", "/services/kinetic-windows"]) {
   await p0.goto(B + r); const t = await p0.locator("body").innerText();
   ok(`no production notes on ${r}`, !banned.some((x) => x.test(t)), banned.filter((x) => x.test(t)).join(","));
@@ -75,28 +75,31 @@ await p1.goto(B + "/"); await p1.getByRole("link", { name: "Explore our work" })
 
 // 6. homepage chapters
 await p1.goto(B + "/");
-ok("statement words are all in the page", /remember: interiors, exhibitions, events, brand activations and kinetic windows/.test(await p1.locator("#stmt-h").locator("xpath=..").innerText()));
+ok("statement words are all in the page", /creative agency that concepts, builds and activates spaces and experiences/.test(await p1.locator("#stmt-h").locator("xpath=..").innerText()));
 const frameAt = async (f) => { const span = await p1.evaluate(() => document.querySelector("[data-expand]").offsetHeight - innerHeight); const top = await p1.evaluate(() => document.querySelector("[data-expand]").getBoundingClientRect().top + scrollY); await jump(p1, top + span * f); await p1.waitForTimeout(400); return p1.evaluate(() => document.querySelector("[data-expand] .scrub-img").style.clipPath); };
 const c0 = await frameAt(0), c1 = await frameAt(0.35), c2 = await frameAt(0.8);
 ok("immersive frame opens as you scroll", c0 !== c1 && c1 !== c2 && /inset\(0/.test(c2), `${c0} | ${c1} | ${c2}`);
-ok("frame caption and links appear once open", (await p1.locator("[data-expand] a:has-text('About interiors')").isVisible()) && (await p1.locator("[data-expand] a:has-text('See the work')").isVisible()));
+ok("frame caption and links appear once open", (await p1.locator("[data-expand] a:has-text('About interiors')").isVisible()) && (await p1.locator("[data-expand] a:has-text('View the project')").isVisible()));
 await p1.goto(B + "/"); const rows = p1.locator("#practice-h").locator("xpath=..").locator("ol > li a");
 ok("five disciplines, each links to its page", (await rows.count()) === 5 && (await rows.evaluateAll((a) => a.map((x) => x.getAttribute("href")))).every((h) => h.startsWith("/services/")));
 await rows.nth(4).click(); await p1.waitForURL("**/services/kinetic-windows"); ok("discipline row opens its service page", true);
 await p1.goto(B + "/"); await p1.locator("#work-h").scrollIntoViewIfNeeded();
-ok("project reel shows five labelled images", (await p1.locator("#work figure").count()) === 5 && (await p1.locator("#work figcaption").allInnerTexts()).every((t) => /Photograph|Design visual/i.test(t)));
-const before = await p1.evaluate(() => document.querySelector("#work ul").scrollLeft); await p1.getByRole("button", { name: "Next image" }).click(); await p1.waitForTimeout(900);
+ok("project reel shows eight real projects, each a link", (await p1.locator("#work ul li a[href^='/work/']").count()) === 8);
+const before = await p1.evaluate(() => document.querySelector("#work ul").scrollLeft); await p1.getByRole("button", { name: "Next project" }).click(); await p1.waitForTimeout(900);
 ok("reel next button scrolls it", (await p1.evaluate(() => document.querySelector("#work ul").scrollLeft)) > before);
 ok("five process steps", (await p1.locator("#delivery-h").locator("xpath=../../..").locator("ol > li").count()) === 5);
 ok("closing has contact actions and verified details", (await p1.locator("#close-h").locator("xpath=..").locator("a[href='/start-a-project'], a[href='/contact'], a[href^='tel:'], a[href^='mailto:']").count()) >= 4);
 
-// 7. work gallery dialog
-await p1.goto(B + "/work"); await p1.locator("[data-work='boardroom']").click();
-ok("work image opens large as a dialog", await p1.getByRole("dialog").isVisible() && (await p1.getByRole("dialog").locator("img").count()) === 1);
-await p1.keyboard.press("Escape"); await p1.waitForTimeout(200);
-ok("Escape closes and restores focus", !(await p1.getByRole("dialog").count()) && (await p1.evaluate(() => document.activeElement?.getAttribute("data-work") === "boardroom")));
-await p1.goto(B + "/work?service=events"); ok("empty discipline gives a way forward", (await p1.getByRole("link", { name: "Start a project" }).count()) >= 1 && (await p1.locator("[data-work]").count()) === 0);
-await p1.goto(B + "/services/interiors"); ok("interiors page has the gallery", (await p1.locator("#gallery-h").count()) === 1);
+// 7. work index, filter, project page, service page
+await p1.goto(B + "/work");
+ok("work index lists every project", (await p1.locator("#work-index, section[aria-label='Work index'] article").count()) === 23, String(await p1.locator("section[aria-label='Work index'] article").count()));
+await p1.locator("nav[aria-label='Filter by category'] a", { hasText: /^Events$/ }).click(); await p1.waitForURL("**/work?category=events");
+ok("category filter narrows the list", (await p1.locator("section[aria-label='Work index'] article").count()) === 2);
+await p1.locator("section[aria-label='Work index'] article a").first().click(); await p1.waitForURL("**/work/*");
+ok("project page shows title, facts, text and gallery", (await p1.locator("h1").count()) === 1 && (await p1.locator("dl dt").count()) >= 3 && (await p1.locator("article img").count()) >= 2);
+ok("project page offers a next step", (await p1.getByRole("link", { name: /Start a project like this/ }).count()) === 1 && (await p1.getByRole("link", { name: /Next:/ }).count()) === 1);
+await p1.goto(B + "/work?category=kinetic-windows"); ok("kinetic windows has its project", (await p1.locator("section[aria-label='Work index'] article").count()) === 1);
+await p1.goto(B + "/services/exhibitions"); ok("service page lists its projects", (await p1.locator("#work-h").locator("xpath=..").locator("article").count()) === 4);
 
 // 8. founder chapters
 await p1.goto(B + "/founder");

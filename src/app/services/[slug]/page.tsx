@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PlaceholderGallery } from "@/components/PlaceholderGallery";
+import { ProjectCard } from "@/components/ProjectCard";
+import { shot } from "@/content/showcase";
 import { Arrow } from "@/components/ui";
 import { processStages, projectsForService, serviceBySlug, services } from "@/content";
 import type { Service, ServiceSlug } from "@/content/types";
@@ -16,8 +17,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 type Key = "briefs" | "scope" | "process" | "work" | "faq" | "gallery";
 // Each discipline leads with what matters most for it, so the pages are not the same page re-titled.
+const HEAD: Record<ServiceSlug, ReturnType<typeof shot>> = {
+  interiors: shot("laduree-dubai-hills", 0),
+  exhibitions: shot("laduree-expex", 0),
+  events: shot("ahmed-al-maghribi-launch", 3),
+  "brand-activations": shot("fifa-arab-cup-qatar", 0),
+  "kinetic-windows": shot("chopard-kinetic-windows", 0),
+};
 const ORDER: Record<ServiceSlug, Key[]> = {
-  interiors: ["gallery", "briefs", "scope", "process", "work", "faq"],
+  interiors: ["work", "briefs", "scope", "process", "faq"],
   exhibitions: ["briefs", "scope", "process", "work", "faq"],
   events: ["scope", "briefs", "process", "faq", "work"],
   "brand-activations": ["briefs", "scope", "process", "work", "faq"],
@@ -36,8 +44,6 @@ const Dot = ({ c = "bg-emerald" }: { c?: string }) => <span aria-hidden="true" c
 function render(key: Key, s: Service) {
   const related = projectsForService(s.slug);
   switch (key) {
-    case "gallery":
-      return <Section key={key} id="gallery-h" label="Interiors" title="Spaces we design."><PlaceholderGallery /></Section>;
     case "briefs":
       return (
         <Section key={key} id="briefs-h" label="Briefs we take on" title={`What brings people to ${s.name.toLowerCase()}.`}>
@@ -72,8 +78,8 @@ function render(key: Key, s: Service) {
       );
     case "work":
       return related.length ? (
-        <Section key={key} id="work-h" label="Related work" title="Work in this discipline.">
-          <ul className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{related.map((p) => <li key={p.slug}><Link className="link t-h3" href={`/work/${p.slug}`}>{p.title}</Link></li>)}</ul>
+        <Section key={key} id="work-h" label="Selected work" title="Work in this discipline.">
+          <ul className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{related.map((p) => <li key={p.slug}><ProjectCard p={p} /></li>)}</ul>
         </Section>
       ) : null;
     case "faq":
@@ -102,7 +108,7 @@ export default async function ServicePage({ params }: Props) {
     <>
       <header className="relative">
         <div className="container-x grid items-end gap-x-12 gap-y-8 pb-10 pt-masthead md:pb-14 lg:grid-cols-12">
-          <div className={s.slug === "interiors" ? "lg:col-span-6" : "lg:col-span-9"}>
+          <div className="lg:col-span-6">
             <nav aria-label="Breadcrumb" className="t-caption"><Link className="link" href="/services">What we do</Link></nav>
             <h1 className="t-lux mt-4 !text-[clamp(2.4rem,1rem+5.2vw,5.5rem)]">{s.name}</h1>
             <p className="t-lead mt-5 max-w-[48ch]">{s.intro}</p>
@@ -111,13 +117,13 @@ export default async function ServicePage({ params }: Props) {
               <Link href={`/work?service=${s.slug}`} className="btn btn-outline">See related work</Link>
             </div>
           </div>
-          {s.slug === "interiors" && (
+          {(() => { const m = HEAD[s.slug]; return (
             <div className="lg:col-span-6">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/projects/cafe.webp" width={1800} height={1200} alt="A café interior with a pastry counter, hanging planters, pendant lights and a glazed staircase wall." fetchPriority="high" className="aspect-[4/3] w-full rounded-2xl object-cover" />
-              <p className="t-caption mt-2 text-indigo-80">Photograph · Placeholder image</p>
+              <img src={m.image.src} width={m.image.w} height={m.image.h} alt={m.alt} fetchPriority="high" className="aspect-[4/3] w-full rounded-2xl object-cover" />
+              <p className="t-caption mt-2 text-indigo-80">{m.project.title}</p>
             </div>
-          )}
+          ); })()}
         </div>
       </header>
       {ORDER[s.slug].map((k) => render(k, s))}
