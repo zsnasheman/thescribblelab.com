@@ -69,7 +69,7 @@ for (const w of [360, 390, 768, 1024, 1440]) {
   await at(0.0); ok("journey: A copy visible at start", await beat("Extraordinary spaces"), JSON.stringify(await dbg()));
   await at(0.26); ok("journey: B copy appears", await beat("It starts as a line"));
   await at(0.5); ok("journey: C copy appears", await beat("Then it gets a surface"));
-  await at(0.97); ok("journey: D caption names the project and links to it", (await p.locator("[data-journey] a[href^='/work/']").first().isVisible()) && await beat("Placeholder image"));
+  await at(0.97); ok("journey: D caption names the project and links to it", (await p.locator("[data-journey] a:has-text('See interiors work')").isVisible()) && await beat("Placeholder image"));
   ok("journey: concept is labelled until real media exists", /Placeholder image|Concept study/.test(await p.locator("[data-journey]").textContent()));
   await at(0); await p.locator("[data-journey] a:has-text('Skip the story')").click(); await p.waitForTimeout(900);
   ok("journey: Skip the story reaches the practice board", await p.evaluate(() => document.querySelector("#breadth").getBoundingClientRect().top < innerHeight * 0.6));
