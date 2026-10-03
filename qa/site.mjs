@@ -45,7 +45,7 @@ for (const w of [360, 390, 768, 1024, 1440]) {
   ok(`${w}: no horizontal overflow`, await p.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth));
   ok(`${w}: headline is whole`, /Small scribbles\.\s*Extraordinary spaces\./.test((await p.locator("[data-journey] h1").innerText()).replace(/\n/g, " ")));
   ok(`${w}: opening says what the studio does`, /designs and builds creative spaces and experiences/.test(await p.locator("[data-journey]").innerText()));
-  ok(`${w}: guide form fills part of the first screen`, await p.evaluate(() => { const r = document.querySelector("[data-journey] path[fill='#2f2058']").getBoundingClientRect(); return r.width > innerWidth * 0.4 && r.height > innerHeight * 0.3; }));
+  ok(`${w}: guide form fills part of the first screen`, await p.evaluate(() => { const r = document.querySelector("[data-journey] path[data-guide='body']").getBoundingClientRect(); return r.width > innerWidth * 0.25 && r.height > innerHeight * 0.25; }));
   if (w === 1440 || w === 390) {
     ok(`${w}: art layers do not intercept pointer`, await p.evaluate(() => getComputedStyle(document.querySelector("[data-journey] svg")).pointerEvents === "none"));
     ok(`${w}: no configurator controls in the opening`, (await p.locator("[data-journey] input[type=range]").count()) === 0);
@@ -59,9 +59,9 @@ for (const w of [360, 390, 768, 1024, 1440]) {
   const p = await page(1440, 900); await p.goto(B + "/"); await p.waitForTimeout(2200);
   const span = await p.evaluate(() => document.querySelector("[data-journey]").offsetHeight - innerHeight);
   const at = async (f) => { await p.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" }), span * f); await p.waitForTimeout(450); };
-  const st = () => p.evaluate(() => ({ body: document.querySelector("[data-journey] path[fill='#2f2058']").getAttribute("d"), ink: +document.querySelector("#jc-ink rect").getAttribute("width"), color: +document.querySelector("#jc-color rect").getAttribute("width"), proj: +getComputedStyle(document.querySelector("[data-journey] g[clip-path='url(#jc-ap)']")).opacity }));
+  const st = () => p.evaluate(() => ({ body: document.querySelector("[data-journey] path[data-guide='body']").getAttribute("d"), ink: +document.querySelector("#jc-ink rect").getAttribute("width"), color: +document.querySelector("#jc-color rect").getAttribute("width"), proj: +getComputedStyle(document.querySelector("[data-journey] g[clip-path='url(#jc-ap)']")).opacity }));
   const s0 = await st(); await at(0.34); const s1 = await st(); await at(0.62); const s2 = await st(); await at(0.95); const s3 = await st();
-  ok("journey: the sketch develops after the first mark", s0.ink === 0 && s1.ink > 100, JSON.stringify([s0.ink, s1.ink]));
+  ok("journey: the line drawing of the real render draws itself on load", s0.ink > 1500, JSON.stringify([s0.ink]));
   ok("journey: colour and material follow the sketch", s1.color < s2.color && s2.color > 800, JSON.stringify([s1.color, s2.color]));
   ok("journey: the mark changes shape into the arch", s0.body !== s1.body && s1.body !== s2.body);
   ok("journey: the project layer appears only after the colour", s0.proj === 0 && s2.proj > 0.5);

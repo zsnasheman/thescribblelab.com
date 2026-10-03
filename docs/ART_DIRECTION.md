@@ -64,3 +64,17 @@ uses the first *completed* project that has permitted image media; otherwise it 
 
 **Reference recordings:** the WeTransfer link and Instagram posts could not be reached from the build environment; the
 recordings were not watched. The scene design follows the written brief. Replace/adjust once stills are supplied.
+
+
+---
+# Iteration 4: photographic journey (replaces the painted/blob opening)
+Feedback: the blob, scribble and painted concept art read as a cartoon; a realistic, high-resolution result was requested.
+The motionsites.ai references (luxury-hero, immersive-studio) and the screen-recording links could not be opened from the
+build environment (egress proxy 403), so they have **not** been studied; stills or recordings are needed.
+
+Journey now runs on the supplied real imagery:
+- **A** an architectural line drawing derived (edge detection) from the supplied reception render draws itself over paper; the guide is reduced to a thin coral outline (traced from the logo's form) with the scribble stroke inside it.
+- **B** the outline morphs into an arch that sits exactly on the render's window.
+- **C** the render itself develops from the drawing (left-to-right with a hairline front); real material crops from the renders (timber, moss, stone, brass lattice) settle around it; slow camera dolly.
+- **D** the arch opens to full screen onto the supplied cafe photograph (labelled Placeholder image until confirmed).
+Concept-painting assets remain only in the discipline board and the Work studies; they should be replaced by real per-discipline photography (see checklist).
