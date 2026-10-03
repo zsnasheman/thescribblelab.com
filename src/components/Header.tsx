@@ -68,12 +68,12 @@ export function Header() {
     <>
       {extra}
       {NAV.map((n) => (
-        <Link key={n.href} href={n.href} aria-current={isActive(n) ? "page" : undefined} className="nav-link">{n.label}</Link>
+        <Link key={n.href} href={n.href} aria-current={isActive(n) ? "page" : undefined} className="nav-link cap">{n.label}</Link>
       ))}
     </>
   );
   const project = (
-    <Link href="/start-a-project" aria-current={pathname.startsWith("/start-a-project") ? "page" : undefined} className="btn btn-coral !min-h-11 whitespace-nowrap !px-5 !py-2 !text-[0.95rem]">
+    <Link href="/start-a-project" aria-current={pathname.startsWith("/start-a-project") ? "page" : undefined} className="btn btn-coral cap !min-h-11 whitespace-nowrap !px-5 !py-2">
       Start a project
     </Link>
   );

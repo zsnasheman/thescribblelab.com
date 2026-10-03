@@ -1,14 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree, Josefin_Sans } from "next/font/google";
+import { Figtree, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { INDEXING_ENABLED, SITE } from "@/lib/site";
 
-const josefin = Josefin_Sans({
-  variable: "--font-josefin",
+const serif = Instrument_Serif({
+  variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["300", "400", "600", "700"],
+  weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
 const figtree = Figtree({
@@ -48,7 +49,7 @@ const initScript = `document.documentElement.classList.add("js");if(matchMedia("
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${josefin.variable} ${figtree.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${serif.variable} ${figtree.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: initScript }} />
       </head>

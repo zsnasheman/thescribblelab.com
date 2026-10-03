@@ -8,11 +8,11 @@ export function Closing() {
   const c = SITE.contact;
   const m = mediaById("boardroom");
   return (
-    <section aria-labelledby="close-h" className="on-dark relative isolate overflow-hidden bg-indigo py-24 text-white md:py-36">
+    <section aria-labelledby="close-h" className="relative isolate overflow-hidden bg-ink py-24 text-white md:py-36">
       <div aria-hidden="true" className="absolute inset-0 -z-10">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={m.src} width={m.w} height={m.h} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-indigo/80" />
+        <div className="absolute inset-0 bg-ink/80" />
       </div>
       <div className="container-x text-center">
         <p className="t-label text-white/90">The conversation</p>

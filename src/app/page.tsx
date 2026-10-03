@@ -12,6 +12,7 @@ export default function Home() {
   return (
     <>
       <HeroReel />
+      <div className="dark-scope">
 
       <section aria-labelledby="stmt-h" className="container-x py-24 md:py-40">
         <h2 id="stmt-h" className="t-label mb-8 text-lavender">The studio</h2>
@@ -40,6 +41,7 @@ export default function Home() {
       <section aria-labelledby="delivery-h" className="container-x py-20 md:py-32"><ProcessList /></section>
 
       <Closing />
+      </div>
     </>
   );
 }

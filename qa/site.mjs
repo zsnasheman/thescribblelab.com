@@ -57,20 +57,20 @@ for (const w of [360, 390, 768, 1024, 1440]) {
   await p.getByRole("button", { name: "Pause motion" }).click();
   ok("hero: pause control stops the camera move", await p.evaluate(() => document.querySelector("[data-hero]").classList.contains("hero-paused")));
   await p.waitForTimeout(8000); ok("hero: stays on the image while paused", (await cur()) === 2);
-  await p.getByRole("button", { name: "Play motion" }).click(); await p.waitForTimeout(7600);
+  await p.getByRole("button", { name: "Play motion" }).click(); await p.waitForTimeout(8700);
   ok("hero: advances by itself when playing", (await cur()) === 3, String(await cur()));
   await p.context().close();
 }
 
 // 5. navigation
 const p1 = await page(); await p1.goto(B + "/");
-const labels = (await p1.locator("nav[aria-label='Main'] a").allInnerTexts()).map((s) => s.trim());
-ok("desktop nav: Work, Studio, Founder, Contact, Start a project", JSON.stringify(labels) === JSON.stringify(["Work", "Studio", "Founder", "Contact", "Start a project"]), labels.join("|"));
+const labels = (await p1.locator("nav[aria-label='Main'] a").allInnerTexts()).map((s) => s.trim().toLowerCase());
+ok("desktop nav: Work, Studio, Founder, Contact, Start a project", JSON.stringify(labels) === JSON.stringify(["work", "studio", "founder", "contact", "start a project"]), labels.join("|"));
 ok("compact bar hidden at top", (await p1.locator("nav[aria-label='Compact']").isVisible()) === false);
 await jump(p1, 1500); await p1.waitForTimeout(500);
 ok("compact bar appears on scroll with Home", (await p1.locator("nav[aria-label='Compact']").isVisible()) && (await p1.getByRole("link", { name: /^Home/ }).first().isVisible()));
-await p1.goto(B + "/founder"); ok("Founder is current", (await p1.locator("nav[aria-label='Main'] a[aria-current='page']").innerText()).trim() === "Founder");
-await p1.goto(B + "/approach"); ok("Studio is current on Approach", (await p1.locator("nav[aria-label='Main'] a[aria-current='page']").innerText()).trim() === "Studio");
+await p1.goto(B + "/founder"); ok("Founder is current", (await p1.locator("nav[aria-label='Main'] a[aria-current='page']").innerText()).trim().toLowerCase() === "founder");
+await p1.goto(B + "/approach"); ok("Studio is current on Approach", (await p1.locator("nav[aria-label='Main'] a[aria-current='page']").innerText()).trim().toLowerCase() === "studio");
 await p1.goto(B + "/"); await p1.getByRole("link", { name: "Explore our work" }).click(); await p1.waitForURL("**/work"); ok("Explore our work goes to Work", true);
 
 // 6. homepage chapters
