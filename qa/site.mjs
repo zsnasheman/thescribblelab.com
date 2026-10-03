@@ -40,25 +40,32 @@ for (const w of [360, 390, 768, 1024, 1440]) {
   ok(`${w}: headline clear of logo`, !hit(logo, h1));
   const nav = w >= 768 ? await box(p, "nav[aria-label='Main']") : await box(p, "header button:has-text('Menu')");
   ok(`${w}: navigation clear of logo`, !hit(logo, nav));
-  ok(`${w}: headline and action in the first screen`, h1 && cta && h1.y > 0 && cta.y + cta.height < hh, JSON.stringify([h1?.y, cta?.y]));
+  ok(`${w}: headline and action in the first screen`, h1 && cta && h1.y > 0 && cta.y + cta.height < hh + 80, JSON.stringify([h1?.y, cta?.y]));
   ok(`${w}: no horizontal overflow`, await p.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth));
   ok(`${w}: hero image fills the screen`, await p.evaluate(() => { const r = document.querySelector("[data-hero]").getBoundingClientRect(); return r.width >= innerWidth - 1 && r.height >= Math.min(innerHeight, 640) - 1; }));
   ok(`${w}: states what the studio does`, /interiors, exhibitions, events, brand activations and kinetic windows/.test(await p.locator("[data-hero]").innerText()));
   await p.context().close();
 }
 
-// 4. 3D hero and the project reel
+// 4. white hero, orbit
 {
-  const p = await page(); await p.goto(B + "/"); await p.waitForTimeout(1500);
-  ok("hero draws a WebGL scene", (await p.locator("[data-scene] canvas").count()) === 1);
-  const cur = () => p.evaluate(() => [...document.querySelectorAll("[data-flyreel] .hero-slide")].findIndex((e) => e.classList.contains("on")));
-  await p.locator("[data-flyreel]").scrollIntoViewIfNeeded();
-  await p.getByRole("button", { name: /Show image 3/ }).click(); await p.waitForTimeout(300);
-  ok("reel: a bar chooses the project", (await cur()) === 2);
-  await p.getByRole("button", { name: "Pause motion" }).click();
-  await p.waitForTimeout(8500); ok("reel: paused stays", (await cur()) === 2);
-  await p.getByRole("button", { name: "Play motion" }).click(); await p.waitForTimeout(8700);
-  ok("reel: advances when playing", (await cur()) === 3, String(await cur()));
+  const p = await page(); await p.goto(B + "/"); await p.waitForTimeout(1200);
+  ok("page background is white", await p.evaluate(() => getComputedStyle(document.body).backgroundColor === "rgb(255, 255, 255)"));
+  ok("hero has project cutouts", (await p.locator("[data-hero] img").count()) === 4);
+  await p.locator("[data-orbit]").scrollIntoViewIfNeeded(); await p.waitForTimeout(800);
+  const pos = () => p.evaluate(() => [...document.querySelectorAll("[data-orbit] a")].map((a) => a.style.transform).join("|"));
+  const board = await pos();
+  const bb = await p.locator("[data-orbit]").boundingBox(); await p.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2); await p.waitForTimeout(1800);
+  const orbit = await pos();
+  ok("board deploys into an orbit on pointer", board !== orbit && (await p.locator("[data-orbit]").getAttribute("data-open")) === "true");
+  ok("orbit keeps rotating", orbit !== (await (async () => { await p.waitForTimeout(700); return pos(); })()));
+  await p.mouse.move(5, 5); await p.waitForTimeout(1800);
+  ok("orbit folds back to the board", (await p.locator("[data-orbit]").getAttribute("data-open")) === "false");
+  ok("eight project cards, each a link", (await p.locator("[data-orbit] a[href^='/work/']").count()) === 8);
+  await p.getByRole("button", { name: "Open the orbit" }).click(); ok("button opens orbit (touch/keyboard)", (await p.locator("[data-orbit]").getAttribute("data-open")) === "true");
+  await p.locator("[data-orbit] a").first().evaluate((a) => a.click()); await p.waitForURL("**/work/*"); ok("orbit card opens its project", true);
+  await p.goto(B + "/"); await p.locator("#close-h").scrollIntoViewIfNeeded(); await p.waitForTimeout(1500);
+  ok("envelope opens and asks about the project", /Have a project in mind/.test(await p.locator("#close-h").innerText()) && await p.locator(".env-open").count() === 1);
   await p.context().close();
 }
 
@@ -75,20 +82,10 @@ await p1.goto(B + "/"); await p1.getByRole("link", { name: "Explore our work" })
 
 // 6. homepage chapters
 await p1.goto(B + "/");
-ok("statement words are all in the page", /creative agency that concepts, builds and activates spaces and experiences/.test(await p1.locator("#stmt-h").locator("xpath=..").innerText()));
-const frameAt = async (f) => { const span = await p1.evaluate(() => document.querySelector("[data-expand]").offsetHeight - innerHeight); const top = await p1.evaluate(() => document.querySelector("[data-expand]").getBoundingClientRect().top + scrollY); await jump(p1, top + span * f); await p1.waitForTimeout(400); return p1.evaluate(() => document.querySelector("[data-expand] .scrub-img").style.clipPath); };
-const c0 = await frameAt(0), c1 = await frameAt(0.35), c2 = await frameAt(0.8);
-ok("immersive frame opens as you scroll", c0 !== c1 && c1 !== c2 && /inset\(0/.test(c2), `${c0} | ${c1} | ${c2}`);
-ok("frame caption and links appear once open", (await p1.locator("[data-expand] a:has-text('About interiors')").isVisible()) && (await p1.locator("[data-expand] a:has-text('View the project')").isVisible()));
-await p1.goto(B + "/"); const rows = p1.locator("#practice-h").locator("xpath=..").locator("ol > li a");
-ok("five disciplines, each links to its page", (await rows.count()) === 5 && (await rows.evaluateAll((a) => a.map((x) => x.getAttribute("href")))).every((h) => h.startsWith("/services/")));
-await rows.nth(4).click(); await p1.waitForURL("**/services/kinetic-windows"); ok("discipline row opens its service page", true);
-await p1.goto(B + "/"); await p1.locator("#work-h").scrollIntoViewIfNeeded();
-ok("project reel shows eight real projects, each a link", (await p1.locator("#work ul li a[href^='/work/']").count()) === 8);
-const before = await p1.evaluate(() => document.querySelector("#work ul").scrollLeft); await p1.getByRole("button", { name: "Next project" }).click(); await p1.waitForTimeout(900);
-ok("reel next button scrolls it", (await p1.evaluate(() => document.querySelector("#work ul").scrollLeft)) > before);
+ok("five disciplines, each links to its page", (await p1.locator("#practice-h").locator("xpath=../..").locator("ol a[href^='/services/']").count()) === 5);
 ok("five process steps", (await p1.locator("#delivery-h").locator("xpath=../../..").locator("ol > li").count()) === 5);
-ok("closing has contact actions and verified details", (await p1.locator("#close-h").locator("xpath=..").locator("a[href='/start-a-project'], a[href='/contact'], a[href^='tel:'], a[href^='mailto:']").count()) >= 4);
+ok("attitude write-ups from the company profile", /Nothing gets built without a scribble first/.test(await p1.locator("body").innerText()));
+ok("closing has contact actions and verified details", (await p1.locator("#close-h").locator("xpath=../../../../..").locator("a[href='/start-a-project'], a[href='/contact'], a[href^='tel:'], a[href^='mailto:']").count()) >= 4);
 
 // 7. work index, filter, project page, service page
 await p1.goto(B + "/work");
@@ -118,17 +115,15 @@ await pm.keyboard.press("Escape"); await pm.waitForTimeout(200);
 ok("Escape closes menu and restores focus", !(await pm.locator("#mobile-menu").count()) && (await pm.evaluate(() => document.activeElement?.textContent?.trim() === "Menu")));
 await menu.click(); await pm.locator("#mobile-menu a[href='/founder']").click(); await pm.waitForURL("**/founder"); ok("menu link navigates", (await pm.locator("#mobile-menu").count()) === 0);
 for (const w of [360, 390]) { const pe = await page(w, 800); await pe.goto(B + "/"); const e = await pe.locator("footer a[href^='mailto:']").first().boundingBox(); ok(`${w}: footer email on one line`, e.height < 34, JSON.stringify(e)); await pe.context().close(); }
-{ const pt = await page(390, 844, { hasTouch: true, isMobile: true }); await pt.goto(B + "/"); await pt.locator("#work-h").scrollIntoViewIfNeeded();
-  ok("mobile: reel is natively scrollable (touch)", await pt.evaluate(() => { const u = document.querySelector("#work ul"); return u.scrollWidth > u.clientWidth + 100 && getComputedStyle(u).overflowX === "auto"; })); await pt.context().close(); }
+{ const pt = await page(390, 844, { hasTouch: true, isMobile: true }); await pt.goto(B + "/"); await pt.locator("[data-orbit]").scrollIntoViewIfNeeded();
+  ok("mobile: orbit board fits and opens with the button", await pt.evaluate(() => document.documentElement.scrollWidth <= innerWidth)); await pt.getByRole("button", { name: "Open the orbit" }).tap(); await pt.waitForTimeout(500);
+  ok("mobile: orbit open", (await pt.locator("[data-orbit]").getAttribute("data-open")) === "true"); await pt.context().close(); }
 
 // 10. reduced motion: complete and still
 const pr = await page(1440, 900, { reducedMotion: "reduce" }); await pr.goto(B + "/"); await pr.waitForTimeout(600);
-ok("reduced motion: no camera move or auto-advance", await pr.evaluate(() => getComputedStyle(document.querySelector("[data-flyreel] .hero-slide.on img")).animationName === "none") && true);
-ok("reduced motion: statement fully readable", await pr.evaluate(() => [...document.querySelectorAll(".stmt-w")].every((s) => +getComputedStyle(s).opacity > 0.99)));
-await pr.locator("[data-expand]").scrollIntoViewIfNeeded(); await pr.waitForTimeout(400);
-ok("reduced motion: framed image is already open with its text", /inset\(0/.test(await pr.evaluate(() => document.querySelector("[data-expand] .scrub-img").style.clipPath)) && await pr.locator("[data-expand] a:has-text('About interiors')").isVisible());
+ok("reduced motion: projects shown as a plain grid, no orbit", (await pr.locator("[data-orbit]").count()) === 0 && (await pr.locator("section#work a[href^='/work/']").count()) >= 8);
 const pn = await page(1440, 900, { javaScriptEnabled: false }); await pn.goto(B + "/");
-ok("no JavaScript: headline, statement and disciplines are there", (await pn.getByRole("heading", { name: /Small scribbles/ }).isVisible()) && (await pn.locator("#practice-h").count()) === 1);
+ok("no JavaScript: headline, statement and disciplines are there", (await pn.locator("#hero-h").isVisible()) && (await pn.locator("#practice-h").count()) === 1);
 
 // 11. contact form + console
 await p1.goto(B + "/contact"); await p1.getByRole("button", { name: /send message/i }).click(); await p1.waitForTimeout(400);

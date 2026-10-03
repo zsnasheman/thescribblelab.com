@@ -80,7 +80,7 @@ export function Header() {
   const menuBtn = (
     <button type="button" aria-expanded={open} aria-controls="mobile-menu"
       onClick={(e) => { opener.current = e.currentTarget; setOpenAt(pathname); }}
-      className="btn btn-outline !min-h-11 !bg-paper !px-5 !py-2 md:hidden">
+      className="btn btn-outline !min-h-11 !bg-white !px-5 !py-2 md:hidden">
       Menu
     </button>
   );
@@ -90,7 +90,7 @@ export function Header() {
       {/* Opening navigation: sits over the page artwork, not in a strip of its own */}
       <header className="absolute inset-x-0 top-0 z-40">
         <div className="container-x flex items-start justify-between gap-4 pt-4 md:pt-6">
-          <Link href="/" aria-label="The Scribble Lab, home" className="block shrink-0 rounded-2xl bg-paper p-2.5 shadow-[0_8px_30px_rgba(20,10,50,.18)]">
+          <Link href="/" aria-label="The Scribble Lab, home" className="block shrink-0 rounded-2xl bg-white p-2.5 shadow-[0_8px_30px_rgba(20,10,50,.18)]">
             <Logo priority className="h-auto w-[13rem] min-w-[200px] lg:w-[17rem]" />
           </Link>
           <nav aria-label="Main" className="glass mt-1 hidden items-center gap-3 rounded-full py-1 pl-4 pr-1.5 shadow-[0_8px_30px_rgba(20,10,50,.15)] md:flex lg:gap-8">
@@ -102,7 +102,7 @@ export function Header() {
       </header>
 
       {/* Compact bar once the page has scrolled: same routes and project action, plus an accessible Home link */}
-      <div className={`fixed inset-x-0 top-0 z-50 border-b border-indigo/15 bg-paper/95 backdrop-blur transition-[transform,visibility] duration-300 ${scrolled ? "visible translate-y-0" : "invisible -translate-y-full"}`}>
+      <div className={`fixed inset-x-0 top-0 z-50 border-b border-indigo/15 bg-white/95 backdrop-blur transition-[transform,visibility] duration-300 ${scrolled ? "visible translate-y-0" : "invisible -translate-y-full"}`}>
         <div className="container-x flex h-14 items-center justify-between gap-3">
           <Link href="/" className="nav-link" aria-label="Home, The Scribble Lab">Home</Link>
           <nav aria-label="Compact" className="hidden items-center gap-7 md:flex">{links()}</nav>
