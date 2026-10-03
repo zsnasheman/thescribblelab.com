@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MATERIALS, Swatch } from "@/components/art/materials";
 import { PageHeader, SectionHead } from "@/components/PageHeader";
-import { PhotoSlot } from "@/components/PhotoSlot";
 import { Arrow, Bubbles } from "@/components/ui";
 import { allProjects, services } from "@/content";
 import { capabilities, howItConnects, roles, studioIntro, values } from "@/content/studio";
 import { SITE } from "@/lib/site";
-import type { MaterialId } from "@/content/types";
 
 export const metadata: Metadata = {
   title: "Studio",
@@ -15,10 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function StudioPage() {
-  const mats = Object.keys(MATERIALS) as MaterialId[];
   return (
     <>
-      <PageHeader label="Studio" title="A design and build studio in Dubai." lead={studioIntro.lead} art={{ src: "/art/hero-m.webp", w: 794, h: 688, alt: "" }} />
+      <PageHeader label="Studio" title="A design and build studio in Dubai." lead={studioIntro.lead} />
 
       <section aria-labelledby="who-h" className="container-x grid gap-12 pb-16 lg:grid-cols-12">
         <div className="lg:col-span-6">
@@ -64,14 +60,15 @@ export default function StudioPage() {
       </section>
 
       <section aria-labelledby="shop-h" className="container-x border-t border-indigo/15 py-14 md:py-20">
-        <SectionHead id="shop-h" label="Workshop and materials" title="Where pieces are made, and what they are made from.">Photographs of the workshop, samples and installations will go here. Until then, these are the materials the studio works with, drawn as samples.</SectionHead>
-        <div className="grid gap-6 lg:grid-cols-12">
-          <PhotoSlot className="lg:col-span-5" title="Workshop photograph" file="public/studio/workshop-01.jpg" ratio="4 : 3 · landscape" note="Fabrication in progress, shot from standing height." />
-          <PhotoSlot className="lg:col-span-4" title="Material close-up" file="public/studio/materials-01.jpg" ratio="4 : 3 · landscape" note="A macro of a joint, finish or sample board." />
-          <PhotoSlot className="lg:col-span-3" title="Installation night" file="public/studio/install-01.jpg" ratio="4 : 3 · landscape" note="A team on site." />
-        </div>
-        <ul className="mt-10 grid grid-cols-4 gap-4 sm:grid-cols-8">
-          {mats.map((m) => (<li key={m}><Swatch id={m} className="w-full" /><p className="t-caption mt-1.5 font-semibold">{MATERIALS[m].name}</p></li>))}
+        <SectionHead id="shop-h" label="Materials" title="What spaces are made from.">Timber, planting, stone and metalwork: chosen against the drawing, specified and detailed before anything is built.</SectionHead>
+        <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {([["timber", "Timber veneer"], ["moss", "Preserved moss"], ["travertine", "Stone flooring"], ["lattice", "Brass lattice"]] as const).map(([id, name]) => (
+            <li key={id}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`/projects/m-${id}.webp`} width={320} height={320} alt={`${name}, detail from a design visual`} loading="lazy" className="aspect-square w-full rounded-2xl object-cover" />
+              <p className="t-caption mt-2 font-semibold">{name}</p>
+            </li>
+          ))}
         </ul>
       </section>
 

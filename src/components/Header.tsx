@@ -80,7 +80,7 @@ export function Header() {
   const menuBtn = (
     <button type="button" aria-expanded={open} aria-controls="mobile-menu"
       onClick={(e) => { opener.current = e.currentTarget; setOpenAt(pathname); }}
-      className="btn btn-outline !min-h-11 !px-5 !py-2 md:hidden">
+      className="btn btn-outline !min-h-11 !bg-paper !px-5 !py-2 md:hidden">
       Menu
     </button>
   );
@@ -90,10 +90,10 @@ export function Header() {
       {/* Opening navigation: sits over the page artwork, not in a strip of its own */}
       <header className="absolute inset-x-0 top-0 z-40">
         <div className="container-x flex items-start justify-between gap-4 pt-4 md:pt-6">
-          <Link href="/" aria-label="The Scribble Lab, home" className="block shrink-0">
-            <Logo priority className="h-auto w-[13rem] min-w-[200px] md:w-[15.5rem] lg:w-[17rem]" />
+          <Link href="/" aria-label="The Scribble Lab, home" className="block shrink-0 rounded-2xl bg-paper p-2.5 shadow-[0_8px_30px_rgba(20,10,50,.18)]">
+            <Logo priority className="h-auto w-[13rem] min-w-[200px] lg:w-[17rem]" />
           </Link>
-          <nav aria-label="Main" className="mt-1 hidden items-center gap-4 rounded-full bg-paper/80 py-1 pl-5 pr-1.5 backdrop-blur-sm md:flex lg:gap-8">
+          <nav aria-label="Main" className="glass mt-1 hidden items-center gap-3 rounded-full py-1 pl-4 pr-1.5 shadow-[0_8px_30px_rgba(20,10,50,.15)] md:flex lg:gap-8">
             {links()}
             {project}
           </nav>

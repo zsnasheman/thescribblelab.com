@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { VIGNETTES } from "@/content/art";
 import { PlaceholderGallery } from "@/components/PlaceholderGallery";
-import { KineticDemo } from "@/components/KineticDemo";
-import { ServiceSpecial } from "@/components/ServiceSpecial";
-import { SPECIAL_TITLE } from "@/content/serviceSpecial";
-import { WorkCard } from "@/components/WorkCard";
 import { Arrow } from "@/components/ui";
 import { processStages, projectsForService, serviceBySlug, services } from "@/content";
 import type { Service, ServiceSlug } from "@/content/types";
@@ -19,14 +14,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return s ? { title: s.name, description: s.summary } : {};
 }
 
-type Key = "special" | "briefs" | "scope" | "process" | "work" | "faq" | "gallery";
+type Key = "briefs" | "scope" | "process" | "work" | "faq" | "gallery";
 // Each discipline leads with what matters most for it, so the pages are not the same page re-titled.
 const ORDER: Record<ServiceSlug, Key[]> = {
-  interiors: ["gallery", "special", "briefs", "scope", "process", "work", "faq"],
-  exhibitions: ["briefs", "special", "scope", "process", "work", "faq"],
-  events: ["special", "scope", "briefs", "process", "faq", "work"],
-  "brand-activations": ["briefs", "scope", "special", "process", "work", "faq"],
-  "kinetic-windows": ["special", "briefs", "scope", "process", "faq", "work"],
+  interiors: ["gallery", "briefs", "scope", "process", "work", "faq"],
+  exhibitions: ["briefs", "scope", "process", "work", "faq"],
+  events: ["scope", "briefs", "process", "faq", "work"],
+  "brand-activations": ["briefs", "scope", "process", "work", "faq"],
+  "kinetic-windows": ["briefs", "scope", "process", "faq", "work"],
 };
 
 const Section = ({ id, label, title, children }: { id: string; label: string; title: string; children: React.ReactNode }) => (
@@ -41,10 +36,6 @@ const Dot = ({ c = "bg-emerald" }: { c?: string }) => <span aria-hidden="true" c
 function render(key: Key, s: Service) {
   const related = projectsForService(s.slug);
   switch (key) {
-    case "special": {
-      const t = SPECIAL_TITLE[s.slug];
-      return <Section key={key} id="special-h" label={t.label} title={t.title}><p className="t-body mb-6 text-indigo-80">{t.note}</p><ServiceSpecial slug={s.slug} /></Section>;
-    }
     case "gallery":
       return <Section key={key} id="gallery-h" label="Interiors" title="Spaces we design."><PlaceholderGallery /></Section>;
     case "briefs":
@@ -80,13 +71,11 @@ function render(key: Key, s: Service) {
         </Section>
       );
     case "work":
-      return (
-        <Section key={key} id="work-h" label="Related work" title={related.length ? "Work in this discipline." : "Work in this discipline is on its way."}>
-          {related.length ? (
-            <ul className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{related.map((p) => <li key={p.slug}><WorkCard p={p} ratio="landscape" /></li>)}</ul>
-          ) : (<p className="t-body measure">No {s.name.toLowerCase()} projects are published yet. <Link className="link" href="/work">See all work</Link>.</p>)}
+      return related.length ? (
+        <Section key={key} id="work-h" label="Related work" title="Work in this discipline.">
+          <ul className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{related.map((p) => <li key={p.slug}><Link className="link t-h3" href={`/work/${p.slug}`}>{p.title}</Link></li>)}</ul>
         </Section>
-      );
+      ) : null;
     case "faq":
       return (
         <Section key={key} id="faq-h" label="Questions" title="Useful answers.">
@@ -111,29 +100,26 @@ export default async function ServicePage({ params }: Props) {
   if (!s) notFound();
   return (
     <>
-      <header className="relative overflow-hidden">
-        <div className="container-x grid items-center gap-x-12 gap-y-4 pb-10 pt-masthead md:pb-14 lg:grid-cols-12 lg:pt-44">
-          <div className="lg:col-span-6">
+      <header className="relative">
+        <div className="container-x grid items-end gap-x-12 gap-y-8 pb-10 pt-masthead md:pb-14 lg:grid-cols-12">
+          <div className={s.slug === "interiors" ? "lg:col-span-6" : "lg:col-span-9"}>
             <nav aria-label="Breadcrumb" className="t-caption"><Link className="link" href="/services">What we do</Link></nav>
-            <h1 className="t-display mt-4 !text-[clamp(2.25rem,1.4rem+3.4vw,4rem)]">{s.name}</h1>
-            <p className="t-lead mt-5 max-w-[44ch]">{s.intro}</p>
+            <h1 className="t-lux mt-4 !text-[clamp(2.4rem,1rem+5.2vw,5.5rem)]">{s.name}</h1>
+            <p className="t-lead mt-5 max-w-[48ch]">{s.intro}</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href={`/start-a-project?type=${s.slug}`} className="btn btn-coral">Start a project <Arrow /></Link>
               <Link href={`/work?service=${s.slug}`} className="btn btn-outline">See related work</Link>
             </div>
           </div>
-          <div aria-hidden="true" className="pointer-events-none relative lg:col-span-6">
-            <div className="blob blob-2 absolute inset-[-6%_-8%] opacity-45" style={{ backgroundImage: "url(/art/t-wash.webp)" }} />
-            <div className="art-stack relative mx-auto max-w-[34rem] px-[4%]">
+          {s.slug === "interiors" && (
+            <div className="lg:col-span-6">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={VIGNETTES[s.slug].color} width={VIGNETTES[s.slug].w} height={VIGNETTES[s.slug].h} alt="" decoding="async" fetchPriority="high" className="w-full" />
+              <img src="/projects/cafe.webp" width={1800} height={1200} alt="A café interior with a pastry counter, hanging planters, pendant lights and a glazed staircase wall." fetchPriority="high" className="aspect-[4/3] w-full rounded-2xl object-cover" />
+              <p className="t-caption mt-2 text-indigo-80">Photograph · Placeholder image</p>
             </div>
-          </div>
+          )}
         </div>
       </header>
-      {s.slug === "kinetic-windows" && (
-        <section aria-label="Kinetic window demonstration" className="on-dark bg-indigo py-14 text-white md:py-20"><div className="container-x"><KineticDemo /></div></section>
-      )}
       {ORDER[s.slug].map((k) => render(k, s))}
       <section aria-labelledby="next-h" className="container-x py-12">
         <div className="rounded-xl border-2 border-indigo p-8 md:flex md:items-center md:justify-between md:gap-10 md:p-10">

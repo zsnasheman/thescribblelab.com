@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function ApproachPage() {
   return (
     <>
-      <PageHeader label="Our approach" title="From the first idea to the finished space." lead="Every project moves through five stages. For each one, here is what happens, what you see, and where the decisions are made. Nothing here is a promise of time or price: those depend on the project, and we discuss them with you."  art={{ src: "/art/v-brand.webp", w: 580, h: 432, alt: "" }} />
+      <PageHeader label="Our approach" title="From the first idea to the finished space." lead="Every project moves through five stages. For each one, here is what happens, what you see, and where the decisions are made. Nothing here is a promise of time or price: those depend on the project, and we discuss them with you."  />
       <section aria-label="The five stages" className="container-x pb-16 md:pb-24"><ApproachStages /></section>
 
       <section aria-labelledby="by-h" className="container-x border-t border-indigo/15 py-14 md:py-20">

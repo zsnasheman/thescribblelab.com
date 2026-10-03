@@ -1,80 +1,22 @@
-# Art direction: the living studio sketchbook
+# Art direction: immersive, photographic (current)
 
-Status: implemented on the preview branch. Replaces the earlier refinement brief.
+Status: replaces every earlier concept (painted sketchbook, blob guide, scroll "journey", procedural illustrations).
+Those were removed from the code and assets on request.
 
-## References (what could and could not be inspected)
-Roar (designbyroar.com/about), Random Studio and VAVE were **not** visually inspected by the developer: the build
-environment cannot reach them. The notes in the brief (Roar: illustrated skyline and shaped colour fields around editorial
-text; Random: project imagery leads, restrained nav; VAVE: confident type, direct access to the practice) were taken as
-given, and the supplied concept image was used as the direct composition reference. No animation from those sites is claimed
-to have been studied. Nothing is taken from them, or from the old thescribblelab.com.
+## Direction
+A cinematic, photograph-led site in the spirit of the "luxury hero" and "immersive studio" references the owner named.
+**The motionsites.ai pages could not be opened from the build environment (egress block), so they have not been studied;
+this is an interpretation from the brief until stills or recordings are supplied.** Nothing is copied from them.
 
-## The story of the homepage
-One drawn line becomes a place. Six chapters, one visual grammar (line drawing, material mask, paper grain, organic fields):
-1. **Opening, the idea.** Headline, one sentence, "Explore our work". Logo and navigation are part of the composition; the scene runs beneath them.
-2. **Five ways to shape a space.** One board: per discipline a spatial concept, a line-drawing detail and material samples. Selecting gathers them into a focused view; Close/Escape returns. Phones use an accordion.
-3. **Work.** Three larger concept studies: brief, design move, space. Labelled *Concept study*.
-4. **Founder.** Short story, a route to the Founder page, and the four-stage illustration.
-5. **From sketch to site.** Listen, Sketch, Develop, Build, Handover around one canopy concept.
-6. **Let's make a place.** Start a project / Contact us; the footer carries the verified details.
+## Homepage
+1. **Hero reel**: full-bleed real imagery with a slow camera move, thumbnail progress bars, a pause control, and a slot for a looping film (`HERO_VIDEO` in `src/content/media.ts`; null until a clip exists).
+2. **Statement**: a large light-weight sentence whose words come into focus as it scrolls (fully readable without motion).
+3. **Immersive frame**: a framed render that opens to the full screen while scrolling (pinned for ~1.6 screens only), then names Interiors.
+4. **Five ways to shape a space**: typographic index, each row to its discipline page.
+5. **Selected interiors**: horizontal reel (native scroll/snap, buttons, arrow keys).
+6. **From sketch to site**: five large steps with what you receive.
+7. **Closing**: full-bleed image, actions, verified details.
 
-## Artwork pipeline (`scripts/build-art.py`)
-The only detailed artwork available is the supplied concept (1484 px wide). The script crops it into separate layers, removes
-the mock-up's own text, nav, logo and stray marks, converts the paper to transparency (colour-to-alpha), and derives a
-line-only "ink" version of each scene. Outputs are in `public/art/`. The full mock-up is never used as a background.
-All of it is **concept illustration**, labelled as such on the page, never presented as completed work.
-Limitation: at this resolution the art is soft on large or high-density screens. Commissioned high-resolution artwork
-is listed in `CONTENT_CHECKLIST.md`; replacing the files in `public/art/` (same names and ratios) is enough.
-
-## Motion intent
-- **Sketch becomes space**: on load the colour fills across the line drawing once (about 3 s, CSS mask), then the lines settle back. Sketch-to-site repeats it stage by stage, driven by scroll position or by choosing a stage. Reduced motion: complete composition.
-- **Material board becomes a discipline**: shared-layout move of the pieces (framer-motion), focus managed, Escape/Close returns focus to the tile.
-- **Roots become practice** (Founder): four chapters add detail to one illustration; future forms are faint, unlabelled and dashed.
-- **A kinetic display reveals its purpose**: louvre teaser in the Kinetic tile (plays once when visible) and the full Play/Pause demo on the Kinetic windows page.
-- Finishing: drawn underline on nav links, 6-10 px pointer depth on the hero art only (fine pointers, visible area only), no cursor effects, no scroll-jacking.
-
-## Responsive compositions
-Mobile uses a separate hero crop and image; the board is an accordion; phones show one illustration stage per founder chapter.
-Checked at 360, 390, 768, 1024 and 1440 px.
-
----
-# Iteration 3: the scroll journey (scribble, idea, space, experience)
-
-**Persisting element, "the guide":** one indigo organic form with a white scribble line, traced from the supplied logo PNG
-(`scripts`-free: the contour was traced once and stored in `src/content/guide.ts`). The SVG logo was not received, so the
-traced shapes come from the PNG. The official logo is only ever shown unaltered in the header. The guide has no face, limbs
-or speech. Its vocabulary: blob, line, arch outline, aperture, frame, ring.
-
-**Scene map (homepage, `Journey.tsx`; one pinned stage, ~4.3 screens of normal scrolling, no wheel or touch hijacking)**
-| Beat | What persists | What changes | What it reveals |
-|---|---|---|---|
-| A first mark | the blob + scribble | scribble draws on load; guide leans up to 10 px toward the cursor | what the studio does, in the first screen |
-| B idea | the blob (morphs, 72 points) | blob shrinks into the **arch** that exists in the sketch; the scribble's tail becomes a coral line that leads the pencil sketch in | "It starts as a line." |
-| C material | the arch outline and the leading line | colour and surface wipe into the sketch; four material samples settle around it | "Then it gets a surface." |
-| D real space | the arch edge | the arch grows until it fills the screen; the project layer, seen through it, takes over | project name, factual line, link |
-| E breadth | arch/aperture language, line + frame | five selectable frames, each with a result (focused view, service page, filtered Work) | the range of the studio |
-| F delivery | the line | vertical line fills as the five stages are read | tangible deliverables |
-| G invitation | the scribble and the arch | arch frame draws around "Let's make a place"; scribble redraws as keystone | verified contact details |
-
-**Beat D honesty:** the repository has no approved built-project photography. `featuredProject()` (`src/content/featured.ts`)
-uses the first *completed* project that has permitted image media; otherwise it opens onto a clearly labelled **Concept study**
-(generated concept art, never presented as built work). Adding an approved project with media switches the reveal automatically.
-
-**Reduced motion / no JavaScript / print:** a static stack of the same story (`JourneyStatic`), chosen before first paint.
-
-**Reference recordings:** the WeTransfer link and Instagram posts could not be reached from the build environment; the
-recordings were not watched. The scene design follows the written brief. Replace/adjust once stills are supplied.
-
-
----
-# Iteration 4: photographic journey (replaces the painted/blob opening)
-Feedback: the blob, scribble and painted concept art read as a cartoon; a realistic, high-resolution result was requested.
-The motionsites.ai references (luxury-hero, immersive-studio) and the screen-recording links could not be opened from the
-build environment (egress proxy 403), so they have **not** been studied; stills or recordings are needed.
-
-Journey now runs on the supplied real imagery:
-- **A** an architectural line drawing derived (edge detection) from the supplied reception render draws itself over paper; the guide is reduced to a thin coral outline (traced from the logo's form) with the scribble stroke inside it.
-- **B** the outline morphs into an arch that sits exactly on the render's window.
-- **C** the render itself develops from the drawing (left-to-right with a hairline front); real material crops from the renders (timber, moss, stone, brass lattice) settle around it; slow camera dolly.
-- **D** the arch opens to full screen onto the supplied cafe photograph (labelled Placeholder image until confirmed).
-Concept-painting assets remain only in the discipline board and the Work studies; they should be replaced by real per-discipline photography (see checklist).
+## System
+Logo always in a light pill (light field only). Glass navigation. Josefin Sans light for display, Figtree for text, indigo/coral from the brand. Grain overlay on paper.
+Imagery is the five supplied placeholder images (`public/projects`), each labelled Photograph or Design visual; reduced motion stops the camera move and auto-advance.

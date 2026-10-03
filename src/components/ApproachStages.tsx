@@ -1,7 +1,6 @@
 "use client";
 
 import { useId, useRef, useState, useSyncExternalStore } from "react";
-import { Fragment } from "./art/Plates";
 import { Bubbles } from "./ui";
 import { processStages } from "@/content/process";
 
@@ -52,15 +51,9 @@ export function ApproachStages() {
       </div>
 
       <div id={`${uid}-panel`} role="tabpanel" aria-labelledby={`stage-${s.id}`} tabIndex={0} className="min-w-0 lg:col-span-8">
-        <div className="grid gap-8 md:grid-cols-5">
-          <div className="md:col-span-2">
-            <div className="overflow-hidden rounded-lg border border-indigo/15"><Fragment kind={s.fragment} uid={`${uid}-${s.id}`} className="block w-full" /></div>
-            <p className="t-caption mt-2 text-indigo-80">An illustrative drawing of the kind of thing this stage produces.</p>
-          </div>
-          <div className="md:col-span-3">
-            <h3 className="t-h1">{s.name}</h3>
-            <p className="t-lead mt-3 font-medium">{s.line}</p>
-          </div>
+        <div>
+          <h3 className="t-h1">{s.name}</h3>
+          <p className="t-lead mt-3 font-medium">{s.line}</p>
         </div>
         <div className="mt-8 grid gap-8 md:grid-cols-3">
           {([["What happens", s.what], ["What you see", s.clientSees], ["Where decisions are made", s.decisions]] as const).map(([t, items]) => (

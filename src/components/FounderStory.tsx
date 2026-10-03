@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FounderScene, type FounderStage } from "./FounderScene";
+import { mediaById } from "@/content/media";
 import { usePrefersReducedMotion } from "@/lib/useReducedMotion";
 import { background, founderChapters } from "@/content/founder";
 
@@ -24,7 +24,7 @@ export function FounderStory() {
     return () => io.disconnect();
   }, []);
 
-  const stage: FounderStage = reduced ? -1 : (active as FounderStage);
+  const IMGS = ["boardroom", "reception", "office-lounge", "cafe"].map(mediaById);
 
   return (
     <div className="grid gap-x-16 lg:grid-cols-12">
@@ -45,9 +45,8 @@ export function FounderStory() {
           <article key={c.id} id={c.id} ref={(el) => { refs.current[i] = el; }} aria-labelledby={`${c.id}-h`} className="scroll-mt-24 border-t border-indigo/15 py-12 first:border-t-0 first:pt-2 md:py-16 lg:min-h-[26rem]">
             <p className="t-label text-lavender">Chapter {c.kicker}</p>
             <h2 id={`${c.id}-h`} className="t-h1 mt-3">{c.title}</h2>
-            {/* Phones: each chapter carries its own stage of the drawing */}
-            <div className="mt-6 max-w-sm lg:hidden"><FounderScene stage={reduced ? -1 : (i as FounderStage)} /></div>
-            <p className="t-caption mt-2 text-indigo-80 lg:hidden">{c.caption}</p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS[i].thumb} width={640} height={IMGS[i].kind === "photograph" ? 427 : 320} alt="" loading="lazy" className="mt-6 aspect-[16/10] w-full rounded-xl object-cover lg:hidden" />
             <div className="mt-6 space-y-4">
               {c.paragraphs.map((t, k) => (<p key={k} className="t-lead measure">{t}</p>))}
             </div>
@@ -64,11 +63,16 @@ export function FounderStory() {
         ))}
       </div>
 
-      {/* Desktop: a drawing that follows the story */}
+      {/* Desktop: imagery that follows the story */}
       <div className="hidden lg:col-span-5 lg:block">
-        <div className="sticky top-20">
-          <FounderScene stage={stage} />
-          <p className="t-caption mt-3 text-indigo-80" aria-live="polite">{reduced ? "The complete drawing: roots, practice, the studio and the future direction. An interpretation, not a biography." : founderChapters[active].caption}</p>
+        <div className="sticky top-24">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-indigo">
+            {IMGS.map((m, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={m.id} src={m.src} width={m.w} height={m.h} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms]" style={{ opacity: (reduced ? 0 : active) === i ? 1 : 0 }} />
+            ))}
+          </div>
+          <p className="t-caption mt-3 text-indigo-80" aria-live="polite">{founderChapters[active].caption}</p>
         </div>
       </div>
     </div>
