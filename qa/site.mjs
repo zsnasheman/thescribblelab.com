@@ -61,7 +61,7 @@ for (const w of [360, 390, 768, 1024, 1440]) {
   ok("orbit keeps rotating", orbit !== (await (async () => { await p.waitForTimeout(700); return pos(); })()));
   await p.mouse.move(5, 5); await p.waitForTimeout(1800);
   ok("orbit folds back to the board", (await p.locator("[data-orbit]").getAttribute("data-open")) === "false");
-  ok("eight project cards, each a link", (await p.locator("[data-orbit] a[href^='/work/']").count()) === 8);
+  ok("twelve project cards, each a link", (await p.locator("[data-orbit] a[href^='/work/']").count()) === 12);
   await p.getByRole("button", { name: "Open the orbit" }).click(); ok("button opens orbit (touch/keyboard)", (await p.locator("[data-orbit]").getAttribute("data-open")) === "true");
   await p.locator("[data-orbit] a").first().evaluate((a) => a.click()); await p.waitForURL("**/work/*"); ok("orbit card opens its project", true);
   await p.goto(B + "/"); await p.locator("#close-h").scrollIntoViewIfNeeded(); await p.waitForTimeout(1500);
@@ -121,7 +121,7 @@ for (const w of [360, 390]) { const pe = await page(w, 800); await pe.goto(B + "
 
 // 10. reduced motion: complete and still
 const pr = await page(1440, 900, { reducedMotion: "reduce" }); await pr.goto(B + "/"); await pr.waitForTimeout(600);
-ok("reduced motion: projects shown as a plain grid, no orbit", (await pr.locator("[data-orbit]").count()) === 0 && (await pr.locator("section#work a[href^='/work/']").count()) >= 8);
+ok("reduced motion: projects shown as a plain grid, no orbit", (await pr.locator("[data-orbit]").count()) === 0 && (await pr.locator("section#work a[href^='/work/']").count()) >= 12);
 const pn = await page(1440, 900, { javaScriptEnabled: false }); await pn.goto(B + "/");
 ok("no JavaScript: headline, statement and disciplines are there", (await pn.locator("#hero-h").isVisible()) && (await pn.locator("#practice-h").count()) === 1);
 

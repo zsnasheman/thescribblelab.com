@@ -22,7 +22,7 @@ export const HERO_SLIDES: Shot[] = [
 ];
 
 /** Projects shown on the homepage reel, in order. */
-export const FEATURED = ["ahmed-al-maghribi-launch", "laduree-ramadan-tent", "fifa-arab-cup-qatar", "chopard-kinetic-windows", "al-haramain-beauty-world", "roche-riyadh", "hitchki-mirdif", "wandr-jlt"];
+export const FEATURED = ["ahmed-al-maghribi-launch", "laduree-ramadan-tent", "fifa-arab-cup-qatar", "chopard-kinetic-windows", "al-haramain-beauty-world", "roche-riyadh", "hitchki-mirdif", "wandr-jlt", "the-juice-beauty", "huda-beauty-bowling", "laduree-snow-globe", "stanley-automechanika"];
 
 /** The studio's own description of why clients choose it (company profile). */
 export const WHY = [
