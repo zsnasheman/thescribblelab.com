@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { VIGNETTES } from "@/content/art";
+import { PlaceholderGallery } from "@/components/PlaceholderGallery";
 import { KineticDemo } from "@/components/KineticDemo";
 import { ServiceSpecial } from "@/components/ServiceSpecial";
 import { SPECIAL_TITLE } from "@/content/serviceSpecial";
@@ -18,10 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return s ? { title: s.name, description: s.summary } : {};
 }
 
-type Key = "special" | "briefs" | "scope" | "process" | "work" | "faq";
+type Key = "special" | "briefs" | "scope" | "process" | "work" | "faq" | "gallery";
 // Each discipline leads with what matters most for it, so the pages are not the same page re-titled.
 const ORDER: Record<ServiceSlug, Key[]> = {
-  interiors: ["special", "briefs", "scope", "process", "work", "faq"],
+  interiors: ["gallery", "special", "briefs", "scope", "process", "work", "faq"],
   exhibitions: ["briefs", "special", "scope", "process", "work", "faq"],
   events: ["special", "scope", "briefs", "process", "faq", "work"],
   "brand-activations": ["briefs", "scope", "special", "process", "work", "faq"],
@@ -44,6 +45,8 @@ function render(key: Key, s: Service) {
       const t = SPECIAL_TITLE[s.slug];
       return <Section key={key} id="special-h" label={t.label} title={t.title}><p className="t-body mb-6 text-indigo-80">{t.note}</p><ServiceSpecial slug={s.slug} /></Section>;
     }
+    case "gallery":
+      return <Section key={key} id="gallery-h" label="Interiors" title="Spaces we design."><PlaceholderGallery /></Section>;
     case "briefs":
       return (
         <Section key={key} id="briefs-h" label="Briefs we take on" title={`What brings people to ${s.name.toLowerCase()}.`}>

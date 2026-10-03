@@ -30,15 +30,15 @@ export function JourneyStatic({ featured }: { featured: Featured }) {
       </section>
       <section aria-label="The space" className="relative overflow-hidden bg-indigo py-12 text-white md:py-20 on-dark">
         <div className="container-x grid items-center gap-10 lg:grid-cols-2">
-          <div className="mx-auto w-full max-w-md overflow-hidden rounded-t-[999px] bg-gradient-to-b from-indigo via-lavender to-[#ffb08f] px-4 pt-16">
+          <div className={`mx-auto w-full max-w-md overflow-hidden rounded-t-[999px] ${featured.kind === "concept" ? "bg-gradient-to-b from-indigo via-lavender to-[#ffb08f] px-4 pt-16" : "aspect-[3/4]"}`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={featured.src} alt={featured.alt} width={featured.w} height={featured.h} loading="lazy" className="w-full" />
+            <img src={featured.src} alt={featured.alt} width={featured.w} height={featured.h} loading="lazy" className={featured.kind === "concept" ? "w-full" : "h-full w-full object-cover"} />
           </div>
           <div>
-            <p className="t-label text-white/90">03 · The space{featured.kind === "concept" ? " · Concept study" : ""}</p>
+            <p className="t-label text-white/90">03 · The space{featured.kind === "concept" ? " · Concept study" : featured.kind === "placeholder" ? " · Placeholder image" : ""}</p>
             <p className="t-h1 mt-2">{featured.title}</p>
             <p className="t-lead mt-3 max-w-[40ch] text-white/95">{featured.line}</p>
-            <Link href={featured.href} className="btn btn-coral mt-6">{featured.kind === "built" ? "Explore the project" : "Read the study"} <Arrow /></Link>
+            <Link href={featured.href} className="btn btn-coral mt-6">{featured.kind === "built" ? "Explore the project" : featured.kind === "placeholder" ? "See interiors work" : "Read the study"} <Arrow /></Link>
           </div>
         </div>
       </section>

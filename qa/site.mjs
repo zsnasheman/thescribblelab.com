@@ -69,8 +69,8 @@ for (const w of [360, 390, 768, 1024, 1440]) {
   await at(0.0); ok("journey: A copy visible at start", await beat("Extraordinary spaces"), JSON.stringify(await dbg()));
   await at(0.26); ok("journey: B copy appears", await beat("It starts as a line"));
   await at(0.5); ok("journey: C copy appears", await beat("Then it gets a surface"));
-  await at(0.97); ok("journey: D caption names the project and links to it", (await p.locator("[data-journey] a[href^='/work/']").first().isVisible()) && await beat("Concept study"));
-  ok("journey: concept is labelled until real media exists", /Concept study/.test(await p.locator("[data-journey]").textContent()));
+  await at(0.97); ok("journey: D caption names the project and links to it", (await p.locator("[data-journey] a[href^='/work/']").first().isVisible()) && await beat("Placeholder image"));
+  ok("journey: concept is labelled until real media exists", /Placeholder image|Concept study/.test(await p.locator("[data-journey]").textContent()));
   await at(0); await p.locator("[data-journey] a:has-text('Skip the story')").click(); await p.waitForTimeout(900);
   ok("journey: Skip the story reaches the practice board", await p.evaluate(() => document.querySelector("#breadth").getBoundingClientRect().top < innerHeight * 0.6));
   ok("journey: scroll is normal (no wheel trapping)", await p.evaluate(() => !document.querySelector("[data-journey]").onwheel && getComputedStyle(document.documentElement).overflow !== "hidden"));
@@ -82,7 +82,7 @@ for (const w of [360, 390, 768, 1024, 1440]) {
   await p.context().close();
   const pr = await page(1440, 900, { reducedMotion: "reduce" }); await pr.goto(B + "/"); await pr.waitForTimeout(500);
   ok("reduced motion: static story replaces the pinned stage", (await pr.locator("[data-journey]").isVisible()) === false && await pr.locator(".journey-static").getByText("It starts as a line.").isVisible());
-  ok("reduced motion: headline and project are in the page", (await pr.getByRole("heading", { name: /Small scribbles/ }).first().isVisible()) && (await pr.locator(".journey-static a[href^='/work/']").first().isVisible()));
+  ok("reduced motion: headline and project are in the page", (await pr.getByRole("heading", { name: /Small scribbles/ }).first().isVisible()) && (await pr.locator(".journey-static a[href^='/work']").first().isVisible()));
   await pr.context().close();
   const pn = await page(1440, 900, { javaScriptEnabled: false }); await pn.goto(B + "/");
   ok("no JavaScript: the story reads as a normal page", await pn.locator(".journey-static").getByText("It starts as a line.").isVisible());

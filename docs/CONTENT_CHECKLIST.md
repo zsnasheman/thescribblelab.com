@@ -108,3 +108,9 @@ None of these are shown on the public site; the pages read as complete without t
 4. **The logo SVG** (it was not received). If you want the guide to use the exact paths, send the original SVG.
 5. **Process material that is real:** photographs of sketches, a material board, a model or a site visit (3-6 images), for the Material and Delivery scenes.
 6. **Recording stills:** 3-5 frames from each of the three reference recordings (beginning, middle, end of the key change).
+
+
+---
+## Update: placeholder imagery received (Oct 2026)
+Five images were supplied as placeholders: one photograph (cafe, `public/projects/cafe.webp`) and four design visuals (collaboration area, reception, open workspace, boardroom). They appear in the journey's aperture (Beat D, the cafe photograph) and in the Interiors gallery, labelled as a photograph or a design visual and flagged "Placeholder image/imagery".
+Still needed before they can be shown as Scribble Lab projects: confirmation each is the studio's own work, the project names, location and year, written permission to publish (the cafe photograph shows a third-party brand sign: "LDC"), and photographer credit. The logo SVG was not attached; please resend it.

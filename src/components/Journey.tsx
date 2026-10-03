@@ -178,8 +178,8 @@ export function Journey({ featured }: { featured: Featured }) {
           <path ref={set("connector")} pathLength={1} fill="none" stroke="#ff663e" strokeWidth={3} strokeLinecap="round" strokeDasharray="1" style={{ strokeDashoffset: 1 }} vectorEffect="non-scaling-stroke" />
           {/* The project layer, seen through the aperture */}
           <g ref={set("project")} clipPath={scene("jc-ap")} style={{ opacity: 0 }}>
-            <rect width="100%" height="100%" fill={featured.kind === "built" ? "#2b2b2e" : "url(#jc-dusk)"} />
-            <image href={featured.src} preserveAspectRatio={featured.kind === "built" ? "xMidYMid slice" : "xMidYMax meet"} x="5%" y="4%" width="90%" height="92%" />
+            <rect width="100%" height="100%" fill={featured.kind !== "concept" ? "#2b2b2e" : "url(#jc-dusk)"} />
+            <image href={featured.src} preserveAspectRatio={featured.kind !== "concept" ? "xMidYMid slice" : "xMidYMax meet"} x={featured.kind !== "concept" ? "0" : "5%"} y={featured.kind !== "concept" ? "0" : "4%"} width={featured.kind !== "concept" ? "100%" : "90%"} height={featured.kind !== "concept" ? "100%" : "92%"} />
           </g>
           <path ref={set("outline")} fill="none" stroke="#ff663e" strokeWidth={4} vectorEffect="non-scaling-stroke" style={{ opacity: 0 }} />
         </svg>
@@ -226,11 +226,11 @@ export function Journey({ featured }: { featured: Featured }) {
         {/* The reveal caption */}
         <div ref={set("beatD")} className="container-x pointer-events-none absolute inset-x-0 bottom-0 z-20 pb-10 text-white md:pb-14" style={{ opacity: 0, visibility: "hidden" }}>
           <div className="pointer-events-auto max-w-[34rem]">
-            <p className="t-label text-white/90">03 · The space{featured.kind === "concept" ? " · Concept study" : ""}</p>
+            <p className="t-label text-white/90">03 · The space{featured.kind === "concept" ? " · Concept study" : featured.kind === "placeholder" ? " · Placeholder image" : ""}</p>
             <p className="t-h1 mt-2 !text-[clamp(1.75rem,1.2rem+2vw,3rem)]">{featured.title}</p>
             <p className="mt-2 text-white/95">{featured.line}</p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
-              <Link href={featured.href} className="btn btn-coral">{featured.kind === "built" ? "Explore the project" : "Read the study"} <Arrow /></Link>
+              <Link href={featured.href} className="btn btn-coral">{featured.kind === "built" ? "Explore the project" : featured.kind === "placeholder" ? "See interiors work" : "Read the study"} <Arrow /></Link>
               <a href="#breadth" className="btn btn-outline text-white">Keep exploring</a>
             </div>
           </div>
