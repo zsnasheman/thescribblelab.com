@@ -11,7 +11,7 @@ replaces a clearly marked placeholder or confirms a draft.
 | Founder's title | Founder & Design Director | Brand Book | Confirm |
 | Studio established | December 2021 | Owner's brief | Confirm |
 | Phone and WhatsApp | +971 52 281 5209 | Brand Book and brief | Confirm it is monitored on WhatsApp |
-| Email | nash@thescribblelab.com | Brand Book | Confirm this is the address to publish |
+| Email | hello@thescribblelab.com | Brand Book | Confirm this is the address to publish |
 | Studio address | UNBOX Community, Building 4, 2nd Floor, Bay Square, Business Bay, Dubai, UAE | Brand Book | Confirm |
 | Map link | A Google Maps **search** built from the address | Generated | Open it and confirm it lands on the right place. If not, send the exact Maps link. |
 | Workshop address | Not published | none | Supply if it should appear. Nothing is invented. |

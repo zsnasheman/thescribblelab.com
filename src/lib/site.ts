@@ -16,8 +16,9 @@ export const SITE = {
     phone: "+971 52 281 5209",
     phoneHref: "tel:+971522815209",
     whatsappHref: "https://wa.me/971522815209",
-    email: "nash@thescribblelab.com",
+    email: "hello@thescribblelab.com",
     studio: studioLines,
+    warehouse: ["Warehouse No. 215, Sheikh Saeed Al Maktoum Warehouses", "Mena Jabal Ali, Industrial 1, Dubai"] as readonly string[],
     // A search link built from the address text. The pin itself still needs owner confirmation.
     mapHref:
       "https://www.google.com/maps/search/?api=1&query=" +

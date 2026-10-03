@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Closing } from "@/components/Closing";
 import { DisciplineIndex } from "@/components/DisciplineIndex";
 import { ExpandReel } from "@/components/ExpandReel";
-import { HeroReel } from "@/components/HeroReel";
+import { FlyReel } from "@/components/FlyReel";
+import { Hero3D } from "@/components/Hero3D";
 import { ProcessList } from "@/components/ProcessList";
 import { ProjectReel } from "@/components/ProjectReel";
 import { StatementReveal } from "@/components/StatementReveal";
@@ -12,7 +13,8 @@ import { Arrow } from "@/components/ui";
 export default function Home() {
   return (
     <>
-      <HeroReel />
+      <Hero3D />
+      <FlyReel />
       <div className="dark-scope">
 
       <section aria-labelledby="stmt-h" className="container-x py-24 md:py-40">

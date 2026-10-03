@@ -12,7 +12,7 @@ const DUR = 8000;
  * Full-bleed opening. The camera flies into one picture while the next arrives from inside it
  * (a film, when HERO_VIDEO is supplied). Typography is staged around the image, not on a banner.
  */
-export function HeroReel() {
+export function FlyReel() {
   const reduced = usePrefersReducedMotion();
   const [{ idx, prev }, setPos] = useState<{ idx: number; prev: number | null }>({ idx: 0, prev: null });
   const [paused, setPaused] = useState(false);
@@ -37,7 +37,7 @@ export function HeroReel() {
 
   const cur = HERO_SLIDES[idx];
   return (
-    <section ref={root} aria-labelledby="hero-h" data-hero className={`dark-scope relative isolate flex min-h-[680px] h-[100svh] flex-col justify-end overflow-hidden ${running ? "" : "hero-paused"}`}>
+    <section ref={root} aria-labelledby="reel-h" data-flyreel className={`dark-scope relative isolate flex min-h-[640px] h-[92svh] flex-col justify-end overflow-hidden ${running ? "" : "hero-paused"}`}>
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink">
         {HERO_VIDEO ? (
           <video src={HERO_VIDEO.src} poster={HERO_VIDEO.poster} muted loop playsInline autoPlay preload="metadata" className="h-full w-full object-cover" />
@@ -56,31 +56,12 @@ export function HeroReel() {
       </div>
 
       <div className="container-x pb-8 md:pb-10">
-        <h1 id="hero-h" className="text-white">
-          <span className="block font-[family-name:var(--font-display)] text-[clamp(1.5rem,0.8rem+2.4vw,3rem)] italic leading-none">Small scribbles.</span>
-          <span className="mt-1 flex flex-wrap items-end justify-between gap-x-8 md:mt-2">
-            <span className="block font-[family-name:var(--font-display)] text-[clamp(2.7rem,0.5rem+10.6vw,13rem)] uppercase leading-[0.9] tracking-[-0.01em]">Extraordinary</span>
-            <span className="block font-[family-name:var(--font-display)] text-[clamp(2rem,0.8rem+4.4vw,6rem)] italic leading-[0.95] md:mb-3">spaces.</span>
-          </span>
-        </h1>
-
-        <div className="mt-6 grid items-end gap-x-10 gap-y-5 border-t border-white/25 pt-5 md:mt-8 md:grid-cols-[auto_1fr_1fr_auto]">
-          <Link href={`/work/${cur.project.slug}`} className="hidden h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-white/40 md:block" aria-label={`View project: ${cur.project.title}`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={cur.image.thumb} alt="" width={820} height={460} className="h-full w-full object-cover" />
-          </Link>
-          <div>
-            <p className="cap text-white/90">01 — Our craft</p>
-            <p className="mt-2 max-w-[34ch] text-[0.95rem] leading-snug text-white/90">We design and build interiors, exhibitions, events, brand activations and kinetic windows.</p>
-          </div>
-          <div className="hidden md:block">
-            <p className="cap text-white/90">02 — Our approach</p>
-            <p className="mt-2 max-w-[34ch] text-[0.95rem] leading-snug text-white/90">We concept. We build. We leave a mark.</p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 md:justify-end">
-            <Link href="/work" className="pill pill-solid cap">Explore our work</Link>
-            <Link href="/start-a-project" className="pill cap">Start a project <span aria-hidden="true">↗</span></Link>
-          </div>
+        <p className="cap text-white/90">Selected work</p>
+        <h2 id="reel-h" className="mt-2 max-w-[18ch] font-[family-name:var(--font-display)] text-[clamp(2.4rem,1rem+6vw,7rem)] leading-[0.95] text-white">{cur.project.title}</h2>
+        <p className="mt-3 max-w-[48ch] text-white/90">{cur.project.summary}</p>
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <Link href={`/work/${cur.project.slug}`} className="pill pill-solid cap">View the project</Link>
+          <Link href="/work" className="pill cap">All work <span aria-hidden="true">↗</span></Link>
         </div>
 
         <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">

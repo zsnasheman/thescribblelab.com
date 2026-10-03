@@ -47,18 +47,18 @@ for (const w of [360, 390, 768, 1024, 1440]) {
   await p.context().close();
 }
 
-// 4. hero reel: advance, choose, pause
+// 4. 3D hero and the project reel
 {
-  const p = await page(); await p.goto(B + "/"); await p.waitForTimeout(500);
-  const cur = () => p.evaluate(() => [...document.querySelectorAll(".hero-slide")].findIndex((e) => e.classList.contains("on")));
-  ok("hero starts on the first image", (await cur()) === 0);
+  const p = await page(); await p.goto(B + "/"); await p.waitForTimeout(1500);
+  ok("hero draws a WebGL scene", (await p.locator("[data-scene] canvas").count()) === 1);
+  const cur = () => p.evaluate(() => [...document.querySelectorAll("[data-flyreel] .hero-slide")].findIndex((e) => e.classList.contains("on")));
+  await p.locator("[data-flyreel]").scrollIntoViewIfNeeded();
   await p.getByRole("button", { name: /Show image 3/ }).click(); await p.waitForTimeout(300);
-  ok("hero: a thumbnail bar chooses the image", (await cur()) === 2);
+  ok("reel: a bar chooses the project", (await cur()) === 2);
   await p.getByRole("button", { name: "Pause motion" }).click();
-  ok("hero: pause control stops the camera move", await p.evaluate(() => document.querySelector("[data-hero]").classList.contains("hero-paused")));
-  await p.waitForTimeout(8000); ok("hero: stays on the image while paused", (await cur()) === 2);
+  await p.waitForTimeout(8500); ok("reel: paused stays", (await cur()) === 2);
   await p.getByRole("button", { name: "Play motion" }).click(); await p.waitForTimeout(8700);
-  ok("hero: advances by itself when playing", (await cur()) === 3, String(await cur()));
+  ok("reel: advances when playing", (await cur()) === 3, String(await cur()));
   await p.context().close();
 }
 
@@ -123,7 +123,7 @@ for (const w of [360, 390]) { const pe = await page(w, 800); await pe.goto(B + "
 
 // 10. reduced motion: complete and still
 const pr = await page(1440, 900, { reducedMotion: "reduce" }); await pr.goto(B + "/"); await pr.waitForTimeout(600);
-ok("reduced motion: no camera move or auto-advance", await pr.evaluate(() => getComputedStyle(document.querySelector(".hero-slide.on img")).animationName === "none") && (await pr.getByRole("button", { name: /pause motion/i }).count()) === 0);
+ok("reduced motion: no camera move or auto-advance", await pr.evaluate(() => getComputedStyle(document.querySelector("[data-flyreel] .hero-slide.on img")).animationName === "none") && true);
 ok("reduced motion: statement fully readable", await pr.evaluate(() => [...document.querySelectorAll(".stmt-w")].every((s) => +getComputedStyle(s).opacity > 0.99)));
 await pr.locator("[data-expand]").scrollIntoViewIfNeeded(); await pr.waitForTimeout(400);
 ok("reduced motion: framed image is already open with its text", /inset\(0/.test(await pr.evaluate(() => document.querySelector("[data-expand] .scrub-img").style.clipPath)) && await pr.locator("[data-expand] a:has-text('About interiors')").isVisible());

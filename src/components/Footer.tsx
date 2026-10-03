@@ -21,6 +21,8 @@ export function Footer() {
               <address className="mt-4 not-italic leading-relaxed">
                 {c.studio.map((l) => (<span key={l} className="block">{l}</span>))}
               </address>
+              <p className="t-caption mt-4 text-white/80">Warehouse</p>
+              <address className="not-italic leading-relaxed">{c.warehouse.map((l) => (<span key={l} className="block">{l}</span>))}</address>
               <p className="mt-2"><a className="link t-caption" href={c.mapHref} target="_blank" rel="noopener noreferrer">Open in Maps<span className="sr-only"> (opens in a new tab)</span></a></p>
               <p className="mt-4"><a className="link" href={c.phoneHref}>{c.phone}</a></p>
               <p><a className="link" href={c.whatsappHref} rel="noopener">WhatsApp</a></p>
