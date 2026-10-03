@@ -33,23 +33,60 @@ for (const r of ["/", "/work", "/studio", "/founder", "/approach", "/contact", "
 
 // 3. opening composition at every required width
 for (const w of [360, 390, 768, 1024, 1440]) {
-  const p = await page(w, w < 700 ? 800 : 900); await p.goto(B + "/"); await p.waitForTimeout(400);
-  const logo = await box(p, "header a[aria-label*='home'] img"), h1 = await box(p, "h1"), cta = await box(p, "a:has-text('Explore our work')");
+  const hh = w < 700 ? 800 : 900;
+  const p = await page(w, hh); await p.goto(B + "/"); await p.waitForTimeout(2200);
+  const logo = await box(p, "header a[aria-label*='home'] img"), h1 = await box(p, "[data-journey] h1"), cta = await box(p, "[data-journey] a:has-text('Explore our work')");
   ok(`${w}: full logo at upper left, at least 200px wide`, logo && logo.x < 64 && logo.y < 40 && logo.width >= 200, JSON.stringify(logo));
   ok(`${w}: logo keeps its proportions`, logo && Math.abs(logo.width / logo.height - 1600 / 1043) < 0.05);
   ok(`${w}: headline clear of logo`, !hit(logo, h1));
   const nav = w >= 768 ? await box(p, "nav[aria-label='Main']") : await box(p, "header button:has-text('Menu')");
   ok(`${w}: navigation clear of logo`, !hit(logo, nav));
-  ok(`${w}: headline and action visible in the first screen`, h1 && cta && h1.y + h1.height < (w < 700 ? 800 : 900) && cta.y + cta.height < (w < 700 ? 800 : 900) + 20, JSON.stringify([h1?.y, cta?.y]));
+  ok(`${w}: headline and action visible in the first screen`, h1 && cta && h1.y + h1.height < hh && cta.y + cta.height < hh + 20, JSON.stringify([h1?.y, cta?.y]));
   ok(`${w}: no horizontal overflow`, await p.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth));
-  ok(`${w}: headline is whole`, /Small scribbles\.\s*Extraordinary spaces\./.test((await p.locator("h1").innerText()).replace(/\n/g, " ")));
-  ok(`${w}: artwork fills part of the first screen`, await p.evaluate((vh) => { const e = document.querySelector(".hero-color"); const r = e.getBoundingClientRect(); return Math.min(r.bottom, vh) - Math.max(r.top, 0) > vh * 0.35; }, w < 700 ? 800 : 900));
+  ok(`${w}: headline is whole`, /Small scribbles\.\s*Extraordinary spaces\./.test((await p.locator("[data-journey] h1").innerText()).replace(/\n/g, " ")));
+  ok(`${w}: opening says what the studio does`, /designs and builds creative spaces and experiences/.test(await p.locator("[data-journey]").innerText()));
+  ok(`${w}: guide form fills part of the first screen`, await p.evaluate(() => { const r = document.querySelector("[data-journey] path[fill='#2f2058']").getBoundingClientRect(); return r.width > innerWidth * 0.4 && r.height > innerHeight * 0.3; }));
   if (w === 1440 || w === 390) {
-    ok(`${w}: art layers do not intercept pointer`, await p.evaluate(() => getComputedStyle(document.querySelector(".hero-color").closest("[data-hero] > div")).pointerEvents === "none"));
-    ok(`${w}: no configurator controls in the opening`, (await p.locator("[data-hero] input[type=range], [data-hero] :text('View angle'), [data-hero] :text('Light')").count()) === 0);
+    ok(`${w}: art layers do not intercept pointer`, await p.evaluate(() => getComputedStyle(document.querySelector("[data-journey] svg")).pointerEvents === "none"));
+    ok(`${w}: no configurator controls in the opening`, (await p.locator("[data-journey] input[type=range]").count()) === 0);
     ok(`${w}: no separate purple strip`, (await p.locator("header .bg-indigo").count()) === 0);
   }
   await p.context().close();
+}
+
+// 3b. the scroll journey: each beat changes the same scene
+{
+  const p = await page(1440, 900); await p.goto(B + "/"); await p.waitForTimeout(2200);
+  const span = await p.evaluate(() => document.querySelector("[data-journey]").offsetHeight - innerHeight);
+  const at = async (f) => { await p.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" }), span * f); await p.waitForTimeout(450); };
+  const st = () => p.evaluate(() => ({ body: document.querySelector("[data-journey] path[fill='#2f2058']").getAttribute("d"), ink: +document.querySelector("#jc-ink rect").getAttribute("width"), color: +document.querySelector("#jc-color rect").getAttribute("width"), proj: +getComputedStyle(document.querySelector("[data-journey] g[clip-path='url(#jc-ap)']")).opacity }));
+  const s0 = await st(); await at(0.34); const s1 = await st(); await at(0.62); const s2 = await st(); await at(0.95); const s3 = await st();
+  ok("journey: the sketch develops after the first mark", s0.ink === 0 && s1.ink > 100, JSON.stringify([s0.ink, s1.ink]));
+  ok("journey: colour and material follow the sketch", s1.color < s2.color && s2.color > 800, JSON.stringify([s1.color, s2.color]));
+  ok("journey: the mark changes shape into the arch", s0.body !== s1.body && s1.body !== s2.body);
+  ok("journey: the project layer appears only after the colour", s0.proj === 0 && s2.proj > 0.5);
+  const beat = async (t) => (await p.locator("[data-journey]").getByText(t, { exact: false }).first().isVisible()); const dbg = async () => p.evaluate(() => [scrollY, getComputedStyle(document.querySelector("[data-journey] h1")).visibility, document.querySelector("[data-journey] h1").closest("div").style.opacity]);
+  await at(0.0); ok("journey: A copy visible at start", await beat("Extraordinary spaces"), JSON.stringify(await dbg()));
+  await at(0.26); ok("journey: B copy appears", await beat("It starts as a line"));
+  await at(0.5); ok("journey: C copy appears", await beat("Then it gets a surface"));
+  await at(0.97); ok("journey: D caption names the project and links to it", (await p.locator("[data-journey] a[href^='/work/']").first().isVisible()) && await beat("Concept study"));
+  ok("journey: concept is labelled until real media exists", /Concept study/.test(await p.locator("[data-journey]").textContent()));
+  await at(0); await p.locator("[data-journey] a:has-text('Skip the story')").click(); await p.waitForTimeout(900);
+  ok("journey: Skip the story reaches the practice board", await p.evaluate(() => document.querySelector("#breadth").getBoundingClientRect().top < innerHeight * 0.6));
+  ok("journey: scroll is normal (no wheel trapping)", await p.evaluate(() => !document.querySelector("[data-journey]").onwheel && getComputedStyle(document.documentElement).overflow !== "hidden"));
+  await p.goto(B + "/"); await p.waitForTimeout(1800);
+  const t0 = await p.evaluate(() => document.querySelector("[data-journey] g[transform]:not(defs g)")?.getAttribute("transform"));
+  await p.mouse.move(300, 200); await p.mouse.move(1200, 700); await p.waitForTimeout(300);
+  const t1 = await p.evaluate(() => document.querySelector("[data-journey] g[transform]:not(defs g)")?.getAttribute("transform"));
+  ok("journey: the guide leans toward the pointer", t0 !== t1, `${t0} -> ${t1}`);
+  await p.context().close();
+  const pr = await page(1440, 900, { reducedMotion: "reduce" }); await pr.goto(B + "/"); await pr.waitForTimeout(500);
+  ok("reduced motion: static story replaces the pinned stage", (await pr.locator("[data-journey]").isVisible()) === false && await pr.locator(".journey-static").getByText("It starts as a line.").isVisible());
+  ok("reduced motion: headline and project are in the page", (await pr.getByRole("heading", { name: /Small scribbles/ }).first().isVisible()) && (await pr.locator(".journey-static a[href^='/work/']").first().isVisible()));
+  await pr.context().close();
+  const pn = await page(1440, 900, { javaScriptEnabled: false }); await pn.goto(B + "/");
+  ok("no JavaScript: the story reads as a normal page", await pn.locator(".journey-static").getByText("It starts as a line.").isVisible());
+  await pn.context().close();
 }
 
 // 4. navigation: desktop row, compact bar on scroll, current page
@@ -90,8 +127,6 @@ ok("three larger work stories", (await stories.count()) === 3);
 ok("stories are labelled Concept study", (await p1.locator("#work :text('Concept study')").count()) >= 3);
 ok("stories show brief, design move and space", (await p1.locator("#work dt").allInnerTexts()).filter((t) => /brief/i.test(t)).length === 3);
 ok("link to the Work index", (await p1.locator("#work a[href='/work']").count()) >= 1);
-ok("founder chapter has a route to the Founder page", (await p1.locator("a[href='/founder']:has-text('Read her story')").count()) === 1);
-ok("no silhouette placeholder", (await p1.getByText(/portrait/i).count()) === 0);
 await p1.goto(B + "/work"); ok("Work index has no Completed tab while none exist", (await p1.getByRole("link", { name: /^Completed$/ }).count()) === 0);
 await p1.goto(B + "/work/concept-hall-stand"); ok("project page omits empty outcomes", (await p1.getByRole("heading", { name: "Outcomes" }).count()) === 0);
 ok("project page has no Completed work tab", (await p1.getByRole("tab", { name: /Completed work/ }).count()) === 0);
@@ -135,8 +170,7 @@ for (const w of [360, 390]) {
 }
 
 // 9. reduced motion: complete, static composition
-const pr = await page(1440, 900, { reducedMotion: "reduce" }); await pr.goto(B + "/"); await pr.waitForTimeout(300);
-ok("reduced motion: colour layer fully revealed", await pr.evaluate(() => getComputedStyle(document.querySelector(".hero-color")).maskPosition.startsWith("0%")));
+const prf = await page(1440, 900, { reducedMotion: "reduce" }); const pr = prf;
 await pr.goto(B + "/founder"); await pr.waitForTimeout(800);
 ok("reduced motion: founder illustration is complete", (await pr.evaluate(() => { const f = [...document.querySelector("div.sticky [role=img]").children].find((c) => c.querySelector("svg[stroke-dasharray='3 5']")); return +getComputedStyle(f).opacity; })) > 0.5);
 

@@ -36,3 +36,31 @@ is listed in `CONTENT_CHECKLIST.md`; replacing the files in `public/art/` (same 
 ## Responsive compositions
 Mobile uses a separate hero crop and image; the board is an accordion; phones show one illustration stage per founder chapter.
 Checked at 360, 390, 768, 1024 and 1440 px.
+
+---
+# Iteration 3: the scroll journey (scribble, idea, space, experience)
+
+**Persisting element, "the guide":** one indigo organic form with a white scribble line, traced from the supplied logo PNG
+(`scripts`-free: the contour was traced once and stored in `src/content/guide.ts`). The SVG logo was not received, so the
+traced shapes come from the PNG. The official logo is only ever shown unaltered in the header. The guide has no face, limbs
+or speech. Its vocabulary: blob, line, arch outline, aperture, frame, ring.
+
+**Scene map (homepage, `Journey.tsx`; one pinned stage, ~4.3 screens of normal scrolling, no wheel or touch hijacking)**
+| Beat | What persists | What changes | What it reveals |
+|---|---|---|---|
+| A first mark | the blob + scribble | scribble draws on load; guide leans up to 10 px toward the cursor | what the studio does, in the first screen |
+| B idea | the blob (morphs, 72 points) | blob shrinks into the **arch** that exists in the sketch; the scribble's tail becomes a coral line that leads the pencil sketch in | "It starts as a line." |
+| C material | the arch outline and the leading line | colour and surface wipe into the sketch; four material samples settle around it | "Then it gets a surface." |
+| D real space | the arch edge | the arch grows until it fills the screen; the project layer, seen through it, takes over | project name, factual line, link |
+| E breadth | arch/aperture language, line + frame | five selectable frames, each with a result (focused view, service page, filtered Work) | the range of the studio |
+| F delivery | the line | vertical line fills as the five stages are read | tangible deliverables |
+| G invitation | the scribble and the arch | arch frame draws around "Let's make a place"; scribble redraws as keystone | verified contact details |
+
+**Beat D honesty:** the repository has no approved built-project photography. `featuredProject()` (`src/content/featured.ts`)
+uses the first *completed* project that has permitted image media; otherwise it opens onto a clearly labelled **Concept study**
+(generated concept art, never presented as built work). Adding an approved project with media switches the reveal automatically.
+
+**Reduced motion / no JavaScript / print:** a static stack of the same story (`JourneyStatic`), chosen before first paint.
+
+**Reference recordings:** the WeTransfer link and Instagram posts could not be reached from the build environment; the
+recordings were not watched. The scene design follows the written brief. Replace/adjust once stills are supplied.

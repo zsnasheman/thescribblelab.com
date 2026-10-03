@@ -98,3 +98,13 @@ None of these are shown on the public site; the pages read as complete without t
 6. **Map pin**: confirm the Google Maps location for UNBOX Community, Bay Square.
 7. **Approved alternate logo lockup** for the compact bar, if you want one; until then the compact bar uses a plain Home link.
 8. **Run `supabase/migrations/20261001000000_contact_source.sql`** (pending): the contact form cannot store messages until it has run. Verify storage on the deployed preview afterwards.
+
+
+---
+## Assets needed for the next refinement (prioritised)
+1. **One completed Scribble Lab project: 3-5 landscape photographs** (min 2400 px wide) and its verified facts (name, discipline, location, year, one-line brief, what you made). The best one is a wide shot with a strong **arched or framed opening** (or a clear architectural edge) so the journey's aperture can open onto it; add to `src/content/projects.ts` with `permissionToPublish: true`. This replaces the concept study in the reveal (Beat D). Also provide a portrait crop (4:5) of the same space for mobile.
+2. **A 6-10 second silent clip (landscape, 1920x1080, MP4/WebM, under 4 MB) of the same project** (walk-through or kinetic movement) plus a poster frame. Used inside the aperture on desktop.
+3. **One real photograph per discipline** (interiors, exhibitions, events, brand activations, kinetic windows), landscape plus a square crop, each with permission and a one-line caption. Until then each discipline shows a labelled concept study.
+4. **The logo SVG** (it was not received). If you want the guide to use the exact paths, send the original SVG.
+5. **Process material that is real:** photographs of sketches, a material board, a model or a site visit (3-6 images), for the Material and Delivery scenes.
+6. **Recording stills:** 3-5 frames from each of the three reference recordings (beginning, middle, end of the key change).

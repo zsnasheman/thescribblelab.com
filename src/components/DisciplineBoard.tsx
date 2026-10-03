@@ -119,6 +119,7 @@ export function DisciplineBoard() {
                 </ul>
                 <div className="mt-7 flex flex-wrap items-center gap-3">
                   <Link href={`/services/${a.slug}`} className="btn btn-indigo">About {a.name.toLowerCase()} <Arrow /></Link>
+                  <Link href={`/work?service=${a.slug}`} className="btn btn-outline">Related work</Link>
                   <button type="button" onClick={close} className="btn btn-outline">Close</button>
                 </div>
               </motion.div>

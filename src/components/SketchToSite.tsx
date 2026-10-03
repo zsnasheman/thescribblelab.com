@@ -68,11 +68,12 @@ export function SketchToSite() {
         </div>
       </div>
 
-      <ol className="space-y-2 lg:col-span-6 lg:pt-6">
+      <ol className="relative space-y-2 lg:col-span-6 lg:pt-6">
+        <li aria-hidden="true" className="pointer-events-none absolute bottom-24 left-0 top-6 w-[3px] rounded bg-indigo/15"><span className="block w-full rounded bg-coral transition-[height] duration-700 ease-[var(--ease-out-expo)]" style={{ height: `${((stage + 1) / 5) * 100}%` }} /></li>
         {processStages.map((s, i) => (
           <li key={s.id} ref={(el) => { refs.current[i] = el; }} className="lg:min-h-[9.5rem]">
             <button type="button" onClick={() => setPicked(i)} aria-current={stage === i ? "step" : undefined}
-              className={`block w-full rounded-xl border-l-4 py-4 pl-5 pr-3 text-left transition-colors ${stage === i ? "border-coral bg-white" : "border-indigo/20 hover:border-indigo/60"}`}>
+              className={`block w-full rounded-xl py-4 pl-6 pr-3 text-left transition-colors ${stage === i ? "bg-white" : "hover:bg-white/60"}`}>
               <span className="t-label tabular-nums text-lavender">0{i + 1}</span>
               <span className="t-h2 mt-1 block">{s.name}</span>
               <span className="mt-1.5 block max-w-[44ch]">{s.line}</span>

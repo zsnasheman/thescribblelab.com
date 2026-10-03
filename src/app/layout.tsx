@@ -44,7 +44,7 @@ export const viewport: Viewport = {
 };
 
 // Marks JS availability so scroll reveals can hide content only when they can also show it.
-const initScript = `document.documentElement.classList.add('js');setTimeout(function(){document.documentElement.classList.add('reveal-fallback')},4000);`;
+const initScript = `document.documentElement.classList.add("js");if(matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("reduce-journey");setTimeout(function(){document.documentElement.classList.add('reveal-fallback')},4000);`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

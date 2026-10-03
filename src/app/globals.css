@@ -285,3 +285,21 @@ body {
   .hero-ink { background-image: url(/art/hero-ink.webp); }
   .hero-color { background-image: url(/art/hero.webp); }
 }
+
+/* ---------- Journey: live stage vs static stack ---------- */
+.journey-static { display: none; }
+html:not(.js) .journey-static, html.reduce-journey .journey-static { display: block; }
+html:not(.js) .journey-live, html.reduce-journey .journey-live { display: none; }
+.scribble-draw { stroke-dasharray: 1; stroke-dashoffset: 0; animation: scribble-in 1.8s 0.15s var(--ease-paper) backwards; }
+@keyframes scribble-in { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+/* Closing ring: redrawn once when it enters view */
+.ring { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.2s var(--ease-paper); }
+.ring-2 { transition-delay: 0.9s; }
+.in .ring, .reveal-fallback .ring { stroke-dashoffset: 0; }
+html:not(.js) .ring { stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: reduce) { .ring { stroke-dashoffset: 0; } }
+
+.arch-frame { clip-path: inset(0 0 100% 0); transition: clip-path 1.6s var(--ease-paper); }
+.in .arch-frame, .reveal-fallback .arch-frame, html:not(.js) .arch-frame { clip-path: inset(-4px); }
+@media (prefers-reduced-motion: reduce) { .arch-frame { clip-path: inset(-4px); } }
