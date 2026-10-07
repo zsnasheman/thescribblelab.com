@@ -6,7 +6,7 @@ import { shot } from "@/content/showcase";
 
 const PIC = { interiors: shot("laduree-dubai-hills", 0), exhibitions: shot("laduree-expex", 0), events: shot("ahmed-al-maghribi-launch", 3), "brand-activations": shot("fifa-arab-cup-qatar", 0), "kinetic-windows": shot("chopard-kinetic-windows", 0) } as const;
 const SH: Shape[] = ["blob-a", "arch", "circle", "blob-b", "pill"];
-const PA = ["tex:09-coral", "tex:01-emerald", "tex:08-lavender", "tex:09-mustard", "tex:01-indigo"];
+const PA = ["#ff663e", "#1e9e74", "#6b5291", "#d99a12", "#ff663e"];
 
 /** The five disciplines as cut-out pictures, each sliding in from alternating sides. */
 export function ServiceCutouts() {

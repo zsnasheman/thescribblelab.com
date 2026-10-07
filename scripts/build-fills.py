@@ -1,7 +1,7 @@
 """Seamless fill tiles for the three chosen textures (01 vertical dashes, 08 short offset dashes, 09 long horizontal dashes), in brand colours.
 Writes public/texture/fill-NN-colour.svg (120 x 120 tiles, transparent background)."""
 import random, os
-COL = {"indigo": "#2f2058", "lavender": "#6b5291", "coral": "#ff663e", "mustard": "#d99a12", "emerald": "#1e9e74", "mist": "#c2b3ec"}
+COL = {"indigo": "#2f2058", "lavender": "#6b5291", "coral": "#ff663e", "mustard": "#d99a12", "emerald": "#1e9e74", "mist": "#c2b3ec", "tint": "#d9d3ea"}
 T = 120
 def seg(x1, y1, x2, y2, w, c):
     return f'<path d="M{x1:.1f} {y1:.1f}L{x2:.1f} {y2:.1f}" stroke="{c}" stroke-width="{w:.1f}" stroke-linecap="round" fill="none"/>'
