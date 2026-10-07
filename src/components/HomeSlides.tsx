@@ -1,20 +1,19 @@
 import Link from "next/link";
-import { Patch } from "./Cutout";
+import { Disc, Patch } from "./Cutout";
 import { Slide } from "./Slide";
 import { Arrow } from "./ui";
 import { WHY } from "@/content/showcase";
 import { PORTFOLIO } from "@/content/portfolio";
 
-const NAVY = "#2f2058", CORAL = "#ff663e", LAV = "#6b5291", MINT = "#bfe8da", PINK = "#ffe0d8", MUSTARD = "#d99a12";
+const NAVY = "#2f2058", CORAL = "#ff663e";
 
 /** 1. White opening: big condensed headline between curved colour blocks (the logo's language of blobs and block colour). */
 export function SlideHero() {
   return (
     <section aria-labelledby="hero-h" data-hero className="slide bg-white">
-      <Patch shape="blob-a" color={PINK} className="-left-[12%] -top-[14%] h-[62%] w-[44%]" />
+      <Patch shape="blob-a" color="tex:09-coral" className="-right-[6%] -top-[16%] h-[48%] w-[34%]" />
       <Patch shape="blob-c" color={NAVY} className="-bottom-[34%] -left-[10%] h-[50%] w-[80%]" />
-      <Patch shape="blob-b" color={MUSTARD} className="-bottom-[10%] -right-[10%] h-[70%] w-[30%] rotate-[18deg]" />
-      <Patch shape="circle" color={CORAL} className="right-[14%] top-[16%] h-[7vmin] w-[7vmin]" />
+      <Disc n="01" className="-bottom-[16%] -right-[8%] h-[62vmin] w-[62vmin]" />
       <div className="container-x relative z-10 pb-20 pt-masthead">
         <h1 id="hero-h">
           <span className="cond block text-[clamp(3rem,0.5rem+8.4vw,9rem)] text-[#333]">We design &amp; build spaces</span>
@@ -48,7 +47,10 @@ export function SlideCoral() {
 /** 3. Contour landscape with the studio line. */
 export function SlideLandscape() {
   return (
-    <section aria-labelledby="land-h" className="slide contours bg-white">
+    <section aria-labelledby="land-h" className="slide bg-white">
+      <Disc n="08" className="-left-[10vmin] -top-[12vmin] h-[58vmin] w-[58vmin]" />
+      <Disc n="09" className="-bottom-[18vmin] -right-[8vmin] h-[66vmin] w-[66vmin]" />
+      <Disc n="02" className="bottom-[14%] left-[10%] h-[14vmin] w-[14vmin]" />
       <Slide from="up" className="container-x relative z-10 -mt-16">
         <h2 id="land-h" className="cond text-[clamp(2.4rem,0.6rem+6.4vw,7rem)] text-[#333]">Small scribbles.<br />Extraordinary spaces.</h2>
         <p className="cond-light mt-4 text-[clamp(1.2rem,0.8rem+1.2vw,2rem)] text-[#333]">A Dubai-based creative agency that concepts, builds and activates</p>
@@ -60,10 +62,11 @@ export function SlideLandscape() {
 /** 5. Words that move apart, with floating blobs. */
 export function SlideFollows() {
   return (
-    <section aria-labelledby="fol-h" className="slide contours bg-white">
-      <Patch shape="blob-c" color={MINT} className="left-[6%] top-[4%] h-[30%] w-[32%]" />
-      <Patch shape="blob-a" color={PINK} className="right-[8%] top-[26%] h-[26%] w-[20%] rotate-12" />
-      <Patch shape="blob-b" color={MUSTARD} className="bottom-[16%] left-[18%] h-[28%] w-[22%] -rotate-12" />
+    <section aria-labelledby="fol-h" className="slide bg-white">
+      <Disc n="01" className="left-[4%] top-[6%] h-[34vmin] w-[34vmin]" />
+      <Disc n="07" className="right-[10%] top-[24%] h-[16vmin] w-[16vmin]" />
+      <Disc n="08" className="bottom-[8%] left-[22%] h-[30vmin] w-[30vmin]" />
+      <Disc n="09" className="-bottom-[10vmin] right-[4%] h-[40vmin] w-[40vmin]" />
       <h2 id="fol-h" className="cond relative z-10 text-[clamp(2.4rem,0.6rem+6.4vw,7rem)] text-indigo">
         <Slide from="left"><span className="block">Sketch</span></Slide>
         <Slide from="right" delay={120}><span className="cond-light block py-2 text-[clamp(1.2rem,0.8rem+1.4vw,2.2rem)] text-indigo-80 normal-case">becomes</span></Slide>

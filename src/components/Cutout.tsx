@@ -1,6 +1,9 @@
 import type { CSSProperties } from "react";
 
 export type Shape = "blob-a" | "blob-b" | "blob-c" | "circle" | "arch" | "pill";
+/** A fill: a flat colour, or "tex:NN-colour" for one of the hand-made mark textures (01 vertical dashes, 08 short dashes, 09 long dashes). */
+export const fill = (spec: string): CSSProperties => (spec.startsWith("tex:") ? { backgroundImage: `url(/texture/fill-${spec.slice(4)}.svg)`, backgroundSize: "110px 110px" } : { background: spec });
+
 const mask = (shape: Shape): CSSProperties => ({
   WebkitMaskImage: `url(/shapes/${shape}.svg)`, maskImage: `url(/shapes/${shape}.svg)`,
   WebkitMaskSize: "100% 100%", maskSize: "100% 100%", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat",
@@ -12,7 +15,7 @@ export function Cutout({ src, alt = "", shape, patch, patchShape, className = ""
 }) {
   return (
     <div className={`relative ${className}`} style={{ aspectRatio: ratio, transform: rotate ? `rotate(${rotate}deg)` : undefined }}>
-      <div aria-hidden="true" className="absolute inset-0 translate-x-[7%] translate-y-[6%] scale-[1.02]" style={{ ...mask(patchShape ?? shape), background: patch }} />
+      <div aria-hidden="true" className="absolute inset-0 translate-x-[7%] translate-y-[6%] scale-[1.02]" style={{ ...mask(patchShape ?? shape), ...fill(patch) }} />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} width={width} height={height} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" className="absolute inset-0 h-full w-full object-cover" style={mask(shape)} />
     </div>
@@ -21,7 +24,12 @@ export function Cutout({ src, alt = "", shape, patch, patchShape, className = ""
 
 /** Flat colour patch in a logo colour, decorative. */
 export function Patch({ shape, color, className = "", style }: { shape: Shape; color: string; className?: string; style?: CSSProperties }) {
-  return <div aria-hidden="true" className={`pointer-events-none absolute ${className}`} style={{ ...mask(shape), background: color, ...style }} />;
+  return <div aria-hidden="true" className={`pointer-events-none absolute ${className}`} style={{ ...mask(shape), ...fill(color), ...style }} />;
+}
+
+/** A circular swatch of one of the textures (01-12), decorative. */
+export function Disc({ n, className = "", style }: { n: string; className?: string; style?: CSSProperties }) {
+  return <div aria-hidden="true" className={`pointer-events-none absolute rounded-full ${className}`} style={{ backgroundImage: `url(/texture/${n}.svg)`, backgroundSize: "100% 100%", ...style }} />;
 }
 
 export const STRIPES = "repeating-linear-gradient(-24deg,#d99a12 0 9px,#fff 9px 18px)";
