@@ -4,7 +4,7 @@ import { Closing } from "@/components/Closing";
 import { Orbit } from "@/components/Orbit";
 import { ProcessList } from "@/components/ProcessList";
 import { Slide } from "@/components/Slide";
-import { SlideCoral, SlideFollows, SlideHero, SlideLandscape, SlideLavender, SlideStats } from "@/components/HomeSlides";
+import { SlideCoral, SlideFollows, SlideHero, SlideLandscape, SlideLavender, SlideLoupe, SlideStats } from "@/components/HomeSlides";
 import { Arrow } from "@/components/ui";
 
 export default function Home() {
@@ -16,6 +16,7 @@ export default function Home() {
       <CategoryPan />
       <SlideFollows />
       <SlideLavender />
+        <SlideLoupe />
       <SlideStats />
 
       <section id="work" aria-labelledby="work-h" className="container-x py-20 md:py-28">

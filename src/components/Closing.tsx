@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Arrow } from "./ui";
 import { Patch } from "./Cutout";
 import { SITE } from "@/lib/site";
+import { ContactCounter } from "./ContactCounter";
 
 /** The invitation as an envelope: it opens as it scrolls into view (or on hover or focus), and the letter asks about the project. */
 export function Closing() {
@@ -40,6 +41,9 @@ export function Closing() {
               <svg viewBox="0 0 100 56" preserveAspectRatio="none" className="h-full w-full"><path d="M0 0H100L50 56Z" fill="#ff663e" stroke="#2f2058" strokeOpacity=".15" strokeWidth=".4" /></svg>
             </div>
           </div>
+        </div>
+        <div className="mt-16">
+          <ContactCounter lines={["HAVE A PROJECT", c.phone, "TALK TO A PERSON", "BUSINESS BAY DXB"]} />
         </div>
         <div className="mt-12 flex flex-wrap justify-center gap-3">
           <Link href="/start-a-project" className="btn btn-coral btn-lg">Start a project <Arrow /></Link>

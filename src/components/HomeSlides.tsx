@@ -4,6 +4,8 @@ import { Slide } from "./Slide";
 import { Arrow } from "./ui";
 import { WHY } from "@/content/showcase";
 import { PORTFOLIO } from "@/content/portfolio";
+import { shot } from "@/content/showcase";
+import { HalftoneReveal } from "./HalftoneReveal";
 
 const NAVY = "#2f2058", CORAL = "#ff663e", LAV = "#6b5291", MINT = "#bfe8da", PINK = "#ffe0d8", MUSTARD = "#d99a12";
 
@@ -82,6 +84,23 @@ export function SlideLavender() {
       <Slide from="left" className="container-x relative z-10 text-left">
         <p id="lav-h" className="cond-light max-w-[24ch] text-[clamp(2rem,0.8rem+3.4vw,4.6rem)] !leading-[1.04]">We don’t hire people who colour inside the lines. We hire people who question why there are lines in the first place.</p>
         <p className="cond mt-6 text-[clamp(1.4rem,0.8rem+1.6vw,2.4rem)] text-[#ffe0d8]">We call ourselves Scribblers</p>
+      </Slide>
+    </section>
+  );
+}
+
+/** Look closer: a halftone print of a real project; the loupe shows the sharp photograph. */
+export function SlideLoupe() {
+  const s = shot("laduree-dubai-hills", 0);
+  return (
+    <section aria-labelledby="loupe-h" className="slide dashes bg-white">
+      <Slide from="up" className="container-x relative z-10 grid items-center gap-8 md:grid-cols-[1fr_1.4fr]">
+        <div>
+          <p className="t-label text-lavender">Look closer</p>
+          <h2 id="loupe-h" className="cond mt-3 text-[clamp(2.4rem,1rem+4.4vw,5.4rem)] !leading-[1]">Every detail is built, not printed</h2>
+          <p className="mt-4 max-w-[34ch] text-indigo-80">Move across the print to see the real thing. {s.project.title}.</p>
+        </div>
+        <HalftoneReveal src={s.image.src} alt={s.alt} className="aspect-[4/3] w-full rounded-[2rem]" />
       </Slide>
     </section>
   );
