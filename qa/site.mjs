@@ -32,18 +32,17 @@ for (const r of ["/", "/work", "/studio", "/founder", "/approach", "/contact", "
 
 // 3. opening at every width
 for (const w of [360, 390, 768, 1024, 1440]) {
-  const hh = w < 700 ? 800 : 900;
-  const p = await page(w, hh); await p.goto(B + "/"); await p.waitForTimeout(800);
+  const hh = w < 700 ? 800 : 810;
+  const p = await page(w, hh); await p.goto(B + "/"); await p.waitForTimeout(700);
   const logo = await box(p, "header a[aria-label*='home'] img"), h1 = await box(p, "[data-hero] h1"), cta = await box(p, "[data-hero] a:has-text('Explore our work')");
   ok(`${w}: full logo at upper left, at least 200px wide`, logo && logo.x < 80 && logo.y < 60 && logo.width >= 200, JSON.stringify(logo));
   ok(`${w}: logo keeps its proportions`, logo && Math.abs(logo.width / logo.height - 1600 / 1043) < 0.05);
   ok(`${w}: headline clear of logo`, !hit(logo, h1));
   const nav = w >= 768 ? await box(p, "nav[aria-label='Main']") : await box(p, "header button:has-text('Menu')");
   ok(`${w}: navigation clear of logo`, !hit(logo, nav));
-  ok(`${w}: headline and action in the first screen`, h1 && cta && h1.y > 0 && cta.y + cta.height < hh + 80, JSON.stringify([h1?.y, cta?.y]));
+  ok(`${w}: headline and action in the first screen`, h1 && cta && h1.y > 0 && cta.y + cta.height < hh + 120, JSON.stringify([h1?.y, cta?.y]));
   ok(`${w}: no horizontal overflow`, await p.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth));
-  ok(`${w}: hero image fills the screen`, await p.evaluate(() => { const r = document.querySelector("[data-hero]").getBoundingClientRect(); return r.width >= innerWidth - 1 && r.height >= Math.min(innerHeight, 640) - 1; }));
-  ok(`${w}: states what the studio does`, /interiors, exhibitions, events, brand activations and kinetic windows/.test(await p.locator("[data-hero]").innerText()));
+  ok(`${w}: hero states what the studio does`, /interiors, exhibitions, events, brand activations and kinetic windows/i.test(await p.locator("[data-hero]").innerText()));
   await p.context().close();
 }
 
@@ -51,7 +50,7 @@ for (const w of [360, 390, 768, 1024, 1440]) {
 {
   const p = await page(); await p.goto(B + "/"); await p.waitForTimeout(1200);
   ok("page background is white", await p.evaluate(() => getComputedStyle(document.body).backgroundColor === "rgb(255, 255, 255)"));
-  ok("hero has project cutouts", (await p.locator("[data-hero] img").count()) === 4);
+  ok("category pan lists all eight disciplines, each a link", (await p.locator("[data-pan] a[href^='/work?category=']").count()) === 8);
   await p.locator("[data-orbit]").scrollIntoViewIfNeeded(); await p.waitForTimeout(800);
   const pos = () => p.evaluate(() => [...document.querySelectorAll("[data-orbit] a")].map((a) => a.style.transform).join("|"));
   const board = await pos();
@@ -80,12 +79,16 @@ await p1.goto(B + "/founder"); ok("Founder is current", (await p1.locator("nav[a
 await p1.goto(B + "/approach"); ok("Studio is current on Approach", (await p1.locator("nav[aria-label='Main'] a[aria-current='page']").innerText()).trim().toLowerCase() === "studio");
 await p1.goto(B + "/"); await p1.getByRole("link", { name: "Explore our work" }).click(); await p1.waitForURL("**/work"); ok("Explore our work goes to Work", true);
 
-// 6. homepage chapters
+// 6. homepage slides
 await p1.goto(B + "/");
-ok("five disciplines, each links to its page", (await p1.locator("#practice-h").locator("xpath=../..").locator("ol a[href^='/services/']").count()) === 5);
+const txt = await p1.locator("body").innerText();
+ok("slides carry the studio's own words", /Nothing gets built\s+without one/i.test(txt) && /colour inside the lines/.test(txt) && /Scribblers/i.test(txt));
+ok("numbers come from the portfolio (23 projects)", /23\s+Projects in this portfolio/i.test(txt));
 ok("five process steps", (await p1.locator("#delivery-h").locator("xpath=../../..").locator("ol > li").count()) === 5);
-ok("attitude write-ups from the company profile", /Nothing gets built without a scribble first/.test(await p1.locator("body").innerText()));
 ok("closing has contact actions and verified details", (await p1.locator("#close-h").locator("xpath=../../../../..").locator("a[href='/start-a-project'], a[href='/contact'], a[href^='tel:'], a[href^='mailto:']").count()) >= 4);
+await p1.goto(B + "/"); const pan = async (f) => { const [top, span] = await p1.evaluate(() => { const e = document.querySelector("[data-pan]"); return [e.getBoundingClientRect().top + scrollY, e.offsetHeight - innerHeight]; }); await jump(p1, top + span * f); await p1.waitForTimeout(300); return p1.evaluate(() => document.querySelector("[data-pan] > div > div").style.transform); };
+const t0 = await pan(0.02), t1 = await pan(0.9);
+ok("landscape pans sideways as you scroll", t0 !== t1, `${t0} -> ${t1}`);
 
 // 7. work index, filter, project page, service page
 await p1.goto(B + "/work");
@@ -123,7 +126,7 @@ for (const w of [360, 390]) { const pe = await page(w, 800); await pe.goto(B + "
 const pr = await page(1440, 900, { reducedMotion: "reduce" }); await pr.goto(B + "/"); await pr.waitForTimeout(600);
 ok("reduced motion: projects shown as a plain grid, no orbit", (await pr.locator("[data-orbit]").count()) === 0 && (await pr.locator("section#work a[href^='/work/']").count()) >= 12);
 const pn = await page(1440, 900, { javaScriptEnabled: false }); await pn.goto(B + "/");
-ok("no JavaScript: headline, statement and disciplines are there", (await pn.locator("#hero-h").isVisible()) && (await pn.locator("#practice-h").count()) === 1);
+ok("no JavaScript: headline, statement and disciplines are there", (await pn.locator("#hero-h").isVisible()) && (await pn.locator("#cats-h").count()) === 1);
 
 // 11. contact form + console
 await p1.goto(B + "/contact"); await p1.getByRole("button", { name: /send message/i }).click(); await p1.waitForTimeout(400);

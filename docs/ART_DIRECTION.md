@@ -32,3 +32,9 @@ Applied: night grade in brand indigo with a coral glow; Instrument Serif display
 Brand Book's Josefin Sans, to confirm with the owner); the split headline; tracked uppercase nav and captions;
 numbered "01 Our craft / 02 Our approach" strip; fly-through transition between pictures (camera pushes in as the
 next picture arrives from inside it); dark immersive homepage. No artwork, text or layout is copied.
+
+---
+## Reference rebuild (Roar-style slides, Oct 2026)
+Source: a 12-slide full-page capture of a design-studio site plus its copied styles. Structure kept: white hero with colour blocks and a big condensed caps headline; a full colour statement slide; a contour-line landscape; discipline labels with a yellow triangle; grayscale cutouts with colour blocks; a "X follows Y" slide; a pink/navy philosophy slide; outlined-numeral stats; featured projects; closing.
+Adapted, not cloned: Roar's angular polygons become the Scribble logo's curved blobs; yellow/pink/navy become coral/mustard/lavender/indigo; Barlow Condensed (condensed caps, as in the reference) with Figtree for text; all copy and images are the studio's own (company profile).
+The reference's tiger/panther cut-outs are replaced by real cut-outs from the studio's work (Ariel, Huda Beauty bowling, Ariel kiosk) and grayscale photographs that turn to colour on hover. A realistic Scribble "signature" subject (e.g. a real pencil / sketching hands) needs photography: see CONTENT_CHECKLIST.

@@ -126,3 +126,7 @@ To confirm later (look and feel comes first):
 5. Dubai Health / Al Jalila Foundation (2026), Emirates NBD HQ, Bank ABC HQ, Britishvolt, Energy Plus Gym and Barako Grill are in the client list but have no project pages in the PDF; send images and text if they should have one.
 6. Image quality: many PDF images are 500-1400 px wide (compressed PDF). Original files would be sharper for full-bleed use.
 7. The café photograph supplied earlier (shows an "LDC" sign) is not used; no matching project in the PDF.
+
+---
+## Realistic signature imagery (reference rebuild)
+The reference uses realistic black-and-white cut-outs (people, a panther) tied to its name. For Scribble we need real photographs, not illustrations. Options to choose from: (1) hands sketching with a pencil on tracing paper; (2) a real pencil/scribble drawn on a wall or wooden model; (3) the team at work. Please send 3-5 high-resolution photographs on plain backgrounds (or tell me to stage them from your project photos).
