@@ -301,3 +301,15 @@ body {
 
 /* Backdrop: the vertical-dash texture in a light tint of the brand indigo */
 .dashes { background-image: url(/texture/fill-01-tint.svg); background-size: 120px 120px; }
+
+/* /concept: one scene, a camera that moves through it */
+.concept-world { position: absolute; inset: 0; perspective: 1800px; perspective-origin: 50% 45%; --W: min(62vw, 108svh); }
+.concept-rig {
+  position: absolute; left: 50%; top: 50%; width: var(--W); height: calc(var(--W) * .75); margin: calc(var(--W) * -.375) 0 0 calc(var(--W) * -.5);
+  transform-style: preserve-3d; will-change: transform;
+  transform: translate3d(calc(var(--tx) * var(--W)), calc(var(--ty) * var(--W)), 0) rotateX(calc(var(--rx) * 1deg)) rotateZ(calc(var(--rz) * 1deg)) scale(var(--s));
+}
+@media (max-width: 767px) { .concept-world { --W: 150vw; } }
+.concept-scribble { animation: scribble-draw 2.2s .3s cubic-bezier(.6,.05,.3,1) both; }
+@keyframes scribble-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .concept-scribble { animation: none; } }
